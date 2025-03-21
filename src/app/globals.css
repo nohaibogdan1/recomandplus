@@ -10,9 +10,13 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-regal-orange: #F47457;
+  --color-regal-orange-2: #F59058;
+  --color-page: #F5F5F5;
+  --color-regal-orange-dark: #6f3528;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: white) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;

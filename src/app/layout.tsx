@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import HeaderAccount from "@/components/HeaderAccount";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <div className="flex justify-between my-2 pr-4 pl-4 w-full max-w-5xl mx-auto">
+          <a href="/afaceri"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></a>
+          <HeaderAccount/>
+        </div>
         {children}
       </body>
     </html>
