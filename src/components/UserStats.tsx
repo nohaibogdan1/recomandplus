@@ -25,7 +25,7 @@ function StatusBox(props: { image: string, numbers: string, description: string 
 
 export default function UserStats() {
 
-    const [user] = useUser();
+    const {user} = useUser();
 
     const rewards = ["Reducere 50% din cumparaturi in limita a 200 RON", "Un buchet de trandafiri"];
 

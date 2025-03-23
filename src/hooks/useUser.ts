@@ -1,6 +1,7 @@
 "use client"
 
 import { createClient } from "@/utils/supabase/client";
+
 import { useEffect, useState } from "react";
 
 async function bla() {
@@ -22,6 +23,10 @@ export default function useUser(){
     const [isLoading, setIsLoading] = useState(true);
     const supabase = createClient();
 
+    function reset(){
+        setUser(null);
+    }
+
     useEffect(() => {
         async function fetchUser() {
             // await bla();
@@ -32,5 +37,5 @@ export default function useUser(){
         fetchUser();
     }, []);
 
-    return [user, isLoading];
+    return {user, isLoading, reset};
 }
