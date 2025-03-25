@@ -6,7 +6,7 @@ import Image from "next/image";
 
 function BusinessBox(props: { image: string, name: string, rewards: string[], daysLeft: number }) {
     return (
-        <div className="p-3 bg-white rounded-md w-xs lg:w-[calc(33.333%-12px)] hover:shadow-2xl cursor-pointer">
+        <a href={`/campanii/${encodeURIComponent(props.name)}`} className="p-3 bg-white rounded-md w-xs lg:w-[calc(33.333%-12px)] hover:shadow-2xl cursor-pointer">
             <Image
                 className="rounded-md object-cover h-34 lg:h-45"
                 src={props.image}
@@ -40,13 +40,11 @@ function BusinessBox(props: { image: string, name: string, rewards: string[], da
                 />
                 {props.daysLeft} zile au mai ramas
             </div>
-        </div>
+        </a>
     )
 };
 
-
-
-export default async function BusinessListPage({ searchParams }: { searchParams: { [key: string]: string } }) {
+export default async function CampaignsPage({ searchParams }: { searchParams: { [key: string]: string } }) {
     const params = await searchParams;
     const { counties, p, online } = params;
     const res = await fetch(`http://localhost:3000/api/campanii?counties=${counties || ""}&online=${online || ""}&p=${p || ""}`, {
@@ -64,7 +62,7 @@ export default async function BusinessListPage({ searchParams }: { searchParams:
         <>
             <div className="flex flex-col gap-3 bg-neutral-100 pt-5 px-4">
                 <div className="w-xs lg:w-full max-w-5xl mx-auto">
-                    <BusinessFilters params={{ counties, p, online }}/>
+                    <BusinessFilters params={{ counties, p, online }} />
                 </div>
 
                 {error && <div>Problema</div>}

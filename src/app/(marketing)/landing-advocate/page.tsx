@@ -55,7 +55,7 @@ export default function LandingAdvocate() {
                     <div className="flex flex-col lg:flex-row justify-between w-full max-w-5xl mx-auto">
                         <div className="flex flex-col md:flex-row lg:flex-col items-center justify-center align-center">
                             <Image
-                                className="max-w-md lg:max-w-lg relative lg:-left-11"
+                                className="w-full max-w-md lg:max-w-lg relative lg:-left-11"
                                 src="/10559.jpg"
                                 alt="Next.js logo"
                                 width={1800}
@@ -67,7 +67,9 @@ export default function LandingAdvocate() {
                                 <div className="mt-10">Simplu, rapid și avantajos!</div>
                             </div>
                         </div>
-                        <Auth withBorder/>
+                        <div className="mx-5">
+                            <Auth withBorder/>
+                        </div>
                     </div>
 
                     <div className="border mt-10 mx-5 border-gray-300 w-full max-w-5xl mx-auto"></div>
@@ -94,7 +96,7 @@ export default function LandingAdvocate() {
                     </div>
                     <div className="flex w-full max-w-5xl mx-auto flex-col md:flex-row items-center justify-center lg:justify-between align-center">
                         <Image
-                            className="max-w-md lg:max-w-lg relative lg:-left-11"
+                            className="w-full max-w-md lg:max-w-lg relative lg:-left-11"
                             src="/10820.jpg"
                             alt="Next.js logo"
                             width={1000}

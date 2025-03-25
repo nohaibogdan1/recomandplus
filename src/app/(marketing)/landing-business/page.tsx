@@ -54,7 +54,7 @@ export default function LandingBusiness() {
                     <div className="flex flex-col lg:flex-row justify-between w-full max-w-5xl mx-auto">
                         <div className="flex flex-col md:flex-row lg:flex-col items-center justify-center align-center">
                             <Image
-                                className="max-w-xs md:max-w-sm lg:max-w-lg px-5 lg:px-0"
+                                className="w-full max-w-xs md:max-w-sm lg:max-w-lg px-5 lg:px-0"
                                 src="/1.svg"
                                 alt="Next.js logo"
                                 width={1800}
