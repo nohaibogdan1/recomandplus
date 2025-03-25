@@ -26,8 +26,6 @@ export async function GET(request: Request) {
   const limit = 22;
   const offset = (page - 1) * limit;
 
-  console.log("HEHHEOI", counties, onlineParam, page);
-
   const supabase = await createClient();
 
   let data, campaignsError;
@@ -89,4 +87,72 @@ export async function GET(request: Request) {
   };
 
   return NextResponse.json(mapped);
+}
+
+type DbBusiness = {
+  id: string;
+  campaigns: { id: string }[];
+};
+
+export async function POST(req: Request) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  let res = await supabase
+    .from("businesses")
+    .select("*, campaigns!inner(*)")
+    .eq("user_id", user.id)
+    .lt("campaigns.end_at", new Date().toISOString())
+    .single();
+
+  if (res.error) {
+    console.error("Error Business ", res.error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+
+  const business = res.data as DbBusiness;
+
+  if (!business) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  if (business.campaigns[0]) {
+    return NextResponse.json(
+      { error: "Already running campaign" },
+      { status: 409 }
+    );
+  }
+
+  const { months, startAt, reward1, reward2, reward3 } = await req.json();
+
+  const startTimestamp = new Date(startAt);
+  const endTimestamp = new Date(startAt);
+  endTimestamp.setDate(endTimestamp.getDate() + months * 30);
+
+  res = await supabase
+    .from("campaigns")
+    .insert({
+      start_at: startTimestamp,
+      end_at: endTimestamp,
+      months,
+      business_id: business.id,
+      reward1,
+      reward2,
+      reward3,
+    })
+    .select("*");
+
+  if (res.error) {
+    console.error("Error Business insert ", res.error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true }, { status: 200 });
 }

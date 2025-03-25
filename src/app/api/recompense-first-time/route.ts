@@ -2,7 +2,23 @@ import { NextResponse } from "next/server";
 
 import { createClient } from "@/utils/supabase/server";
 
-type DbRespone = {};
+type DbBusiness = {
+  campaigns: {
+    id: string;
+    reward1: string;
+    reward2: string;
+    reward3: string;
+  }[];
+};
+
+type DbUser = {
+  email: string;
+  auth_user_id: string;
+};
+
+type DbAdvocate = {
+  id: string;
+};
 
 export async function POST(req: Request) {
   const supabase = await createClient();
@@ -22,17 +38,19 @@ export async function POST(req: Request) {
   if (user.email === referral) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
-
-  const { data: business, error: businessError } = await supabase
+  let res;
+  res = await supabase
     .from("businesses")
     .select("*, campaigns!inner(*)")
     .eq("name", businessName)
     // .lt('campaigns.end_at', new Date().toISOString())
     .single();
 
-  if (businessError) {
-    console.error("Error Business: ", businessError);
+  if (res.error) {
+    console.error("Error Business: ", res.error);
   }
+
+  const business = res.data as DbBusiness;
 
   const campaign = business.campaigns[0];
 
@@ -40,78 +58,83 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not Found" }, { status: 404 });
   }
 
-  const { data: advocate, error: advocateError } = await supabase
+  res = await supabase
     .from("advocates")
     .select("*")
     .eq("user_id", user.id)
     .eq("campaign_id", campaign.id)
     .single();
 
-  if (advocateError) {
-    console.error("Error Advocate error: ", advocateError);
+  if (res.error) {
+    console.error("Error Advocate error: ", res.error);
   }
 
-  if (advocate) {
+  if (res.data) {
     return NextResponse.json({ error: "Already advocate" }, { status: 409 });
   }
 
-  const { data: userReferral, error: userReferralError } = await supabase
-    .from("users").select("*").eq("email", referral).single();
+  res = await supabase.from("users").select("*").eq("email", referral).single();
 
-  if (userReferralError) {
-    console.error("Error User referral error: ", userReferralError);
+  if (res.error) {
+    console.error("Error User referral error: ", res.error);
   }
+
+  const userReferral = res.data as DbUser;
 
   let userReferralAdvocate = null;
 
   if (userReferral) {
-    const res = await supabase
-    .from("advocates")
-    .select("*")
-    .eq("user_id", userReferral.auth_user_id)
-    .eq("campaign_id", campaign.id).single();
+    res = await supabase
+      .from("advocates")
+      .select("*")
+      .eq("user_id", userReferral.auth_user_id)
+      .eq("campaign_id", campaign.id)
+      .single();
 
-    userReferralAdvocate = res.data;
-    if (res.error)  {
+    userReferralAdvocate = res.data as DbAdvocate;
+    if (res.error) {
       console.error("Error User referral advocate error: ", res.error);
     }
   }
 
-  const { data: advocateInsert, error: advocateInsertError } = await supabase
+  res = await supabase
     .from("advocates")
     .insert({
       user_id: user.id,
       campaign_id: campaign.id,
-      ...(userReferral?.email && userReferralAdvocate && { from_advocate_id: userReferralAdvocate.id }),
+      ...(userReferralAdvocate && {
+        from_advocate_id: userReferralAdvocate.id,
+      }),
     })
     .select()
     .single();
 
-  if (advocateInsertError) {
-    console.error("advocateInsertError", advocateInsertError);
+  if (res.error) {
+    console.error("advocateInsertError", res.error);
   }
-
+  const advocateInsert = res.data as DbAdvocate;
   if (!advocateInsert) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  const { data: advocateRewardInsert, error: advocateRewardInsertError } =
-    await supabase
-      .from("advocates_rewards")
-      .insert({
-        advocate_id: advocateInsert.id,
-        reward: campaign.reward1,
-        first_time: true,
-      })
-      .select()
-      .single();
+  res = await supabase
+    .from("advocates_rewards")
+    .insert({
+      advocate_id: advocateInsert.id,
+      reward: [campaign.reward1, campaign.reward2, campaign.reward3].filter(Boolean).join(" sau "),
+      first_time: true,
+    })
+    .select()
+    .single();
 
-  if (advocateRewardInsertError) {
+  if (res.error) {
     console.error(
       "Error Advocate reward insert first-time: ",
-      advocateRewardInsertError
+      res.error
     );
   }
+
+  const advocateRewardInsert = res.data;
 
   if (!advocateRewardInsert) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
@@ -119,4 +142,3 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ success: true });
 }
-

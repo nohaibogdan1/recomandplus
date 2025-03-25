@@ -5,6 +5,7 @@ import Image from "next/image";
 import useUser from "@/hooks/useUser";
 import CreateCampaignForm from '@/components/CreateCampaignForm';
 import BusinessForm from '@/components/BusinessForm';
+import RewardValidation from '@/components/RewardValidation';
 
 function Recommendations() {
     const rewards = [{
@@ -66,6 +67,7 @@ function Campaigns() {
     return (
         <div className="flex flex-col gap-4 w-full">
             <Business />
+            <RewardValidation/>
             <div className='font-bold'>Campania mea</div>
             {showCreateCampaign && <CreateCampaignForm />}
 
