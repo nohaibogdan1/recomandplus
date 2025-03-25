@@ -20,8 +20,8 @@ export type CampaignRes = {
     id: string,
     remainingDays: number,
     createdAt: string,
-    startAt: string | null,
-    endAt: string | null,
+    startAt: string,
+    endAt: string,
     months: number,
     businessId: string,
     rewards: string[],
@@ -39,3 +39,14 @@ export type CampaignRes = {
       website: string | null
     },
 }
+
+export type CampaignsOwnerRes = {
+    campaigns: {
+        id: string,
+        startAt: string,
+        endAt: string,
+        months: number,
+        reward1: string,
+    }[]
+}
+

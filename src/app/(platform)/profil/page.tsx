@@ -6,6 +6,7 @@ import useUser from "@/hooks/useUser";
 import CreateCampaignForm from '@/components/CreateCampaignForm';
 import BusinessForm from '@/components/BusinessForm';
 import RewardValidation from '@/components/RewardValidation';
+import { CampaignsOwnerRes } from '@/types/serverResponse';
 
 function Recommendations() {
     const rewards = [{
@@ -63,11 +64,31 @@ function Campaigns() {
 
     const showCreateCampaign = false;
 
+    const [campaigns, setCampaigns] = useState<CampaignsOwnerRes["campaigns"]>([]);
+
+    useEffect(() => {
+        async function fetchCampaigns() {
+            const response = await fetch(`/api/campanii-owner`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const result: CampaignsOwnerRes = await response.json();
+
+            if (response.ok) {
+                setCampaigns(result.campaigns);
+            }
+        }
+        fetchCampaigns();
+    }, []);
+
 
     return (
         <div className="flex flex-col gap-4 w-full">
             <Business />
-            <RewardValidation/>
+            <RewardValidation />
             <div className='font-bold'>Campania mea</div>
             {showCreateCampaign && <CreateCampaignForm />}
 
@@ -75,19 +96,7 @@ function Campaigns() {
                 <div className="flex flex-col p-5">
                     <span className="text-md font-bold">{c.business}</span>
                     <span className="text-gray-600 font-bold">{c.startDate} - {c.endDate}</span>
-                    <div className="mt-2 flex flex-col gap-1">
-                        {c.rewards.map(r => <div key={r}>{r}</div>)}
-                    </div>
-                    <button className="cursor-pointer w-40 mt-2 rounded-md bg-gray-100 text-sm font-bold py-2">Vezi detalii</button>
-                    <div className='mt-2 font-bold'>Analiza</div>
-                    <div className='flex'>
-                        <div>Ziua</div>
-                    </div>
-                    {statistics.map(s => (
-                        <div key={s.id} className='flex'>
-                            <div>{s.date}</div>
-                        </div>
-                    ))}
+                    <div className="mt-2 flex flex-col gap-1"></div>
                 </div>
             </div>
         </div>
@@ -119,7 +128,7 @@ function Business() {
     const [showUpdate, setShowUpdate] = useState(false);
 
     async function getBusiness() {
-        const response = await fetch('/api/afaceri', {
+        const response = await fetch('/api/afaceri-owner', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -138,7 +147,7 @@ function Business() {
     }
 
     useEffect(() => {
-        getBusiness();
+        // getBusiness();
     }, []);
 
     return (
@@ -149,7 +158,7 @@ function Business() {
                 <>
                     <div className='flex gap-5'>
                         {!showUpdate && <button onClick={() => setShowUpdate(true)} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Modifica</button>}
-                        <button onClick={() => {setShowBusiness(false); setShowUpdate(false)}} className="cursor-pointer w-7 rounded-md bg-gray-100 text-sm font-bold py-2">X</button>
+                        <button onClick={() => { setShowBusiness(false); setShowUpdate(false) }} className="cursor-pointer w-7 rounded-md bg-gray-100 text-sm font-bold py-2">X</button>
                     </div>
 
                     <div className='flex flex-col gap-5'>

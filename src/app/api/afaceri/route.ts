@@ -54,12 +54,10 @@ export async function GET() {
   return NextResponse.json(mapped);
 }
 
+type DbBusiness = {
+  id: string
+}
 
-
-
-
-
-// POST: Creează sau modifică datele despre business
 export async function POST(req: Request) {
   const supabase = await createClient();
 
@@ -67,10 +65,13 @@ export async function POST(req: Request) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const businessData = await req.json();
-  /*
+
   const dbData = {
-    ...(businessData.id && {id: businessData.id}),
     name: businessData.businessName,
     location: businessData.address,
     location_map: businessData.googleMaps,
@@ -78,71 +79,34 @@ export async function POST(req: Request) {
     facebook: businessData.facebook,
     instagram: businessData.instagram,
     tiktok: businessData.tiktok,
-    user_id: user?.id,
+    user_id: user.id,
     county: businessData.county,
     is_online: businessData.isOnline,
   };
 
-  businessData.user_id = user?.id;
+  businessData.user_id = user.id;
 
-  const { data, error } = await supabase
-    .from("businesses")
-    .upsert(dbData, { onConflict: "id" })
-    .select()
-    .single();
-*/
-
-  for (let i = 4; i < 100; i++) {
-    try {
-      const busData = {
-        name: "Busines name " + i,
-        location: "business address" + i,
-        location_map: "google maps" + i,
-        phone: "1223 _ " + i,
-        facebook: "facebook" + i,
-        instagram: "instagram" + i,
-        tiktok: "tiktok " + i,
-        user_id: user?.id,
-        county: i % 2 === 0 ? "Cluj" : "Dolj",
-        is_online: i % 2 === 0,
-      };
-
-      const { data: bData, error: berror } = await supabase
-        .from("businesses")
-        .insert(busData)
-        .select()
-        .single();
-      console.log("berror", berror);
-
-      console.log("bData", bData.id)
-
-      const campData = {
-        business_id: bData.id,
-        // start_at: Date.now(),
-        months: 2,
-        reward1: "Reward1 "+ i,
-        reward2: "Reard2 " + i,
-        reward3: "Rearddd3 " + i,
-      };
-
-      const { data: cData, error: cerror } = await supabase
-        .from("campaigns")
-        .insert(campData)
-        .select()
-        .single();
-
-      console.log("cData", cData?.id, cerror)
-
-
-    } catch(er) {console.error("er", er)}
-    // break;
-
+  let res = null;
+  res = await supabase.from("businesses").select("*").eq("user_id", user.id);
+  if (res.error) {
+    console.error("Error businesses ", res.error);
+    return NextResponse.json({ error: "Server error", statusCode: 500 });
   }
 
-  return NextResponse.json({ true: 1 });
+  let business = res.data[0] as DbBusiness;
 
-  // if (error) {
-  //   return NextResponse.json({ error: error.message }, { status: 500 });
-  // }
-  // return NextResponse.json(data);
+  res = await supabase
+    .from("businesses")
+    .upsert({
+      ...dbData,
+      ...(business.id && {id: business.id})
+    }, { onConflict: "id" })
+    .select();
+
+  if (res.error) {
+    console.error("Error business upsert: ", res.error);
+    return NextResponse.json({ error: "Server error", statusCode: 500 });
+  }
+
+  return NextResponse.json({ success: true });
 }
