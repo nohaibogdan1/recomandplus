@@ -22,9 +22,9 @@ type DbResponse = {
     location_map: string;
     facebook: string | null;
     instagram: string | null;
-    tiktok: string  | null;
+    tiktok: string | null;
     website: string | null;
-  }
+  };
 };
 
 export async function GET(
@@ -39,12 +39,13 @@ export async function GET(
   const res = await supabase
     .from("campaigns")
     .select("*, businesses!inner(*)")
-    .eq("businesses.name", decodeURIComponent(slug)).single();
+    .eq("businesses.name", decodeURIComponent(slug))
+    .single();
 
-    data = res.data as unknown as DbResponse;
-    console.error("campaignError", res.error);
-
-    console.log("ddd", data);
+  data = res.data as unknown as DbResponse;
+  if (res.error) {
+    console.error("Error campaign: ", res.error);
+  }
 
   if (!data) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
@@ -52,13 +53,12 @@ export async function GET(
 
   const mapped: CampaignRes = {
     id: data.id,
-    remainingDays: 100,
     createdAt: data.created_at,
     startAt: data.start_at,
     endAt: data.end_at,
     months: data.months,
     businessId: data.business_id,
-    rewards: [data.reward1, data.reward2, data.reward3].filter(Boolean) as string[],
+    reward: data.reward1,
     business: {
       name: data.businesses.name,
       photo: data.businesses.photo,

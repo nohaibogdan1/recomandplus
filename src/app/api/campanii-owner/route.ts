@@ -5,6 +5,7 @@ import type { CampaignsOwnerRes } from "@/types/serverResponse";
 
 type DbBusiness = {
   id: string;
+  name: string;
 };
 
 type DbCampaign = {
@@ -43,23 +44,38 @@ export async function GET() {
     .from("campaigns")
     .select("*")
     .eq("business_id", business.id)
-    .order("end_at", { ascending: true });
+    .order("end_at", { ascending: false });
 
   if (res.error) {
     console.error("Error campaigns: ", res.error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  const mapped: CampaignsOwnerRes = {
-    campaigns: (res.data as DbCampaign[]).map((c) => ({
+  const mapped: CampaignsOwnerRes["current"][] = (res.data as DbCampaign[]).map(
+    (c) => ({
       id: c.id,
       startAt: c.start_at,
       endAt: c.end_at,
       months: c.months,
-      reward1: c.reward1,
-    })),
-  };
+      reward: c.reward1,
+      business: business.name,
+    })
+  );
 
-  console.log("mapp", mapped.campaigns[0]);
-  return NextResponse.json({ campaigns: mapped });
+  const check = new Date();
+  check.setUTCDate(check.getUTCDate());
+  check.setUTCHours(0, 0, 0, 0);
+
+  let current;
+  let old = mapped;
+
+  if (mapped[0] && check.getTime() <= new Date(mapped[0].endAt + "Z").getTime()) {
+    current = mapped[0];
+    old = old.slice(1);
+  }
+
+  return NextResponse.json({
+    current,
+    old,
+  });
 }

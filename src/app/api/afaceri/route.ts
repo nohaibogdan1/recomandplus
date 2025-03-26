@@ -16,7 +16,6 @@ interface BusinessData {
   isOnline: boolean;
 }
 
-// GET: Obține datele despre business
 export async function GET() {
   const supabase = await createClient();
   const {

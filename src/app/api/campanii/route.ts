@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
-import { CampaignsRes } from "@/types/serverResponse";
+import { CampaignsRes, CreateCampaignRes } from "@/types/serverResponse";
 
 type DbResponse = {
   campaign_id: string;
@@ -9,8 +9,6 @@ type DbResponse = {
   campaign_end_at: string;
   campaign_months: number;
   campaign_reward1: string;
-  campaign_reward2: string;
-  campaign_reward3: string;
   business_id: string;
   business_name: string;
   business_county: string;
@@ -22,54 +20,41 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("p")) || 1;
   const onlineParam = searchParams.get("online");
-  const counties = searchParams.get("counties")?.split(",");
+  const counties = searchParams
+    .get("counties")
+    ?.split(",")
+    .filter((c) => Boolean(c.trim()));
   const limit = 22;
   const offset = (page - 1) * limit;
 
   const supabase = await createClient();
 
-  let data, campaignsError;
-  if (onlineParam === "true") {
-    const r = await supabase.rpc("get_filtered_campaigns_o", {
-      counties: counties?.[0] ? counties : [],
-      online: true,
-      offsetn: offset,
-      limitn: limit,
-    });
-    data = r.data;
-    campaignsError = r.error;
-  } else {
-    const r = await supabase.rpc("get_filtered_campaigns", {
-      counties: counties?.[0] ? counties : [],
-      offsetn: offset,
-      limitn: limit,
-    });
-    data = r.data;
-    campaignsError = r.error;
-  }
+  const { data, error: campaignsError } = await supabase.rpc("get_campaigns", {
+    counties: counties?.[0] ? counties : null,
+    online:
+      onlineParam === "true" ? true : onlineParam === "false" ? false : null,
+    offsetn: offset,
+    limitn: limit
+  });
 
-  console.log("data", data.length, data[0]);
-  console.error("campaignsError", campaignsError);
-
-  if (!data) {
+  if (campaignsError) {
+    console.error("Error Campaigns all: ", campaignsError);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
   const campaigns = (data as DbResponse[]).map((c) => ({
     id: c.campaign_id,
-    remainingDays: 100,
     createdAt: c.campaign_created_at,
     startAt: c.campaign_start_at,
     endAt: c.campaign_end_at,
     months: c.campaign_months,
     businessId: c.business_id,
-    rewards: [c.campaign_reward1, c.campaign_reward2, c.campaign_reward3],
+    reward: c.campaign_reward1,
     business: {
       name: c.business_name,
       photo: c.business_photo,
       county: c.business_county,
       isOnline: c.business_is_online,
-      slug: "sluggg",
     },
   }));
 
@@ -105,19 +90,41 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  let { months, reward } = (await req.json()) as {
+    months: number;
+    reward: string;
+  };
+
+  reward = reward.trim();
+
+  if (!months || !reward) {
+    return NextResponse.json(
+      { error: "Campuri necompletate" },
+      { status: 400 }
+    );
+  }
+
+  const check = new Date();
+  check.setUTCDate(check.getUTCDate());
+  check.setUTCHours(0, 0, 0, 0);
+
   let res = await supabase
     .from("businesses")
-    .select("*, campaigns!inner(*)")
+    .select("*, campaigns(*)")
     .eq("user_id", user.id)
-    .lt("campaigns.end_at", new Date().toISOString())
-    .single();
+    .gte("campaigns.end_at", check.toISOString());
 
   if (res.error) {
     console.error("Error Business ", res.error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  const business = res.data as DbBusiness;
+  const business = res.data[0] as DbBusiness;
+
+  const startTimestamp = new Date();
+  const endTimestamp = new Date();
+  endTimestamp.setUTCDate(endTimestamp.getUTCDate() + 30 * months);
+  endTimestamp.setUTCHours(0, 0, 0, 0);
 
   if (!business) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -130,22 +137,14 @@ export async function POST(req: Request) {
     );
   }
 
-  const { months, startAt, reward1, reward2, reward3 } = await req.json();
-
-  const startTimestamp = new Date(startAt);
-  const endTimestamp = new Date(startAt);
-  endTimestamp.setDate(endTimestamp.getDate() + months * 30);
-
   res = await supabase
     .from("campaigns")
     .insert({
-      start_at: startTimestamp,
-      end_at: endTimestamp,
+      start_at: startTimestamp.toISOString(),
+      end_at: endTimestamp.toISOString(),
       months,
       business_id: business.id,
-      reward1,
-      reward2,
-      reward3,
+      reward1: reward,
     })
     .select("*");
 
@@ -154,5 +153,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true }, { status: 200 });
+  const r: CreateCampaignRes = { success: true };
+  return NextResponse.json(r, { status: 200 });
 }

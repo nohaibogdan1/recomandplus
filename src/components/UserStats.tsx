@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import useUser from "@/hooks/useUser";
+import { useEffect, useState } from "react";
+import { AdvocateStatusRes, RewardsRes } from "@/types/serverResponse";
 
 
 function StatusBox(props: { image: string, numbers: string, description: string }) {
@@ -23,31 +25,54 @@ function StatusBox(props: { image: string, numbers: string, description: string 
     )
 }
 
-export default function UserStats() {
+export default function UserStats(props: { slug: string }) {
+    const { user } = useUser();
 
-    const {user} = useUser();
+    const [status, setStatus] = useState<RewardsRes>();
 
-    const rewards = ["Reducere 50% din cumparaturi in limita a 200 RON", "Un buchet de trandafiri"];
+    useEffect(() => {
+        async function fetchRewards() {
+            const response = await fetch(`/api/recompense?business=${props.slug}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const result: RewardsRes = (await response.json());
+            if (response.ok) {
+                setStatus(result);
+            }
+        }
 
-    const winns = [{ count: 1, reward: rewards[0] }, { count: 2, reward: rewards[1] }];
+        fetchRewards();
+    }, []);
 
-    if (!user) return null;
+    if (!user || !status) return null;
+
+    const rewardsGroup: Record<string, number> = {};
+
+    for (const r of status.rewards) {
+        if (r in rewardsGroup) {
+            rewardsGroup[r]++;
+        } else {
+            rewardsGroup[r] = 1;
+        }
+    }
 
     return (
         <>
             <div className=" mt-5 p-5 font-bold">Status</div>
             <div className="flex gap-4">
-                <StatusBox image="/diamond.svg" numbers="1/4" description="recomandari folosite" />
-                <StatusBox image="/flame.svg" numbers="10" description="in progres" />
-                <StatusBox image="/xp.svg" numbers="5/100" description="extra puncte" />
+                <StatusBox image="/diamond.svg" numbers={status.status.usedRecommandations} description="recomandari folosite" />
+                <StatusBox image="/flame.svg" numbers={status.status.inProgress.toString()} description="in progres" />
+                <StatusBox image="/xp.svg" numbers={status.status.xp} description="extra puncte" />
             </div>
-
 
             <div className="mt-10 p-5 shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] rounded-md">
                 <span className="font-bold">Castigurile tale</span>
                 <div className="mt-2 text-sm text-stone-700">
-                    {winns.map(w => (
-                        <div key={w.reward} className="mt-1 font-semibold">{w.count}<span className="ml-3 text-neutral-500">{w.reward}</span></div>
+                    {Object.entries(rewardsGroup).map(([k, v]) => (
+                        <div key={k} className="mt-1 font-semibold flex gap-3">{v} <span>X</span> <span className="text-neutral-500">{k}</span></div>
                     ))}
                 </div>
             </div>

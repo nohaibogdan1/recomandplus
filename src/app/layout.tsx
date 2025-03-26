@@ -29,7 +29,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="flex justify-between my-2 pr-4 pl-4 w-full max-w-5xl mx-auto">
-          <a href="/afaceri"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></a>
+          <a href="/campanii"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></a>
           <HeaderAccount/>
         </div>
         {children}

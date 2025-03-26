@@ -33,87 +33,69 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { validationText } = await req.json();
+  let { validationText } = await req.json();
+  validationText = validationText.trim();
+  if (!validationText) {
+    return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+  }
+
   let res;
-  res = await supabase
-    .from("users")
-    .select("*")
-    .eq("email", validationText)
-    .single();
+  res = await supabase.from("users").select("*").eq("email", validationText);
 
   if (res.error) {
     console.error("Error User advocate error: ", res.error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
-  const userAdvocate = res.data as DbUser;
+  const userAdvocate = res.data[0] as DbUser;
 
   if (!userAdvocate) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
+  const check = new Date();
+  check.setUTCDate(check.getUTCDate());
+  check.setUTCHours(0, 0, 0, 0);
+
   res = await supabase
     .from("businesses")
-    .select("*, campaigns!inner(*)")
+    .select("*, campaigns(*)")
     .eq("user_id", user.id)
-    .lt("campaigns.end_at", new Date().toISOString())
-    .single();
+    .gte("campaigns.end_at", check.toISOString());
 
   if (res.error) {
     console.error("Error Business: ", res.error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  const business = res.data as DbBusiness;
+  const business = res.data[0] as DbBusiness;
 
   const campaign = business.campaigns[0];
 
-  res = await supabase
-    .from("campaigns")
-    .select("*")
-    .eq("business_id", business.id)
-    .order("campaigns.end_at", { ascending: false })
-    .single();
-
-  if (res.error) {
-    console.error("Error Campaign: ", res.error);
-  }
-
-  const lastCampaign = res.data as DbLastCampaign;
-
-  if (!lastCampaign) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
-
   if (!campaign) {
-    return NextResponse.json(
-      {
-        valid: false,
-        campaign: {
-          endAt: lastCampaign.end_at,
-        },
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      valid: false,
+    });
   }
 
   res = await supabase
     .from("advocates")
-    .select("*, advocates_rewards!inner(*)")
+    .select("*, advocates_rewards(*)")
     .eq("user_id", userAdvocate.auth_user_id)
     .eq("campaign_id", campaign.id)
-    .eq("advocates_rewards.used", false)
-    .single();
+    .eq("advocates_rewards.used", false);
 
   if (res.error) {
     console.error("Error advocate: ", res.error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
-  const advocate = res.data as DbAdvocate;
+  const advocate = res.data[0] as DbAdvocate;
 
   if (!advocate) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
   if (!advocate.advocate_rewards[0]) {
-    return NextResponse.json({ valid: false }, { status: 200 });
+    return NextResponse.json({ valid: false });
   }
 
   res = await supabase

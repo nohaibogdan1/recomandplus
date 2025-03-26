@@ -19,7 +19,7 @@ export async function login({
   const { data, error } = await supabase.auth.signInWithOtp({
     email: formData.get("email") as string,
     options: {
-      emailRedirectTo: `http://localhost:3000/${red}` || "http://localhost:3000/campanii",
+      emailRedirectTo: red ? `http://localhost:3000/${red}` : "http://localhost:3000/campanii",
     },
   });
 

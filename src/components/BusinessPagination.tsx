@@ -12,7 +12,7 @@ type IBusinessPagination = {
 }
 
 export default function BusinessPagination({ params, pagination }: IBusinessPagination) {
-    let link = '/afaceri?';
+    let link = '/campanii?';
     if (params.counties) {
         link += `counties=${params.counties}`;
     }

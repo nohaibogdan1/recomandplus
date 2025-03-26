@@ -1,26 +1,40 @@
 import { NextResponse } from "next/server";
 
 import { createClient } from "@/utils/supabase/server";
+import { RewardsRes } from "@/types/serverResponse";
 
 type DbBusiness = {
   user_id: string;
   campaigns: { id: string }[];
 };
 
+type DbAdvocate = {
+  recommendations_used: number;
+  recommendations_in_progress: number;
+  xp: number;
+  level: number;
+  advocates_rewards: {
+    id: string;
+    reward: string;
+  }[];
+};
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const businessName = decodeURIComponent(searchParams.get("business") || "").trim();
+  const businessName = decodeURIComponent(
+    searchParams.get("business") || ""
+  ).trim();
   if (!businessName) {
     return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
   }
-  
+
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ valid: true });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const check = new Date();
@@ -41,10 +55,6 @@ export async function GET(request: Request) {
 
   const business = res.data[0] as DbBusiness;
 
-  if (business.user_id === user.id) {
-    return NextResponse.json({ valid: false });
-  }
-
   const campaign = business?.campaigns[0];
 
   if (!campaign) {
@@ -53,18 +63,39 @@ export async function GET(request: Request) {
 
   res = await supabase
     .from("advocates")
-    .select("*")
+    .select("*, advocates_rewards(*)")
     .eq("user_id", user.id)
-    .eq("campaign_id", campaign.id);
+    .eq("campaign_id", campaign.id)
+    .eq("advocates_rewards.used", false);
 
   if (res.error) {
     console.error("Error Advocate error: ", res.error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  if (!res.data[0]) {
-    return NextResponse.json({ valid: true });
+  const advocate = res.data[0] as DbAdvocate;
+
+  if (!advocate) {
+    return NextResponse.json({ error: "Not Found" }, { status: 404 });
   }
 
-  return NextResponse.json({ valid: false });
+  let usedRecommandations;
+
+  if (advocate.level === 1) {
+    usedRecommandations = `${advocate.recommendations_used}/1`;
+  } else {
+    usedRecommandations = `${advocate.recommendations_used}/3`;
+  }
+
+  const data: RewardsRes = {
+    rewards: advocate.advocates_rewards.map((r) => r.reward),
+    status: {
+      usedRecommandations,
+      inProgress: advocate.recommendations_in_progress,
+      xp: `${advocate.xp}/100`,
+      level: advocate.level
+    }
+  };
+
+  return NextResponse.json(data);
 }

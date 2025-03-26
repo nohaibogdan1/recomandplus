@@ -3,11 +3,13 @@ import useUser from "@/hooks/useUser"
 import { useRouter } from "next/navigation";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Share from "./Share";
 
-export default function RewardBtn(props: {slug: string}) {
+export default function RewardBtn(props: { slug: string }) {
     const { user } = useUser();
     const router = useRouter();
-    const [show, setShow] = useState(false);
+    const [showGetReward, setShowGetReward] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function canTakeReward() {
@@ -17,14 +19,15 @@ export default function RewardBtn(props: {slug: string}) {
                     'Content-Type': 'application/json',
                 }
             });
-    
+
             const result = await response.json();
-    
+
             if (response.ok) {
-                if (result.valid){
-                    setShow(true);
+                if (result.valid) {
+                    setShowGetReward(true);
                 }
             }
+            setLoading(false);
         }
 
         canTakeReward();
@@ -34,7 +37,6 @@ export default function RewardBtn(props: {slug: string}) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const referral = searchParams.get("referral");
-    const reward = searchParams.get("reward");
 
     async function handler() {
         if (!user) {
@@ -45,25 +47,30 @@ export default function RewardBtn(props: {slug: string}) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ businessName: props.slug, reward, referral }),
+                body: JSON.stringify({ businessName: props.slug, referral }),
             });
 
             const result = await response.json();
 
             if (response.ok) {
-                if (result.success){
+                if (result.success) {
                     window.scrollTo({ top: 500, behavior: "smooth" });
-                    setShow(false);
+                    setShowGetReward(false);
                 }
             }
         }
     }
 
-    if (!show) {
+    if (loading) {
         return null;
     }
 
+    if (showGetReward) {
+        return (
+            <button onClick={handler} className={`mt-5 px-5 py-3 bg-regal-orange rounded-md text-white font-bold text-md cursor-pointer`}>Obtine recompensa</button>
+        )
+    }
     return (
-        <button onClick={handler} className={`mt-5 px-5 py-3 bg-regal-orange rounded-md text-white font-bold text-md cursor-pointer`}>Obtine recompensa</button>
+        <Share slug={props.slug} />
     )
 }

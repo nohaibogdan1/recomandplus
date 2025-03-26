@@ -2,6 +2,8 @@ import Reward from "@/components/Reward";
 import UserStats from "@/components/UserStats";
 import { CampaignRes } from "@/types/serverResponse";
 import Image from "next/image";
+import getLeftDays from "../components/getLeftDays";
+import Share from "@/components/Share";
 
 const slugToPicture = {
     "floraria-mimi": "/florarie.jpeg",
@@ -15,22 +17,13 @@ export default async function CampaignPage({params}: {params: { slug: string };}
     const {slug} = await params;
 
     const res = await fetch(`http://localhost:3000/api/campanii/${slug}`, {
-        cache: "no-store", // Asigură că datele sunt mereu fresh
+        cache: "no-store", 
     });
 
-    let data: CampaignRes | null = null;
-    if (res.status === 200) {
-        data = await res.json();
-    }
-
-    let error = false;
-
+    const data: CampaignRes = await res.json();
+  
     if (!res.ok) {
-        error = true;
-    }
-
-    if (!data) {
-        return null;
+        return <span>Problema</span>
     }
 
     return (
@@ -56,19 +49,14 @@ export default async function CampaignPage({params}: {params: { slug: string };}
                             height={20}
                             priority
                         />
-                        {data.remainingDays} zile au mai ramas
+                        <span>{getLeftDays(data.endAt)}</span>
                     </div>
                     <div className="mt-5 p-5 shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] rounded-md">
-                        <span className="font-bold">Recompense oferite</span>
-                        <div className="mt-2 text-sm text-stone-700">
-                            {data.rewards.map(r => (
-                                <div key={r} className=" mt-1 font-semibold text-neutral-500">{r}</div>
-                            ))}
-                        </div>
+                        <div className="mt-1">{data.reward}</div>
                     </div>
 
                     <Reward slug={slug}/>
-                    <UserStats />
+                    <UserStats slug={slug}/>
 
                     <div className="text-xl mt-6 text-center font-bold text-gray-600">Te asteapta urmatoarea recompensa</div>
 
