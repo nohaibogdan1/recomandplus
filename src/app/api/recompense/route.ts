@@ -9,10 +9,6 @@ type DbBusiness = {
 };
 
 type DbAdvocate = {
-  recommendations_used: number;
-  recommendations_in_progress: number;
-  xp: number;
-  level: number;
   advocates_rewards: {
     id: string;
     reward: string;
@@ -79,22 +75,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Not Found" }, { status: 404 });
   }
 
-  let usedRecommandations;
-
-  if (advocate.level === 1) {
-    usedRecommandations = `${advocate.recommendations_used}/1`;
-  } else {
-    usedRecommandations = `${advocate.recommendations_used}/3`;
-  }
-
   const data: RewardsRes = {
     rewards: advocate.advocates_rewards.map((r) => r.reward),
-    status: {
-      usedRecommandations,
-      inProgress: advocate.recommendations_in_progress,
-      xp: `${advocate.xp}/100`,
-      level: advocate.level
-    }
   };
 
   return NextResponse.json(data);

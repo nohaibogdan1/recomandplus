@@ -3,6 +3,8 @@ import BusinessPagination from "@/components/BusinessPagination";
 import { CampaignsRes } from "@/types/serverResponse";
 import Image from "next/image";
 import getLeftDays from "./components/getLeftDays";
+import Problem from "@/components/Problem";
+import Empty from "@/components/Empty";
 
 function CampaignBox(props: { image: string, name: string, reward: string, endAt: string }) {
   return (
@@ -47,12 +49,12 @@ export default async function CampaignsPage({ searchParams }: { searchParams: { 
 
   return (
     <>
-      <div className="flex flex-col gap-3 bg-neutral-100 pt-5 px-4">
+      <div className="flex flex-col gap-3 bg-neutral-100 pt-5 px-4 min-h-[80vh]">
         <div className="w-xs lg:w-full max-w-5xl mx-auto">
           <BusinessFilters params={{ counties, p, online }} />
         </div>
 
-        {error && <div>Problema</div>}
+        {error && <Problem/>}
 
         {!error &&
           <div className="flex py-2 gap-4 flex-wrap w-full max-w-5xl mx-auto justify-center md:justify-start">
@@ -67,8 +69,10 @@ export default async function CampaignsPage({ searchParams }: { searchParams: { 
             )}
           </div>}
 
+        {!error && !data.campaigns.length && <Empty/>}
+
         <div className="w-full md:max-w-5xl mx-auto">
-          {!error && data.pagination &&
+          {!error && data.pagination.hasNextPage &&
             <BusinessPagination
               params={{ counties, p, online }}
               pagination={data.pagination}

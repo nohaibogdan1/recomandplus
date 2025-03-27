@@ -29,7 +29,13 @@ type DbAdvocate = {
   advocates_rewards: {
     id: string;
     reward: string;
+    used: boolean;
+    from_advocate: boolean;
   }[];
+};
+
+type DbOriginAdvocate = {
+  id: string;
 };
 
 export async function POST(req: Request) {
@@ -46,7 +52,7 @@ export async function POST(req: Request) {
   let { validationText } = await req.json();
   validationText = validationText.trim();
   if (!validationText) {
-    return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+    return NextResponse.json({ valid: false });
   }
 
   let res;
@@ -58,14 +64,9 @@ export async function POST(req: Request) {
   }
   const userAdvocate = res.data[0] as DbUser;
 
-  console.log("useAdvo", userAdvocate)
-
-
   if (!userAdvocate) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+    return NextResponse.json({ valid: false });
   }
-
-  console.log("useAdvo", userAdvocate)
 
   const check = new Date();
   check.setUTCDate(check.getUTCDate());
@@ -106,77 +107,46 @@ export async function POST(req: Request) {
   const advocate = res.data[0] as DbAdvocate;
 
   if (!advocate) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+    return NextResponse.json({ valid: false });
   }
 
   if (!advocate.advocates_rewards[0]) {
     return NextResponse.json({ valid: false });
   }
 
+  let advocateRewardWithOrigin = advocate.advocates_rewards.find((r) => r.from_advocate);
+
   res = await supabase
     .from("advocates_rewards")
     .update({ used: true })
-    .eq("id", advocate.advocates_rewards[0].id);
+    .eq(
+      "id",
+      advocateRewardWithOrigin ? advocateRewardWithOrigin.id : advocate.advocates_rewards[0].id
+    );
 
   if (res.error) {
     console.error("Error advocate reward update: ", res.error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  if (advocate.from_advocate_id) {
+  if (advocateRewardWithOrigin) {
     res = await supabase
       .from("advocates")
-      .select("*, advocates_rewards(*)")
+      .select("id")
       .eq("id", advocate.from_advocate_id);
 
     if (res.error) {
       console.error("Error advocate origin: ", res.error);
     }
     if (res.data?.[0]) {
-      const originAdvocate = res.data?.[0] as DbAdvocate;
+      const originAdvocate = res.data?.[0] as DbOriginAdvocate;
 
-      // originAdvocate.level;
-      // originAdvocate.recommendations_in_progress
-      // originAdvocate.recommendations_used;
-      // originAdvocate.xp
-      if (originAdvocate) {
-        const recommendationsInProgressUpdated =
-          originAdvocate.recommendations_in_progress > 0
-            ? originAdvocate.recommendations_in_progress - 1
-            : 0;
-        let recommendationsUsedUpdated =
-          originAdvocate.recommendations_used + 1;
-
-        let hasNewReward = false;
-
-        let levelUpdated = originAdvocate.level;
-
-        if (originAdvocate.level === 1) {
-          if (originAdvocate.advocates_rewards.length === 2) {
-            levelUpdated = 2;
-          }
-          hasNewReward = true;
-          recommendationsUsedUpdated = 0;
-        } else if (recommendationsUsedUpdated === 3) {
-          recommendationsUsedUpdated = 0;
-          hasNewReward = true;
-        }
-
-        if (hasNewReward) {
-          await supabase.from("advocates_rewards").insert({
-            advocate_id: originAdvocate.id,
-            reward: campaign.reward1,
-          });
-        }
-
-        await supabase
-          .from("advocates")
-          .update({
-            level: levelUpdated,
-            recommendations_in_progress: recommendationsInProgressUpdated,
-            recommendations_used: recommendationsUsedUpdated,
-          })
-          .eq("id", originAdvocate.id);
+      res = await supabase.from("advocates_rewards").insert({
+        advocate_id: originAdvocate.id,
+        reward: campaign.reward1,
+      });
+      if (res.error) {
+        console.error("Error advocate origin reward: ", res.error);
       }
     }
   }

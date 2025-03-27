@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
+
 export default function Recommendations() {
+
     const rewards = [{
         name: "Floraria Mimi",
         statsUsedRecommended: "1/4",
@@ -15,6 +18,29 @@ export default function Recommendations() {
         statsInProgress: "2",
         slug: "frizeria-mihai"
     }];
+
+    const [data, setData] = useState();
+
+
+    async function fetchCampaigns() {
+        const response = await fetch(`/api/advocate/campanii`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            setData(result);
+            console.log("rr", result);
+        }
+    }
+
+    useEffect(() => {
+        fetchCampaigns();
+    }, []);
 
     return (
         <div className="flex flex-col gap-4 w-full">

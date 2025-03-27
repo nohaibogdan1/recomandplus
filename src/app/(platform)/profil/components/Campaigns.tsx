@@ -51,11 +51,12 @@ export default function Campaigns() {
 
             {current &&
                 <div className="rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] w-full">
-                    <div className="flex flex-col p-5">
+                    <div className="flex flex-col p-5 gap-2">
+                        <a className="text-sm text-blue-600" href={`http://localhost:3000/campanii/${encodeURIComponent(current.business)}`}>Link catre pagina campaniei tale</a>
                         <span className="text-md font-bold">{current.business}</span>
                         <span className="text-gray-600 font-bold">{dateFormat.format(new Date(current.startAt))} - {dateFormat.format(new Date(current.endAt))}</span>
-                        <span className="text-sm font-bold mt-2">Recompensa</span>
-                        <span className="text-sm mt-2">{current.reward}</span>
+                        <span className="text-sm font-bold">Recompensa</span>
+                        <span className="text-sm">{current.reward}</span>
                     </div>
                 </div>
             }

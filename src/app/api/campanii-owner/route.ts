@@ -28,7 +28,7 @@ export async function GET() {
   }
 
   let res = null;
-  res = await supabase.from("businesses").select("id").eq("user_id", user.id);
+  res = await supabase.from("businesses").select("id, name").eq("user_id", user.id);
 
   if (res.error) {
     console.error("Error businesses: ", res.error);

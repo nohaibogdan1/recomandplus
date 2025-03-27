@@ -17,10 +17,6 @@ type DbUser = {
 
 type DbAdvocate = {
   id: string;
-  recommendations_used: number;
-  recommendations_in_progress: number;
-  xp: number;
-  level: number;
   advocates_rewards: {
     id: string;
     reward: string;
@@ -159,23 +155,6 @@ export async function POST(req: Request) {
 
   if (!advocateRewardInsert) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
-
-  if (userReferralAdvocate) {
-    res = await supabase
-      .from("advocates")
-      .update({
-        recommendations_in_progress:
-          userReferralAdvocate.recommendations_in_progress + 1,
-      })
-      .eq("id", userReferralAdvocate.id);
-
-    if (res.error) {
-      console.error(
-        "Error Advocate update recommendations_in_progress: ",
-        res.error
-      );
-    }
   }
 
   return NextResponse.json({ success: true });

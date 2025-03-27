@@ -8,7 +8,7 @@ import MyAccount from './components/MyAccount';
 import Menu from './components/Menu';
 
 export default function ProfilePage() {
-    const [menu, setMenu] = useState(1);
+    const [menu, setMenu] = useState(0);
 
     const { user, isLoading } = useUser();
 

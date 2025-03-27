@@ -2,19 +2,20 @@ import { NextResponse } from "next/server";
 
 import { createClient } from "@/utils/supabase/server";
 
-interface BusinessData {
-  id: string | null;
-  businessName: string;
-  photo: string;
-  facebook: string;
-  instagram: string;
-  tiktok: string;
-  googleMaps: string;
-  address: string;
-  phone: string;
-  county?: string;
-  isOnline: boolean;
-}
+
+type DbBusiness = {
+  id: string,
+  name: string,
+  photo: string,
+  facebook: string,
+  instagram: string,
+  tiktok: string,
+  location_map: string,
+  location: string,
+  phone: string,
+  county: string,
+  is_online: string
+};
 
 export async function GET() {
   const supabase = await createClient();
@@ -22,15 +23,24 @@ export async function GET() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data, error } = await supabase
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const res = await supabase
     .from("businesses")
     .select("*")
-    .eq("user_id", user!.id)
-    .limit(1)
-    .single();
+    .eq("user_id", user.id);
+
+  if (res.error) {
+    console.error("Error business: ", res.error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+
+  const data = res.data[0] as DbBusiness;
 
   if (!data) {
-    return NextResponse.json({ error: "Not Found" }, { status: 404 });
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
   const mapped = {
@@ -47,14 +57,7 @@ export async function GET() {
     isOnline: data.is_online,
   };
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
   return NextResponse.json(mapped);
-}
-
-type DbBusiness = {
-  id: string
 }
 
 export async function POST(req: Request) {
@@ -68,22 +71,39 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const businessData = await req.json();
+  let {
+    businessName,
+    address,
+    googleMaps,
+    phone,
+    facebook,
+    instagram,
+    tiktok,
+    county,
+    isOnline,
+  } = await req.json();
+
+  businessName = businessName.trim();
+  address = address.trim();
+  googleMaps = googleMaps.trim();
+  phone = phone.trim();
+  facebook = facebook.trim();
+  instagram = instagram.trim();
+  tiktok = tiktok.trim();
+  county = county.trim();
 
   const dbData = {
-    name: businessData.businessName,
-    location: businessData.address,
-    location_map: businessData.googleMaps,
-    phone: businessData.phone,
-    facebook: businessData.facebook,
-    instagram: businessData.instagram,
-    tiktok: businessData.tiktok,
+    name: businessName,
+    location: address,
+    location_map: googleMaps,
+    phone: phone,
+    facebook: facebook,
+    instagram: instagram,
+    tiktok: tiktok,
     user_id: user.id,
-    county: businessData.county,
-    is_online: businessData.isOnline,
+    county: county,
+    is_online: isOnline,
   };
-
-  businessData.user_id = user.id;
 
   let res = null;
   res = await supabase.from("businesses").select("*").eq("user_id", user.id);
@@ -96,10 +116,13 @@ export async function POST(req: Request) {
 
   res = await supabase
     .from("businesses")
-    .upsert({
-      ...dbData,
-      ...(business.id && {id: business.id})
-    }, { onConflict: "id" })
+    .upsert(
+      {
+        ...dbData,
+        ...(business.id && { id: business.id }),
+      },
+      { onConflict: "id" }
+    )
     .select();
 
   if (res.error) {

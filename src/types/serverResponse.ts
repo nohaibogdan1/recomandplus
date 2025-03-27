@@ -63,10 +63,12 @@ export type CampaignsOwnerRes = {
 
 export type RewardsRes = {
   rewards: string[];
-  status: {
-    usedRecommandations: string;
-    inProgress: number;
-    xp: string;
-    level: number;
-  };
 };
+
+export type AdvocateCampaignsRes = {
+  campaign: {
+    id: string;
+    endAt: string;
+    business: string;
+  };
+}[];
