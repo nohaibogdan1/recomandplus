@@ -33,6 +33,8 @@ export default function RootLayout({
           <HeaderAccount/>
         </div>
         {children}
+
+       
       </body>
     </html>
   );
