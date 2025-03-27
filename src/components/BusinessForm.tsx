@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { upload } from '@vercel/blob/client';
 import useUser from '@/hooks/useUser';
 import { createClient } from "@/utils/supabase/client";
+import { BusinessData } from '@/types/serverResponse';
+import Problem from './Problem';
 
 const counties = ["Alba",
   "Arad",
@@ -56,35 +58,24 @@ interface BusinessFormProps {
   close: () => void;
 }
 
-interface BusinessData {
-  id: string | null;
-  businessName: string;
-  photo: string;
-  facebook: string;
-  instagram: string;
-  tiktok: string;
-  googleMaps: string;
-  address: string;
-  phone: string;
-  county?: string;
-  isOnline: boolean;
-}
-
 export default function BusinessForm({ initialData, updated, close }: BusinessFormProps) {
   const [formData, setFormData] = useState<BusinessData>(
     initialData || {
-      id: null,
-      businessName: '',
+      name: '',
       photo: '',
       facebook: '',
       instagram: '',
       tiktok: '',
-      googleMaps: '',
-      address: '',
+      maps: '',
+      location: '',
       phone: '',
       isOnline: false,
+      county: '',
+      website: '',
     }
   );
+
+  const [error, setError] = useState(false);
 
   const [photo, setPhoto] = useState<string>('');
 
@@ -94,7 +85,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
 
   const [preview, setPreview] = useState<string>(initialData?.photo || '');
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -128,8 +119,6 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
 
       const result = await response.json();
 
-      console.log("respon", response)
-
       if (response.ok) {
         console.log("eee", result);
 
@@ -152,10 +141,16 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         console.log('Business saved successfully:', result);
         updated();
       } else {
-        console.error('Error:', result.error);
+        if (response.status === 500) {
+          setError(true);
+          window.scrollTo({ top: 600, behavior: "smooth" });
+          setTimeout(() => { setError(false) }, 3000);
+        }
       }
     } catch (error) {
-      console.error('Request failed:', error);
+      setError(true);
+      window.scrollTo({ top: 600, behavior: "smooth" });
+      setTimeout(() => { setError(false) }, 3000);
     } finally {
       setLoading(false);
     }
@@ -166,7 +161,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block font-medium">Numele afacerii</label>
-          <input name="businessName" value={formData.businessName} onChange={handleChange} className="w-full p-2 border rounded" required />
+          <input name="name" value={formData.name} onChange={handleChange} className="w-full p-2 border rounded" required />
         </div>
 
         <div>
@@ -176,28 +171,33 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         </div>
 
         <div>
-          <label className="block font-medium">Link catre pagina de facebook</label>
+          <label className="block font-medium">Link catre website (optional)</label>
+          <input name="website" value={formData.website} onChange={handleChange} className="w-full p-2 border rounded" />
+        </div>
+
+        <div>
+          <label className="block font-medium">Link catre pagina de facebook (optional)</label>
           <input name="facebook" value={formData.facebook} onChange={handleChange} className="w-full p-2 border rounded" />
         </div>
 
         <div>
-          <label className="block font-medium">Link catre pagina de instagram</label>
+          <label className="block font-medium">Link catre pagina de instagram (optional)</label>
           <input name="instagram" value={formData.instagram} onChange={handleChange} className="w-full p-2 border rounded" />
         </div>
 
         <div>
-          <label className="block font-medium">Link catre contul de tiktok</label>
+          <label className="block font-medium">Link catre contul de tiktok (optional)</label>
           <input name="tiktok" value={formData.tiktok} onChange={handleChange} className="w-full p-2 border rounded" />
         </div>
 
         <div>
-          <label className="block font-medium">Link catre locatie google maps</label>
-          <input name="googleMaps" value={formData.googleMaps} onChange={handleChange} className="w-full p-2 border rounded" />
+          <label className="block font-medium">Link catre locatie google maps (optional)</label>
+          <input name="maps" value={formData.maps} onChange={handleChange} className="w-full p-2 border rounded" />
         </div>
 
         <div>
           <label className="block font-medium">Adresa</label>
-          <input name="address" value={formData.address} onChange={handleChange} className="w-full p-2 border rounded" required />
+          <input name="location" value={formData.location} onChange={handleChange} className="w-full p-2 border rounded" required />
         </div>
 
         <div>
@@ -247,6 +247,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
           </button>
         </div>
       </form>
+      {error && <Problem />}
     </div>
   );
 }

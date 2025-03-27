@@ -23,10 +23,8 @@ export async function login({
     },
   });
 
-  console.log("data", data, error);
-
   if (error) {
-    return { data: null, hasError: true };
+    return { data: "login", hasError: true };
   }
 
   revalidatePath("/", "layout");

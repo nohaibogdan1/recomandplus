@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
+import Problem from './Problem';
 
 type CampaignData = {
   months: number,
@@ -11,7 +12,8 @@ export default function CreateCampaignForm(props: { created: () => void }) {
     reward: ''
   });
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
+  const [missingParam, setMissingParam] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -22,29 +24,29 @@ export default function CreateCampaignForm(props: { created: () => void }) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setError(false);
+    setMissingParam(false);
 
-    try {
-      const response = await fetch('/api/campanii', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    const response = await fetch('/api/campanii', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        props.created();
-      } else {
-        setError(result.error);
+    if (response.ok) {
+      props.created();
+    } else {
+      if (response.status === 500) {
+        setError(true);
       }
-    } catch (error) {
-      setError("Oops! A aparut o problema!");
-    } finally {
-      setLoading(false);
+      if (response.status === 400) {
+        setMissingParam(true);
+      }
+      setTimeout(() => { setError(false); setMissingParam(false) }, 2000);
     }
+    setLoading(false);
   };
 
   const dateFormat = new Intl.DateTimeFormat("ro-RO", {
@@ -86,13 +88,15 @@ export default function CreateCampaignForm(props: { created: () => void }) {
             <textarea
               id="reward"
               name="reward"
+              required
               value={formData.reward}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Introdu recompensa"
             />
           </div>
-          {error && <div className='text-red-500'>{error}</div>}
+          {error && <Problem />}
+          {missingParam && <span>Lipsesc parametri</span>}
           {!loading && <button className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Porneste campania</button>}
         </form>
       </div>

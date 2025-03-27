@@ -42,23 +42,27 @@ export type CreateCampaignRes = {
   success: boolean;
 };
 
-export type CampaignsOwnerRes = {
-  current: {
+export type BusinessData = {
+  name: string;
+  photo: string;
+  phone: string;
+  county: string;
+  isOnline: boolean;
+  location: string;
+  maps: string;
+  facebook: string;
+  instagram: string;
+  tiktok: string;
+  website: string;
+};
+
+export type BusinessOwnerRes = BusinessData & {
+  campaign?: {
     id: string;
     startAt: string;
     endAt: string;
-    months: number;
     reward: string;
-    business: string;
   };
-  old: {
-    id: string;
-    startAt: string;
-    endAt: string;
-    months: number;
-    reward: string;
-    business: string;
-  }[];
 };
 
 export type RewardsRes = {
@@ -70,5 +74,7 @@ export type AdvocateCampaignsRes = {
     id: string;
     endAt: string;
     business: string;
+    unusedRewards: string[];
   };
+  rewards: { used: boolean; reward: string }[];
 }[];

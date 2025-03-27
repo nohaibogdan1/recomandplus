@@ -1,5 +1,12 @@
+import { logout } from "@/app/(platform)/login/actions";
+import useUser from "@/hooks/useUser";
+
 export default function MyAccount() {
+    const { reset } = useUser();
+
     return (
-        <button className="cursor-pointer w-40 mt-2 rounded-md text-white bg-red-500 text-sm font-bold py-2">Sterge contul</button>
+        <div className="flex flex-col">
+            <button onClick={() => { logout(); reset(); }} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Deconectare</button>
+        </div>
     )
 }

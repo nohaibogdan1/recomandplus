@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createClient } from "@/utils/supabase/server";
+import { BusinessData } from "@/types/serverResponse";
 
 
 type DbBusiness = {
@@ -72,20 +73,21 @@ export async function POST(req: Request) {
   }
 
   let {
-    businessName,
-    address,
-    googleMaps,
+    name,
+    location,
+    maps,
     phone,
     facebook,
     instagram,
     tiktok,
+    website,
     county,
     isOnline,
-  } = await req.json();
+  } = await req.json() as BusinessData;
 
-  businessName = businessName.trim();
-  address = address.trim();
-  googleMaps = googleMaps.trim();
+  name = name.trim();
+  location = location.trim();
+  maps = maps.trim();
   phone = phone.trim();
   facebook = facebook.trim();
   instagram = instagram.trim();
@@ -93,11 +95,12 @@ export async function POST(req: Request) {
   county = county.trim();
 
   const dbData = {
-    name: businessName,
-    location: address,
-    location_map: googleMaps,
+    name,
+    location,
+    location_map: maps,
     phone: phone,
     facebook: facebook,
+    website,
     instagram: instagram,
     tiktok: tiktok,
     user_id: user.id,
@@ -109,7 +112,8 @@ export async function POST(req: Request) {
   res = await supabase.from("businesses").select("*").eq("user_id", user.id);
   if (res.error) {
     console.error("Error businesses ", res.error);
-    return NextResponse.json({ error: "Server error", statusCode: 500 });
+       return NextResponse.json({ error: "Server error" }, { status: 500 });
+
   }
 
   let business = res.data[0] as DbBusiness;
@@ -119,7 +123,7 @@ export async function POST(req: Request) {
     .upsert(
       {
         ...dbData,
-        ...(business.id && { id: business.id }),
+        ...(business?.id && { id: business.id }),
       },
       { onConflict: "id" }
     )
@@ -127,7 +131,8 @@ export async function POST(req: Request) {
 
   if (res.error) {
     console.error("Error business upsert: ", res.error);
-    return NextResponse.json({ error: "Server error", statusCode: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+
   }
 
   return NextResponse.json({ success: true });

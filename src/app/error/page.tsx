@@ -1,5 +1,14 @@
-'use client'
+import Problem from "@/components/Problem";
 
-export default function ErrorPage() {
-  return <p>Sorry, something went wrong</p>
+export default async function ErrorPage({ searchParams }: { searchParams: { [key: string]: string } }) {
+  const { from } = await searchParams;
+
+  return (
+    <div className="flex flex-col font-bold text-gray-500 text-md gap-3 bg-neutral-100 pt-5 px-4 min-h-[80vh] justify-center items-center">
+      {from !== "login" && <Problem/>}
+      {from === "login" && <>
+        <span>Linkul de confirmare este expirat.</span>
+      </>}
+    </div>
+  )
 }
