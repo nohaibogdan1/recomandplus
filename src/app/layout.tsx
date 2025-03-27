@@ -30,11 +30,37 @@ export default function RootLayout({
       >
         <div className="flex justify-between my-2 pr-4 pl-4 w-full max-w-5xl mx-auto">
           <a href="/campanii"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></a>
-          <HeaderAccount/>
+          <HeaderAccount />
         </div>
-        {children}
 
-       
+        <div className="min-h-180">
+          {children}
+        </div>
+
+        <footer className="w-full py-5 pt-10">
+          <div className='text-gray-600 gap-7 flex flex-wrap my-2 pr-4 pl-4 w-full max-w-5xl mx-auto'>
+
+            <div className='w-50 flex flex-col gap-2'>
+              <span className="text-md">Harta site</span>
+              <a href="/landing-business" className='text-sm cursor-pointer'>Am afacere</a>
+              <a href="/landing-advocate" className='text-sm cursor-pointer'>Vreau recompense</a>
+              <a href="/login" className='text-sm cursor-pointer'>Inregistrare / conectare</a>
+              <a href="/profil" className='text-sm cursor-pointer'>Profil</a>
+              <a href="/campanii" className='text-sm cursor-pointer'>Exploreaza</a>
+            </div>
+
+            <div className='w-50 flex flex-col gap-2'>
+              <span className="text-md ">RecomandPlus</span>
+              <a href="/intrebari-frecvente" className='text-sm cursor-pointer'>Cele mai frecvente intrebari</a>
+              <a className=' text-sm cursor-pointer'>Termeni de utilizare</a>
+              <a href="/politica-confidentialitate" className=' text-sm cursor-pointer'>Politica de confidentialitate</a>
+              <a href="/cookies" className='text-sm cursor-pointer'>Cookies</a>
+              <a className=' text-sm cursor-pointer'>ANPC</a>
+            </div>
+
+            <div className="text-lg font-bold">Cum te putem ajuta? <span className="text-regal-orange underline">recommandplus@gmail.com</span></div>
+          </div>
+        </footer>
       </body>
     </html>
   );
