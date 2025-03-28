@@ -114,46 +114,14 @@ export async function POST(req: Request) {
     userReferralAdvocate = res.data[0] as DbAdvocate;
   }
 
-  res = await supabase
-    .from("advocates")
-    .insert({
-      user_id: user.id,
-      campaign_id: campaign.id,
-      ...(userReferralAdvocate && {
-        from_advocate_id: userReferralAdvocate.id,
-      }),
-    })
-    .select();
+  res = await supabase.rpc("insert_advocate", {
+    user_id_p: user.id,
+    campaign_id_p: campaign.id,
+    from_advocate_id_p: userReferralAdvocate?.id,
+  });
 
   if (res.error) {
     console.error("Error Advocate insert: ", res.error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
-
-  const advocateInsert = res.data[0] as DbAdvocate;
-  if (!advocateInsert) {
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
-
-  res = await supabase
-    .from("advocates_rewards")
-    .insert({
-      advocate_id: advocateInsert.id,
-      reward: campaign.reward1,
-      first_time: true,
-      from_advocate: !!userReferralAdvocate,
-    })
-    .select();
-
-  if (res.error) {
-    console.error("Error Advocate reward insert first-time: ", res.error);
-    await supabase.from("advocates").delete().eq("id", advocateInsert.id);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
-
-  const advocateRewardInsert = res.data[0];
-
-  if (!advocateRewardInsert) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 

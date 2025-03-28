@@ -5,7 +5,7 @@ export type Pagination = {
 export type CampaignsRes = {
   campaigns: {
     id: string;
-    reward: string;
+    rewards: string[];
     endAt: string;
     business: {
       name: string;
@@ -22,7 +22,7 @@ export type CampaignRes = {
   endAt: string;
   months: number;
   businessId: string;
-  reward: string;
+  reward: string[];
   business: {
     name: string;
     photo: string;

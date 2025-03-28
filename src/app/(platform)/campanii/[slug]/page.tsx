@@ -52,7 +52,9 @@ export default async function CampaignPage({ params }: { params: { slug: string 
             <span>{getLeftDays(data.endAt)}</span>
           </div>
           <div className="mt-5 p-5 shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] rounded-md">
-            <div className="mt-1">{data.reward}</div>
+            <ul className="mt-1 flex flex-col gap-1">
+              {data.reward.map(o => <li key={o}>{o}</li>)}
+            </ul>
           </div>
 
           <div className='flex gap-6 mt-5'>

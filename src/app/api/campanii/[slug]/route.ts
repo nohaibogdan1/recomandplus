@@ -9,9 +9,7 @@ type DbResponse = {
   end_at: string;
   months: number;
   business_id: string;
-  reward1: string;
-  reward2: string | null;
-  reward3: string | null;
+  campaigns_rewards: {current: boolean, reward: string}[];
   businesses: {
     name: string;
     county: string;
@@ -38,18 +36,26 @@ export async function GET(
 
   const res = await supabase
     .from("campaigns")
-    .select("*, businesses!inner(*)")
+    .select("*, businesses(*), campaigns_rewards(*)")
     .eq("businesses.name", decodeURIComponent(slug))
-    .single();
+    .eq("campaigns_rewards.current", true);
 
-  data = res.data as unknown as DbResponse;
   if (res.error) {
     console.error("Error campaign: ", res.error);
-  }
-
-  if (!data) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
+
+  data = res.data[0] as DbResponse;
+
+  if (!data) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  let reward = [data.campaigns_rewards[0].reward];
+
+  try {
+    reward = JSON.parse(data.campaigns_rewards[0].reward);
+  }catch{}
 
   const mapped: CampaignRes = {
     id: data.id,
@@ -58,7 +64,7 @@ export async function GET(
     endAt: data.end_at,
     months: data.months,
     businessId: data.business_id,
-    reward: data.reward1,
+    reward,
     business: {
       name: data.businesses.name,
       photo: data.businesses.photo,

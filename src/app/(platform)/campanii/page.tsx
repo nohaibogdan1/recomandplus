@@ -6,7 +6,7 @@ import getLeftDays from "./components/getLeftDays";
 import Problem from "@/components/Problem";
 import Empty from "@/components/Empty";
 
-function CampaignBox(props: { image: string, name: string, reward: string, endAt: string }) {
+function CampaignBox(props: { image: string, name: string, rewards: string[], endAt: string }) {
   return (
     <a href={`/campanii/${encodeURIComponent(props.name)}`} className="p-3 bg-white rounded-md w-xs lg:w-[calc(33.333%-12px)] hover:shadow-2xl cursor-pointer">
       <Image
@@ -18,7 +18,9 @@ function CampaignBox(props: { image: string, name: string, reward: string, endAt
         priority
       />
       <div className="mt-2 text-lg font-bold">{props.name}</div>
-      <div className="mt-1">{props.reward}</div>
+      <ul className="mt-1 flex flex-col gap-2">
+        {props.rewards.map(o => <li key={o}>{o}</li>)}
+      </ul>
       <div className="flex gap-2 mt-2">
         <Image
           src="/clock.svg"
@@ -54,7 +56,7 @@ export default async function CampaignsPage({ searchParams }: { searchParams: { 
           <BusinessFilters params={{ counties, p, online }} />
         </div>
 
-        {error && <Problem/>}
+        {error && <Problem />}
 
         {!error &&
           <div className="flex py-2 gap-4 flex-wrap w-full max-w-5xl mx-auto justify-center md:justify-start">
@@ -64,12 +66,12 @@ export default async function CampaignsPage({ searchParams }: { searchParams: { 
                 image="/florarie.jpeg"
                 //image={c.business.photo}
                 name={c.business.name}
-                reward={c.reward}
+                rewards={c.rewards}
                 endAt={c.endAt} />
             )}
           </div>}
 
-        {!error && !data.campaigns.length && <Empty/>}
+        {!error && !data.campaigns.length && <Empty />}
 
         <div className="w-full md:max-w-5xl mx-auto">
           {!error && data.pagination.hasNextPage &&

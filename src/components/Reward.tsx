@@ -4,12 +4,15 @@ import { useRouter } from "next/navigation";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Share from "./Share";
+import Problem from "./Problem";
 
 export default function RewardBtn(props: { slug: string }) {
     const { user } = useUser();
     const router = useRouter();
     const [showGetReward, setShowGetReward] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [loadingReq, setLoadingReq] = useState(false);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         async function canTakeReward() {
@@ -39,9 +42,13 @@ export default function RewardBtn(props: { slug: string }) {
     const referral = searchParams.get("referral");
 
     async function handler() {
+        if (loadingReq) {
+            return;
+        }
         if (!user) {
             router.push(`/login?redirect=${encodeURIComponent(`"${pathname}?${searchParams.toString()}"`)}`);
         } else {
+            setLoadingReq(true);
             const response = await fetch('/api/recompense-first-time', {
                 method: 'POST',
                 headers: {
@@ -50,14 +57,18 @@ export default function RewardBtn(props: { slug: string }) {
                 body: JSON.stringify({ businessName: props.slug, referral }),
             });
 
-            const result = await response.json();
+            await response.json();
 
             if (response.ok) {
-                if (result.success) {
-                    window.scrollTo({ top: 500, behavior: "smooth" });
-                    setShowGetReward(false);
+                window.scrollTo({ top: 500, behavior: "smooth" });
+                setShowGetReward(false);
+            } else {
+                if (response.status === 500) {
+                    setError(true);
+                    setTimeout(() => { setError(false) }, 2000);
                 }
             }
+            setLoadingReq(false);
         }
     }
 
@@ -67,7 +78,14 @@ export default function RewardBtn(props: { slug: string }) {
 
     if (showGetReward) {
         return (
-            <button onClick={handler} className={`mt-5 px-5 py-3 bg-regal-orange rounded-md text-white font-bold text-md cursor-pointer`}>Obtine recompensa</button>
+            <>
+                <button onClick={handler} className={`mt-5 px-5 py-3 bg-regal-orange rounded-md text-white font-bold text-md cursor-pointer`}>Obtine recompensa</button>
+                {error &&
+                    <div className="mt-2">
+                        <Problem />
+                    </div>
+                }
+            </>
         )
     }
     return (

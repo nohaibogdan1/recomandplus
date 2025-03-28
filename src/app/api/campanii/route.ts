@@ -14,6 +14,7 @@ type DbResponse = {
   business_county: string;
   business_is_online: boolean;
   business_photo: string;
+  campaign_rewards: string;
 };
 
 export async function GET(request: Request) {
@@ -42,21 +43,28 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  const campaigns = (data as DbResponse[]).map((c) => ({
-    id: c.campaign_id,
-    createdAt: c.campaign_created_at,
-    startAt: c.campaign_start_at,
-    endAt: c.campaign_end_at,
-    months: c.campaign_months,
-    businessId: c.business_id,
-    reward: c.campaign_reward1,
-    business: {
-      name: c.business_name,
-      photo: c.business_photo,
-      county: c.business_county,
-      isOnline: c.business_is_online,
-    },
-  }));
+  const campaigns = (data as DbResponse[]).map((c) => {
+    let reward = [c.campaign_rewards];
+    try {
+      reward = JSON.parse(c.campaign_rewards);
+    } catch {}
+
+    return {
+      id: c.campaign_id,
+      createdAt: c.campaign_created_at,
+      startAt: c.campaign_start_at,
+      endAt: c.campaign_end_at,
+      months: c.campaign_months,
+      businessId: c.business_id,
+      rewards: reward,
+      business: {
+        name: c.business_name,
+        photo: c.business_photo,
+        county: c.business_county,
+        isOnline: c.business_is_online,
+      },
+    };
+  });
 
   const hasNextPage = data.length > 21;
 
@@ -142,7 +150,7 @@ export async function POST(req: Request) {
     start_at: startTimestamp.toISOString(),
     end_at: endTimestamp.toISOString(),
     months,
-    reward: JSON.stringify(rewards)
+    reward: JSON.stringify(rewards),
   });
 
   if (res.error) {
