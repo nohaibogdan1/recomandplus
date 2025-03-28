@@ -6,7 +6,11 @@ import { AdvocateCampaignsRes } from "@/types/serverResponse";
 type DbAdvocate = {
   id: string;
   advocates_rewards: {
-    reward: string;
+    campaigns_rewards: {
+      id: string;
+      reward: string;
+      campaign_id: string;
+    };
     used: boolean;
   }[];
   campaigns: {
@@ -38,7 +42,7 @@ export async function GET() {
   res = await supabase
     .from("advocates")
     .select(
-      "*, advocates_rewards(reward, used), campaigns(*, businesses(name))"
+      "*, advocates_rewards(used, campaigns_rewards(*)), campaigns(*, businesses(name))"
     )
     .eq("user_id", user.id)
     .gte("campaigns.end_at", check.toISOString())
@@ -54,17 +58,26 @@ export async function GET() {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const mapped = advocates.map((a) => ({
-    campaign: {
-      id: a.campaigns.id,
-      endAt: a.campaigns.end_at,
-      business: a.campaigns.businesses.name,
-    },
-    rewards: a.advocates_rewards.map((r) => ({
-      used: r.used,
-      reward: r.reward,
-    })),
-  }));
+  const mapped = advocates.map((a) => {
+    return {
+      campaign: {
+        id: a.campaigns.id,
+        endAt: a.campaigns.end_at,
+        business: a.campaigns.businesses.name,
+
+        reward: a.advocates_rewards.map((ar) => {
+          let o = [ar.campaigns_rewards.reward];
+          try {
+            o = JSON.parse(ar.campaigns_rewards.reward);
+          } catch {}
+          return {
+            id: ar.campaigns_rewards.id,
+            options: o,
+          };
+        }),
+      },
+    };
+  });
 
   return NextResponse.json(mapped as AdvocateCampaignsRes);
 }

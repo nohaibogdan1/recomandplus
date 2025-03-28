@@ -5,16 +5,18 @@ import getLeftDays from "../../campanii/components/getLeftDays";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-function Box({ campaign, rewards }: AdvocateCampaignsRes[0]) {
+function Box({ campaign }: AdvocateCampaignsRes[0]) {
     const router = useRouter();
 
-    const rewardsGroup: Record<string, number> = {};
+    const rewardsGroup: Record<string, { count: number; options: string[] }> = {};
+    const reward = campaign.reward;
 
-    for (const r of rewards) {
-        if (r.reward in rewardsGroup) {
-            rewardsGroup[r.reward]++;
+    for (const r of reward) {
+        if (r.id in rewardsGroup) {
+            rewardsGroup[r.id].count++;
         } else {
-            rewardsGroup[r.reward] = 1;
+            rewardsGroup[r.id].count = 1;
+            rewardsGroup[r.id].options = r.options;
         }
     }
 
@@ -24,7 +26,16 @@ function Box({ campaign, rewards }: AdvocateCampaignsRes[0]) {
                 <span className="text-md font-bold">{campaign.business}</span>
                 <div className="mt-2 text-sm text-stone-700">
                     {Object.entries(rewardsGroup).map(([k, v]) => (
-                        <div key={k} className="mt-1 font-semibold flex gap-3">{v} <span>X</span> <span className="text-neutral-500">{k}</span></div>
+                        <div key={k} className="mt-1 font-semibold flex gap-3">{v.count}
+                            <span>X</span>
+                            {
+                                <ul>
+                                    {v.options.map(o => (
+                                        <li key={o} className="text-neutral-500">{o}</li>
+                                    ))}
+                                </ul>
+                            }
+                        </div>
                     ))}
                 </div>
                 <div className="flex gap-2 mt-2">
@@ -77,12 +88,12 @@ export default function Recommendations() {
         return null;
     }
 
-    const withRewards = data.filter(a => a.rewards.length);
-    const withNoRewards = data.filter(a => !a.rewards.length);
+    const withRewards = data.filter(a => a.campaign.reward.length);
+    const withNoRewards = data.filter(a => !a.campaign.reward.length);
 
     return (
         <div className="flex flex-col gap-4 w-full">
-            <div className="font-bold">Recompense nefolosite</div>
+            {!!withRewards.length && <div className="font-bold">Recompense nefolosite</div>}
             {withRewards.map(a => <Box key={a.campaign.id} {...a} />)}
             {!!withNoRewards.length && <div className="border border-gray-400"></div>}
             {withNoRewards.map(a => <Box key={a.campaign.id} {...a} />)}

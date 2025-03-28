@@ -1,28 +1,28 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, SyntheticEvent, useState } from 'react';
 import Problem from './Problem';
+import RewardsForm from './RewardsForm';
 
 type CampaignData = {
   months: number,
-  reward: string,
 }
 
+
+
 export default function CreateCampaignForm(props: { created: () => void }) {
-  const [formData, setFormData] = useState<CampaignData>({
-    months: 2,
-    reward: ''
-  });
+  const [months, setMonths] = useState(1);
+  const [addedRewards, setAddedRewards] = useState<string[]>([]);
+  const [agreed, setAgreed] = useState(false);
 
   const [error, setError] = useState(false);
   const [missingParam, setMissingParam] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!addedRewards.length) {
+      return;
+    }
     setLoading(true);
     setError(false);
     setMissingParam(false);
@@ -32,7 +32,10 @@ export default function CreateCampaignForm(props: { created: () => void }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        months,
+        rewards: addedRewards,
+      }),
     });
 
     if (response.ok) {
@@ -71,33 +74,41 @@ export default function CreateCampaignForm(props: { created: () => void }) {
               id="months"
               name="months"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.months}
-              onChange={handleChange}
+              value={months}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => { setMonths(Number(e.target.value)) }}
             >
               <option value={1}>30 zile</option>
               <option value={2}>60 zile</option>
+              <option value={3}>90 zile</option>
+              <option value={4}>120 zile</option>
+              <option value={5}>150 zile</option>
             </select>
           </div>
 
-          <div className='mb-2 text-sm'>{dateFormat.format(new Date())} - {dateFormat.format(endAt.setDate(endAt.getDate() + formData.months * 30))}</div>
+          <div className='mb-2 text-sm'>{dateFormat.format(new Date())} - {dateFormat.format(endAt.setDate(endAt.getDate() + months * 30))}</div>
 
           <div className="mb-4">
-            <label htmlFor="reward" className="block text-sm font-medium text-gray-700">
-              Recompensa
-            </label>
-            <textarea
-              id="reward"
-              name="reward"
-              required
-              value={formData.reward}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Introdu recompensa"
-            />
+            <RewardsForm addedRewards={addedRewards} setAddedRewards={setAddedRewards} />
           </div>
+
+          {!!addedRewards.length &&
+            <div className="flex align-center gap-3 mb-3">
+              <input
+                type="checkbox"
+                id="agree"
+                name="agree"
+                checked={agreed}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setAgreed(e.target.checked)}
+                className="w-5 h-5"
+              />
+              <label htmlFor="agree">
+                Sunt de acord cu campania
+              </label>
+            </div>
+          }
           {error && <Problem />}
           {missingParam && <span>Lipsesc parametri</span>}
-          {!loading && <button className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Porneste campania</button>}
+          {!loading && agreed && <button className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Porneste campania</button>}
         </form>
       </div>
     </div>

@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     online:
       onlineParam === "true" ? true : onlineParam === "false" ? false : null,
     offsetn: offset,
-    limitn: limit
+    limitn: limit,
   });
 
   if (campaignsError) {
@@ -90,14 +90,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let { months, reward } = (await req.json()) as {
+  let { months, rewards } = (await req.json()) as {
     months: number;
-    reward: string;
+    rewards: string[];
   };
 
-  reward = reward.trim();
+  rewards = rewards.map((r) => r.trim()).filter(Boolean);
 
-  if (!months || !reward) {
+  if (!months || !rewards.length) {
     return NextResponse.json(
       { error: "Campuri necompletate" },
       { status: 400 }
@@ -137,16 +137,13 @@ export async function POST(req: Request) {
     );
   }
 
-  res = await supabase
-    .from("campaigns")
-    .insert({
-      start_at: startTimestamp.toISOString(),
-      end_at: endTimestamp.toISOString(),
-      months,
-      business_id: business.id,
-      reward1: reward,
-    })
-    .select("*");
+  res = await supabase.rpc("insert_campaign", {
+    business_id: business.id,
+    start_at: startTimestamp.toISOString(),
+    end_at: endTimestamp.toISOString(),
+    months,
+    reward: JSON.stringify(rewards)
+  });
 
   if (res.error) {
     console.error("Error Business insert ", res.error);
@@ -154,5 +151,5 @@ export async function POST(req: Request) {
   }
 
   const r: CreateCampaignRes = { success: true };
-  return NextResponse.json(r, { status: 200 });
+  return NextResponse.json(r);
 }

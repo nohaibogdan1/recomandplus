@@ -21,7 +21,10 @@ type DbBusiness = {
     start_at: string;
     end_at: string;
     months: number;
-    reward1: string;
+    campaigns_rewards: {
+      id: string,
+      reward: string,
+    }[];
   }[];
 };
 
@@ -43,7 +46,7 @@ export async function GET() {
   let res = null;
   res = await supabase
     .from("businesses")
-    .select("*, campaigns(*)")
+    .select("*, campaigns(*, campaigns_rewards(*))")
     .gte("campaigns.end_at", check.toISOString())
     .eq("user_id", user.id);
 
@@ -52,7 +55,11 @@ export async function GET() {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
+
   const business = res.data[0] as DbBusiness;
+
+  console.log("\n\n business", business, "\n\n");
+
   if (!business) {
     return NextResponse.json({ error: "Not Found" }, { status: 404 });
   }
@@ -74,7 +81,16 @@ export async function GET() {
         id: business.campaigns[0].id,
         startAt: business.campaigns[0].start_at,
         endAt: business.campaigns[0].end_at,
-        reward: business.campaigns[0].reward1,
+        rewards: business.campaigns[0].campaigns_rewards.map(r => {
+          let options = [r.reward];
+          try {
+            options = JSON.parse(r.reward);
+          } catch{}
+          return {
+            id: r.id,
+            options
+          }
+        }),
       },
     }),
   };

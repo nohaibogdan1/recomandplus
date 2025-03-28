@@ -61,7 +61,10 @@ export type BusinessOwnerRes = BusinessData & {
     id: string;
     startAt: string;
     endAt: string;
-    reward: string;
+    rewards: {
+      id: string;
+      options: string[];
+    }[];
   };
 };
 
@@ -74,7 +77,6 @@ export type AdvocateCampaignsRes = {
     id: string;
     endAt: string;
     business: string;
-    unusedRewards: string[];
+    reward: { id: string; options: string[] }[];
   };
-  rewards: { used: boolean; reward: string }[];
 }[];
