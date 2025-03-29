@@ -11,7 +11,7 @@ type DbBusiness = {
 type DbAdvocate = {
   advocates_rewards: {
     id: string;
-    reward: string;
+    campaigns_rewards: { reward: string };
   }[];
 };
 
@@ -59,7 +59,7 @@ export async function GET(request: Request) {
 
   res = await supabase
     .from("advocates")
-    .select("*, advocates_rewards(*)")
+    .select("advocates_rewards(*, campaigns_rewards(*))")
     .eq("user_id", user.id)
     .eq("campaign_id", campaign.id)
     .eq("advocates_rewards.used", false);
@@ -76,7 +76,16 @@ export async function GET(request: Request) {
   }
 
   const data: RewardsRes = {
-    rewards: advocate.advocates_rewards.map((r) => r.reward),
+    rewards: advocate.advocates_rewards.map((ar) => {
+      let r = [ar.campaigns_rewards.reward];
+      try {
+        r = JSON.parse(ar.campaigns_rewards.reward);
+      } catch {}
+      return {
+        id: ar.id,
+        rewards: r,
+      };
+    }),
   };
 
   return NextResponse.json(data);

@@ -22,8 +22,9 @@ type DbBusiness = {
     end_at: string;
     months: number;
     campaigns_rewards: {
-      id: string,
-      reward: string,
+      id: string;
+      reward: string;
+      created_at: string;
     }[];
   }[];
 };
@@ -55,13 +56,33 @@ export async function GET() {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-
   const business = res.data[0] as DbBusiness;
 
   console.log("\n\n business", business, "\n\n");
 
   if (!business) {
     return NextResponse.json({ error: "Not Found" }, { status: 404 });
+  }
+
+  const campaign = business.campaigns[0];
+  let rewards;
+  if (campaign?.campaigns_rewards) {
+    rewards = campaign.campaigns_rewards;
+    rewards.sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+    rewards = rewards.map((r) => {
+      let options = [r.reward];
+      try {
+        options = JSON.parse(r.reward);
+      } catch {}
+      return {
+        id: r.id,
+        options,
+        createdAt: r.created_at
+      };
+    });
   }
 
   const mapped: BusinessOwnerRes = {
@@ -81,16 +102,7 @@ export async function GET() {
         id: business.campaigns[0].id,
         startAt: business.campaigns[0].start_at,
         endAt: business.campaigns[0].end_at,
-        rewards: business.campaigns[0].campaigns_rewards.map(r => {
-          let options = [r.reward];
-          try {
-            options = JSON.parse(r.reward);
-          } catch{}
-          return {
-            id: r.id,
-            options
-          }
-        }),
+        rewards: rewards!,
       },
     }),
   };

@@ -15,8 +15,10 @@ function Box({ campaign }: AdvocateCampaignsRes[0]) {
         if (r.id in rewardsGroup) {
             rewardsGroup[r.id].count++;
         } else {
-            rewardsGroup[r.id].count = 1;
-            rewardsGroup[r.id].options = r.options;
+            rewardsGroup[r.id] = {
+                count: 1,
+                options: r.options
+            };
         }
     }
 

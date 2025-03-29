@@ -5,25 +5,17 @@ import CreateCampaignForm from '@/components/CreateCampaignForm';
 import Problem from "@/components/Problem";
 import Image from "next/image";
 import BusinessForm from "@/components/BusinessForm";
-import ChangeRewardForm from "@/components/ChangeRewardForm";
+import ProfileCurrentCampaign from "@/components/ProfileCurrentCampaign";
 
 export default function Business({ business, refetch, error }: { business?: BusinessOwnerRes, refetch: () => void, error: boolean }) {
   const [showCreateCampaign, setShowCreateCampaign] = useState(false);
   const [showUpdateBusiness, setShowUpdateBusiness] = useState(false);
   const [showBusiness, setShowBusiness] = useState(false);
-  const [showChangeReward, setShowChangeReward] = useState(false);
 
   function createdCampaignHandler() {
     setShowCreateCampaign(false);
     refetch();
   }
-
-  const dateFormat = new Intl.DateTimeFormat("ro-RO", {
-    timeZone: "Europe/Bucharest",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -133,34 +125,10 @@ export default function Business({ business, refetch, error }: { business?: Busi
             {business.campaign &&
               <>
                 <RewardValidation />
-
-                <div className="rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] w-full">
-                  <div className="flex flex-col p-5 gap-2">
-                    <a className="text-sm text-blue-600" href={`http://localhost:3000/campanii/${encodeURIComponent(business.name)}`}>Link catre pagina campaniei tale</a>
-                    <span className="text-gray-600 font-bold">{dateFormat.format(new Date(business.campaign.startAt))} - {dateFormat.format(new Date(business.campaign.endAt))}</span>
-                    <span className="text-sm font-bold">Recompensa curenta</span>
-                    <ul>
-                      {business.campaign.rewards[0].options.map(o =>
-                        <li key={o} className="text-sm list-disc">{o}</li>
-                      )}
-                    </ul>
-                    <button onClick={() => setShowChangeReward(true)} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Schimba recompensa</button>
-                    {showChangeReward && <ChangeRewardForm changed={() => refetch()}/>}
-
-                    {business.campaign.rewards.length > 1 &&
-                      <>
-                        <span className="text-sm font-bold">Recompense anterioare</span>
-                        {business.campaign.rewards.slice(1).map(r => (
-                          <ul>
-                            {r.options.map(o => (
-                              <li key={o} className="text-sm list-disc">{o}</li>
-                            ))}
-                          </ul>
-                        ))}
-                      </>
-                    }
-                  </div>
-                </div>
+                <ProfileCurrentCampaign
+                  businessName={business.name}
+                  campaign={business.campaign}
+                  refetch={refetch} />
               </>
             }
           </>

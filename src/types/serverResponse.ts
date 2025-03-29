@@ -64,12 +64,13 @@ export type BusinessOwnerRes = BusinessData & {
     rewards: {
       id: string;
       options: string[];
+      createdAt: string;
     }[];
   };
 };
 
 export type RewardsRes = {
-  rewards: string[];
+  rewards: { id: string; rewards: string[] }[];
 };
 
 export type AdvocateCampaignsRes = {
@@ -80,3 +81,5 @@ export type AdvocateCampaignsRes = {
     reward: { id: string; options: string[] }[];
   };
 }[];
+
+export type ValidateRewardRes = { valid: boolean; reward: string[] };
