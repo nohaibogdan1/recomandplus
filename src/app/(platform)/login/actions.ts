@@ -16,10 +16,12 @@ export async function login({
 
   const red = redirect?.slice(2, redirect.length - 1);
 
+  console.log("\n\nAAAAAAAA ", process.env.NEXT_PUBLIC_API_URL, "\n\n");
+
   const { data, error } = await supabase.auth.signInWithOtp({
     email: formData.get("email") as string,
     options: {
-      emailRedirectTo: red ? `http://localhost:3000/${red}` : "http://localhost:3000/campanii",
+      emailRedirectTo: red ? `${process.env.NEXT_PUBLIC_API_URL}/${red}` : `${process.env.NEXT_PUBLIC_API_URL}/campanii`,
     },
   });
 

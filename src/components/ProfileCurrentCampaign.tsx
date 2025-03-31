@@ -24,7 +24,7 @@ export default function ProfileCurrentCampaign({
     return (
         <div className="rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] w-full">
             <div className="flex flex-col p-5 gap-2">
-                <a className="text-sm text-blue-600" href={`http://localhost:3000/campanii/${encodeURIComponent(businessName)}`}>Link catre pagina campaniei tale</a>
+                <a className="text-sm text-blue-600" href={`/campanii/${encodeURIComponent(businessName)}`}>Link catre pagina campaniei tale</a>
                 <span className="text-gray-600 font-bold">{dateFormat.format(new Date(campaign.startAt))} - {dateFormat.format(new Date(campaign.endAt))}</span>
                 <CampaignStatistics id={campaign.id}/>
                 <span className="text-sm font-bold">Recompensa curenta</span>

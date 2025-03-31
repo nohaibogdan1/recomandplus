@@ -9,7 +9,7 @@ import Problem from "@/components/Problem";
 export default async function CampaignPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  const res = await fetch(`http://localhost:3000/api/campanii/${slug}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campanii/${slug}`, {
     cache: "no-store",
   });
 

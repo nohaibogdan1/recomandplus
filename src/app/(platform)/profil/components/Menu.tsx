@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Menu({ menu, setMenu }: { menu: number, setMenu: (o: number) => void }) {
     return (
@@ -13,7 +14,7 @@ export default function Menu({ menu, setMenu }: { menu: number, setMenu: (o: num
                         onClick={() => setMenu(2)}>Cont</div>
                 </div>
                 <div className="flex items-center justify-evenly md:hidden absolute bottom-0 w-45 gap-10 bg-white w-full fixed px-2">
-                    <a href="http://localhost:3000/campanii" className="cursor-pointer py-3  items-center flex flex-col  justify-center text-center gap-1 font-light flex-1"
+                    <Link href="/campanii" className="cursor-pointer py-3  items-center flex flex-col  justify-center text-center gap-1 font-light flex-1"
                     >
                         <Image
                             src="/home.svg"
@@ -22,7 +23,7 @@ export default function Menu({ menu, setMenu }: { menu: number, setMenu: (o: num
                             height={15}
                             priority />
                         <span className="text-xs text-wrap">Exploreaza</span>
-                    </a>
+                    </Link>
                     <div className="cursor-pointer py-3  items-center flex flex-col  justify-center text-center gap-1 font-light  flex-1"
                         onClick={() => setMenu(1)}>
                         <Image

@@ -23,7 +23,7 @@ function Box({ campaign }: AdvocateCampaignsRes[0]) {
     }
 
     return (
-        <div onClick={() => router.push(`http://localhost:3000/campanii/${encodeURIComponent(campaign.business)}`)} className="rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)]   cursor-pointer w-full">
+        <div onClick={() => router.push(`/campanii/${encodeURIComponent(campaign.business)}`)} className="rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)]   cursor-pointer w-full">
             <div className="flex flex-col p-5">
                 <span className="text-md font-bold">{campaign.business}</span>
                 <div className="mt-2 text-sm text-stone-700">
