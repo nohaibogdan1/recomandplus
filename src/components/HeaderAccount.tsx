@@ -1,5 +1,3 @@
-"use client";
-
 export default function HeaderAccount() {
     return (
         <div className="flex flex-col md:flex-row gap-4 items-center">
