@@ -11,6 +11,8 @@ export default function RewardValidation() {
     const [error, setError] = useState(false);
 
     async function handlerValidate() {
+        setValid(0);
+        setReward([]);
         const response = await fetch('/api/recompense/validare', {
             method: 'POST',
             headers: {

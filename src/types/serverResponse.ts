@@ -83,3 +83,11 @@ export type AdvocateCampaignsRes = {
 }[];
 
 export type ValidateRewardRes = { valid: boolean; reward: string[] };
+
+export type CampaignAnalyticsRes = {
+  id: string;
+  createdAt: string;
+  sales: number;
+  rewards: number;
+  advocates: number;
+}[];

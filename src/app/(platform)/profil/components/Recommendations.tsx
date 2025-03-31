@@ -97,7 +97,7 @@ export default function Recommendations() {
         <div className="flex flex-col gap-4 w-full">
             {!!withRewards.length && <div className="font-bold">Recompense nefolosite</div>}
             {withRewards.map(a => <Box key={a.campaign.id} {...a} />)}
-            {!!withNoRewards.length && <div className="border border-gray-400"></div>}
+            {!!withRewards.length && !!withNoRewards.length && <div className="border border-gray-400"></div>}
             {withNoRewards.map(a => <Box key={a.campaign.id} {...a} />)}
             {error && <Problem />}
         </div>

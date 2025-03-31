@@ -59,7 +59,7 @@ export default function ProfilePage() {
         <div className="max-w-5xl mx-auto mt-3 px-2 md:px-10">
             <div className="">{user.email}</div>
             <div className='flex mt-5'>
-                <Menu menu={menu} setMenu={setMenu} />
+                <Menu menu={menu} setMenu={(o: number) => { setMenu(o); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
                 <div className="w-full">
                     {menu === 0 && <Recommendations />}
                     {menu === 1 && <Business business={business} refetch={() => fetchBusiness()} error={error} />}

@@ -40,8 +40,8 @@ export default function ProfileCurrentCampaign({
                 {campaign.rewards.length > 1 &&
                     <>
                         <span className="text-sm font-bold">Recompense anterioare</span>
-                        {campaign.rewards.slice(1).map(r => (
-                            <div key={r.id}>
+                        {campaign.rewards.slice(1).map((r,i) => (
+                            <div key={r.id} className={`${i%2 ? "bg-slate-50" : "bg-white"}`}>
                                 <span className="text-gray-600 font-bold">{dateFormat.format(new Date(r.createdAt))}</span>
                                 <ul>
                                     {r.options.map(o => (

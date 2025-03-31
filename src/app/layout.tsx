@@ -26,18 +26,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
       >
-        <div className="flex justify-between my-2 pr-4 pl-4 w-full max-w-5xl mx-auto">
-          <a href="/campanii"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></a>
-          <HeaderAccount />
+        <div className="z-2 py-2  sticky top-0 bg-white ">
+          <div className="flex justify-between px-4 w-full max-w-5xl mx-auto " >
+            <a href="/campanii"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></a>
+            <HeaderAccount />
+          </div>
         </div>
 
         <div className="min-h-180">
           {children}
         </div>
 
-        <footer className="w-full py-5 pt-10">
+        <footer className="w-full py-5 pt-10 pb-5">
           <div className='text-gray-600 gap-7 flex flex-wrap my-2 pr-4 pl-4 w-full max-w-5xl mx-auto'>
 
             <div className='w-50 flex flex-col gap-2'>
