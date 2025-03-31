@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
-import { CampaignsRes, CreateCampaignRes } from "@/types/serverResponse";
+import { CreateCampaignRes } from "@/types/serverResponse";
 
 type DbBusiness = {
   id: string;

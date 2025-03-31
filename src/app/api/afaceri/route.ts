@@ -3,19 +3,18 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { BusinessData } from "@/types/serverResponse";
 
-
 type DbBusiness = {
-  id: string,
-  name: string,
-  photo: string,
-  facebook: string,
-  instagram: string,
-  tiktok: string,
-  location_map: string,
-  location: string,
-  phone: string,
-  county: string,
-  is_online: string
+  id: string;
+  name: string;
+  photo: string;
+  facebook: string;
+  instagram: string;
+  tiktok: string;
+  location_map: string;
+  location: string;
+  phone: string;
+  county: string;
+  is_online: string;
 };
 
 export async function GET() {
@@ -72,6 +71,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const payload = (await req.json()) as BusinessData;
+
   let {
     name,
     location,
@@ -82,8 +83,9 @@ export async function POST(req: Request) {
     tiktok,
     website,
     county,
-    isOnline,
-  } = await req.json() as BusinessData;
+  } = payload;
+
+  const { isOnline } = payload;
 
   name = name.trim();
   location = location.trim();
@@ -91,6 +93,7 @@ export async function POST(req: Request) {
   phone = phone.trim();
   facebook = facebook.trim();
   instagram = instagram.trim();
+  website = website.trim();
   tiktok = tiktok.trim();
   county = county.trim();
 
@@ -112,11 +115,10 @@ export async function POST(req: Request) {
   res = await supabase.from("businesses").select("*").eq("user_id", user.id);
   if (res.error) {
     console.error("Error businesses ", res.error);
-       return NextResponse.json({ error: "Server error" }, { status: 500 });
-
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-  let business = res.data[0] as DbBusiness;
+  const business = res.data[0] as DbBusiness;
 
   res = await supabase
     .from("businesses")
@@ -132,7 +134,6 @@ export async function POST(req: Request) {
   if (res.error) {
     console.error("Error business upsert: ", res.error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
-
   }
 
   return NextResponse.json({ success: true });

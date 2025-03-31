@@ -17,7 +17,7 @@ export default function BusinessPagination({ params, pagination }: IBusinessPagi
         link += `counties=${params.counties}`;
     }
     if (params.online !== null) {
-        link + `&online=${params.online}`;
+        link += `&online=${params.online}`;
     }
 
     let page: number | null = Number(params.p);

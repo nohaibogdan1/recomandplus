@@ -35,7 +35,7 @@ function CampaignBox(props: { image: string, name: string, rewards: string[], en
   )
 };
 
-export default async function CampaignsPage({ searchParams }: { searchParams: { [key: string]: string } }) {
+export default async function CampaignsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string }> }) {
   const params = await searchParams;
   const { counties, p, online } = params;
   const res = await fetch(`http://localhost:3000/api/campanii?counties=${counties || ""}&online=${online || ""}&p=${p || ""}`, {

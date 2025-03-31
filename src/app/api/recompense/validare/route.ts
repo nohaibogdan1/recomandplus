@@ -24,9 +24,7 @@ export async function POST(req: Request) {
   check.setUTCDate(check.getUTCDate());
   check.setUTCHours(0, 0, 0, 0);
 
-  let res;
-
-  res = await supabase.rpc("validate_reward", {
+  const res = await supabase.rpc("validate_reward", {
     business_owner_id_p: user.id,
     campaign_end_at_p: check.toISOString(),
     email_advocate_p: validationText,

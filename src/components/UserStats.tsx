@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import useUser from "@/hooks/useUser";
 import { useEffect, useState } from "react";
 import { RewardsRes } from "@/types/serverResponse";

@@ -43,7 +43,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 
-
   const campaigns = (data as DbResponse[]).map((c) => {
     let reward = [c.campaign_rewards];
     try {
@@ -99,10 +98,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let { months, rewards } = (await req.json()) as {
+  const payload = (await req.json()) as {
     months: number;
     rewards: string[];
   };
+
+  let { rewards } = payload;
+  const { months } = payload;
 
   rewards = rewards.map((r) => r.trim()).filter(Boolean);
 

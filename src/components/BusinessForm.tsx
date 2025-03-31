@@ -2,9 +2,9 @@
 
 import { useState, ChangeEvent, FormEvent } from 'react';
 import Image from 'next/image';
-import { upload } from '@vercel/blob/client';
-import useUser from '@/hooks/useUser';
-import { createClient } from "@/utils/supabase/client";
+// import { upload } from '@vercel/blob/client';
+// import useUser from '@/hooks/useUser';
+// import { createClient } from "@/utils/supabase/client";
 import { BusinessData } from '@/types/serverResponse';
 import Problem from './Problem';
 
@@ -77,9 +77,9 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
 
   const [error, setError] = useState(false);
 
-  const [photo, setPhoto] = useState<string>('');
+  // const [_, setPhoto] = useState<string>('');
 
-  const { user } = useUser();
+  // const { user } = useUser();
 
   const [loading, setLoading] = useState(false);
 
@@ -96,7 +96,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
       reader.onloadend = () => {
         const result = reader.result as string;
         setPreview(result);
-        setPhoto(result);
+        // setPhoto(result);
       };
       reader.readAsDataURL(file);
     }
@@ -147,7 +147,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
           setTimeout(() => { setError(false) }, 3000);
         }
       }
-    } catch (error) {
+    } catch {
       setError(true);
       window.scrollTo({ top: 600, behavior: "smooth" });
       setTimeout(() => { setError(false) }, 3000);

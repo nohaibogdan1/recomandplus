@@ -10,7 +10,6 @@ export async function POST(request: Request): Promise<NextResponse> {
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
-  console.log("user", user);
 
   try {
     const jsonResponse = await handleUpload({
@@ -55,10 +54,11 @@ export async function POST(request: Request): Promise<NextResponse> {
           const { error } = await supabase.from("businesses").update({
             photo: blob.url
            }).eq('business_id', businessId);
+           console.error(error);
            if (error){
             throw error;
            }
-        } catch (error) {
+        } catch {
           throw new Error('Could not update user');
         }
       },
@@ -66,6 +66,8 @@ export async function POST(request: Request): Promise<NextResponse> {
  
     return NextResponse.json(jsonResponse);
   } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       { error: (error as Error).message },
       { status: 400 }, // The webhook will retry 5 times waiting for a 200

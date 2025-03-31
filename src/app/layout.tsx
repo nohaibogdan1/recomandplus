@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import HeaderAccount from "@/components/HeaderAccount";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,7 @@ export default function RootLayout({
       >
         <div className="z-2 py-2  sticky top-0 bg-white ">
           <div className="flex justify-between px-4 w-full max-w-5xl mx-auto " >
-            <a href="/campanii"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></a>
+            <Link href="/campanii"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></Link>
             <HeaderAccount />
           </div>
         </div>
@@ -44,19 +45,19 @@ export default function RootLayout({
 
             <div className='w-50 flex flex-col gap-2'>
               <span className="text-md">Harta site</span>
-              <a href="/landing-business" className='text-sm cursor-pointer'>Am afacere</a>
-              <a href="/landing-advocate" className='text-sm cursor-pointer'>Vreau recompense</a>
-              <a href="/login" className='text-sm cursor-pointer'>Inregistrare / conectare</a>
-              <a href="/profil" className='text-sm cursor-pointer'>Profil</a>
-              <a href="/campanii" className='text-sm cursor-pointer'>Exploreaza</a>
+              <Link href="/landing-business" className='text-sm cursor-pointer'>Am afacere</Link>
+              <Link href="/landing-advocate" className='text-sm cursor-pointer'>Vreau recompense</Link>
+              <Link href="/login" className='text-sm cursor-pointer'>Inregistrare / conectare</Link>
+              <Link href="/profil" className='text-sm cursor-pointer'>Profil</Link>
+              <Link href="/campanii" className='text-sm cursor-pointer'>Exploreaza</Link>
             </div>
 
             <div className='w-50 flex flex-col gap-2'>
               <span className="text-md ">RecomandPlus</span>
-              <a href="/intrebari-frecvente" className='text-sm cursor-pointer'>Cele mai frecvente intrebari</a>
-              <a className=' text-sm cursor-pointer'>Termeni de utilizare</a>
-              <a href="/politica-confidentialitate" className=' text-sm cursor-pointer'>Politica de confidentialitate</a>
-              <a href="/cookies" className='text-sm cursor-pointer'>Cookies</a>
+              <Link href="/intrebari-frecvente" className='text-sm cursor-pointer'>Cele mai frecvente intrebari</Link>
+              {/* <Link className=' text-sm cursor-pointer'>Termeni de utilizare</Link> */}
+              <Link href="/politica-confidentialitate" className=' text-sm cursor-pointer'>Politica de confidentialitate</Link>
+              <Link href="/cookies" className='text-sm cursor-pointer'>Cookies</Link>
               <a className=' text-sm cursor-pointer'>ANPC</a>
             </div>
 

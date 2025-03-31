@@ -33,13 +33,12 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let res;
 
   const check = new Date();
   check.setUTCDate(check.getUTCDate());
   check.setUTCHours(0, 0, 0, 0);
 
-  res = await supabase
+  const res = await supabase
     .from("advocates")
     .select(
       "*, advocates_rewards(used, campaigns_rewards(*)), campaigns(*, businesses(name))"

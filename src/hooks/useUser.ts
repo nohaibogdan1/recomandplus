@@ -4,12 +4,6 @@ import { createClient } from "@/utils/supabase/client";
 
 import { useEffect, useState } from "react";
 
-async function bla() {
-    return new Promise((acc) => {
-        setTimeout(() => acc(true), 1000);
-    })
-}
-
 interface UserData {
     id: string;
     email: string;

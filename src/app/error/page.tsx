@@ -1,6 +1,6 @@
 import Problem from "@/components/Problem";
 
-export default async function ErrorPage({ searchParams }: { searchParams: { [key: string]: string } }) {
+export default async function ErrorPage({ searchParams }: { searchParams: Promise<{ [key: string]: string }> }) {
   const { from } = await searchParams;
 
   return (

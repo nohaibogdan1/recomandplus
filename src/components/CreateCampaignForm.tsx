@@ -1,12 +1,6 @@
-import React, { ChangeEvent, FormEvent, SyntheticEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import Problem from './Problem';
 import RewardsForm from './RewardsForm';
-
-type CampaignData = {
-  months: number,
-}
-
-
 
 export default function CreateCampaignForm(props: { created: () => void }) {
   const [months, setMonths] = useState(1);
@@ -59,7 +53,7 @@ export default function CreateCampaignForm(props: { created: () => void }) {
     timeZone: "Europe/Bucharest",
   });
 
-  let endAt = new Date();
+  const endAt = new Date();
 
   return (
     <div className="rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] w-full">

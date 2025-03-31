@@ -5,15 +5,8 @@ import Image from "next/image";
 import getLeftDays from "../components/getLeftDays";
 import Problem from "@/components/Problem";
 
-const slugToPicture = {
-  "floraria-mimi": "/florarie.jpeg",
-  "frizeria-mihai": "/frizerie.jpg",
-  "dentistii-cool": "/cabinetstomatologic.jpeg",
-  "scoala-de-it-suceava": "/cursuriprogramare.jpeg",
-  "nohai-la-miere": "/miere.jpeg"
-};
 
-export default async function CampaignPage({ params }: { params: { slug: string }; }) {
+export default async function CampaignPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
   const res = await fetch(`http://localhost:3000/api/campanii/${slug}`, {
