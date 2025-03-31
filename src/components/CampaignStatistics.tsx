@@ -1,6 +1,7 @@
 import { CampaignAnalyticsRes } from "@/types/serverResponse";
 import { useEffect, useState } from "react";
 import Problem from "./Problem";
+import Button from "./common/Button";
 
 export default function CampaignStatistics({ id }: { id: string }) {
   const [showStatistics, setShowStatistics] = useState(false);
@@ -51,18 +52,18 @@ export default function CampaignStatistics({ id }: { id: string }) {
 
   return (
     <div>
-      <button onClick={() => setShowStatistics(true)} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Vezi statisticile {loading ? "..." : ""}</button>
+      <Button onClick={() => setShowStatistics(true)} text="Vezi statisticile" loading={loading}/>
       {loading && <span>Se Incarca</span>}
       {error && <Problem />}
       {!!statistics.length &&
         <div className="max-w-full max-h-96 overflow-auto">
           <table className="min-w-full border-collapse">
-            <thead className="sticky top-0 z-10">
+            <thead className="sticky top-0 z-2">
               <tr>
-                <th className="sticky left-0 p-2 z-20 bg-white text-center">Data</th>
-                <th className=" p-2 text-center text-center bg-white">Vanzari</th>
-                <th className=" p-2 text-center text-center bg-white">Recompense noi</th>
-                <th className=" p-2 text-center text-center bg-white">Recomandatori</th>
+                <th className="sticky left-0 p-2 z-1 bg-white text-center align-baseline">Data</th>
+                <th className=" p-2 text-center text-center bg-white align-baseline">Vanzari</th>
+                <th className=" p-2 text-center text-center bg-white align-baseline">Recompense noi</th>
+                <th className=" p-2 text-center text-center bg-white align-baseline">Recomandatori</th>
               </tr>
             </thead>
             <tbody>

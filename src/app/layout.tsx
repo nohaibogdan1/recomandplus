@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
       >
-        <div className="z-2 py-2  sticky top-0 bg-white ">
+        <div className="z-3 py-2  sticky top-0 bg-white ">
           <div className="flex justify-between px-4 w-full max-w-5xl mx-auto " >
             <Link href="/campanii"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></Link>
             <HeaderAccount />
@@ -40,7 +40,7 @@ export default function RootLayout({
           {children}
         </div>
 
-        <footer className="w-full py-5 pt-10 pb-5">
+        <footer className="w-full py-5 pt-10 pb-17 md:pb-5">
           <div className='text-gray-600 gap-7 flex flex-wrap my-2 pr-4 pl-4 w-full max-w-5xl mx-auto'>
 
             <div className='w-50 flex flex-col gap-2'>

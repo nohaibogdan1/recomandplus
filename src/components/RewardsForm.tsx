@@ -1,4 +1,5 @@
 import { SyntheticEvent, useState } from "react";
+import Button from "./common/Button";
 
 export default function RewardsForm({
   addedRewards = [],
@@ -34,12 +35,7 @@ export default function RewardsForm({
         />
       </div>
 
-      <button
-        onClick={handleAddReward}
-        className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2"
-      >
-        Adaugă
-      </button>
+      <Button onClick={handleAddReward} text="Adaugă"/>
 
       {addedRewards.length > 0 && (
         <div className="mt-4">

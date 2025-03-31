@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import RewardsForm from "./RewardsForm";
 import Problem from "./Problem";
+import Button from "./common/Button";
 
 export default function ChangeRewardForm({ changed }: { changed: () => void }) {
   const [addedRewards, setAddedRewards] = useState<string[]>([]);
@@ -49,13 +50,12 @@ export default function ChangeRewardForm({ changed }: { changed: () => void }) {
               Sunt de acord cu modificarile
             </label>
           </div>
-          {agreed && !loading &&
-            <button
+          {agreed &&
+            <Button
               onClick={handleChangeReward}
-              className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2"
-            >
-              Schimba
-            </button>
+              loading={loading}
+              text="Schimba"
+            />
           }
           {error && <Problem />}
         </>

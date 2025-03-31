@@ -6,6 +6,7 @@ import Problem from "@/components/Problem";
 import Image from "next/image";
 import BusinessForm from "@/components/BusinessForm";
 import ProfileCurrentCampaign from "@/components/ProfileCurrentCampaign";
+import Button from "@/components/common/Button";
 
 export default function Business({ business, refetch, error }: { business?: BusinessOwnerRes, refetch: () => void, error: boolean }) {
   const [showCreateCampaign, setShowCreateCampaign] = useState(false);
@@ -22,14 +23,14 @@ export default function Business({ business, refetch, error }: { business?: Busi
       {error && <Problem />}
       {!error &&
         <>
-          {!business && <button onClick={() => setShowUpdateBusiness(true)} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Adauga afacerea</button>}
-          {business && !showBusiness && <button onClick={() => setShowBusiness(true)} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Vezi afacerea</button>}
+          {!business && <Button onClick={() => setShowUpdateBusiness(true)} text="Adauga afacerea"/>}
+          {business && !showBusiness && <Button onClick={() => setShowBusiness(true)} text="Vezi afacerea"/>}
 
           {business && showBusiness &&
             <>
               <div className='flex gap-5'>
-                {!showUpdateBusiness && <button onClick={() => setShowUpdateBusiness(true)} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Modifica</button>}
-                <button onClick={() => { setShowBusiness(false); setShowUpdateBusiness(false) }} className="cursor-pointer w-7 rounded-md bg-gray-100 text-sm font-bold py-2">X</button>
+                {!showUpdateBusiness && <Button onClick={() => setShowUpdateBusiness(true)} text="Modifica"/>}
+                <Button onClick={() => { setShowBusiness(false); setShowUpdateBusiness(false)}} text="X"/>
               </div>
 
               <div className='flex flex-col gap-5'>
@@ -107,6 +108,7 @@ export default function Business({ business, refetch, error }: { business?: Busi
             <BusinessForm
               close={() => setShowUpdateBusiness(false)}
               updated={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
                 setShowUpdateBusiness(false);
                 refetch();
               }}
@@ -117,7 +119,7 @@ export default function Business({ business, refetch, error }: { business?: Busi
 
             <div className='font-bold'>Campania mea</div>
             {!business.campaign && <>
-              <button onClick={() => setShowCreateCampaign(true)} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Creaza campanie</button>
+              <Button onClick={() => setShowCreateCampaign(true)} text="Creaza campanie"/>
               {showCreateCampaign && <CreateCampaignForm created={createdCampaignHandler} />}
             </>
             }

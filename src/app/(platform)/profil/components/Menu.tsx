@@ -13,7 +13,7 @@ export default function Menu({ menu, setMenu }: { menu: number, setMenu: (o: num
                     <div className={`cursor-pointer ${menu === 2 && 'font-bold'}`}
                         onClick={() => setMenu(2)}>Cont</div>
                 </div>
-                <div className="flex items-center justify-evenly md:hidden absolute bottom-0 w-45 gap-10 bg-white w-full fixed px-2">
+                <div className="flex items-center justify-evenly md:hidden absolute bottom-0 w-45 gap-10 bg-white w-full fixed px-2 z-3">
                     <Link href="/campanii" className="cursor-pointer py-3  items-center flex flex-col  justify-center text-center gap-1 font-light flex-1"
                     >
                         <Image

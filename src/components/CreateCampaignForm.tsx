@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import Problem from './Problem';
 import RewardsForm from './RewardsForm';
+import Button from './common/Button';
 
 export default function CreateCampaignForm(props: { created: () => void }) {
   const [months, setMonths] = useState(1);
@@ -14,7 +15,7 @@ export default function CreateCampaignForm(props: { created: () => void }) {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!addedRewards.length) {
+    if (loading || !addedRewards.length) {
       return;
     }
     setLoading(true);
@@ -102,7 +103,7 @@ export default function CreateCampaignForm(props: { created: () => void }) {
           }
           {error && <Problem />}
           {missingParam && <span>Lipsesc parametri</span>}
-          {!loading && agreed && <button className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Porneste campania</button>}
+          {agreed && <Button type='submit' text='Porneste campania' loading={loading}/>}
         </form>
       </div>
     </div>

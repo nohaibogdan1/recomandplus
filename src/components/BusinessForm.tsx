@@ -7,6 +7,7 @@ import Image from 'next/image';
 // import { createClient } from "@/utils/supabase/client";
 import { BusinessData } from '@/types/serverResponse';
 import Problem from './Problem';
+import Button from './common/Button';
 
 const counties = ["Alba",
   "Arad",
@@ -105,6 +106,8 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Form data:', formData);
+
+    if (loading) {return;}
 
     setLoading(true);
 
@@ -238,13 +241,9 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         </div>
 
         <div className='flex gap-5 flex-wrap justify-center'>
-          <button onClick={close} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">
-            Inchide
-          </button>
+          <Button onClick={close} text="Inchide"/>
 
-          <button type="submit" className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">
-            Salveaza {loading && <span>....</span>}
-          </button>
+          <Button type="submit" text="Salveaza" loading={loading}/>
         </div>
       </form>
       {error && <Problem />}

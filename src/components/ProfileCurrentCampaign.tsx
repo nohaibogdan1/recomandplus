@@ -2,6 +2,7 @@ import { BusinessOwnerRes } from "@/types/serverResponse";
 import ChangeRewardForm from "./ChangeRewardForm";
 import { useState } from "react";
 import CampaignStatistics from "./CampaignStatistics";
+import Button from "./common/Button";
 
 export default function ProfileCurrentCampaign({
     refetch,
@@ -27,25 +28,25 @@ export default function ProfileCurrentCampaign({
                 <a className="text-sm text-blue-600" href={`/campanii/${encodeURIComponent(businessName)}`}>Link catre pagina campaniei tale</a>
                 <span className="text-gray-600 font-bold">{dateFormat.format(new Date(campaign.startAt))} - {dateFormat.format(new Date(campaign.endAt))}</span>
                 <CampaignStatistics id={campaign.id}/>
-                <span className="text-sm font-bold">Recompensa curenta</span>
+                <span className="text-sm font-bold mt-3">Recompensa curenta</span>
                 <span className="text-gray-600 font-bold">{dateFormat.format(new Date(campaign.rewards[0].createdAt))}</span>
                 <ul>
                     {campaign.rewards[0].options.map(o =>
-                        <li key={o} className="text-sm list-disc">{o}</li>
+                        <li key={o} className="text-sm">{o}</li>
                     )}
                 </ul>
-                <button onClick={() => setShowChangeReward(true)} className="cursor-pointer w-50 rounded-md bg-gray-100 text-sm font-bold py-2">Schimba recompensa</button>
+                <Button onClick={() => setShowChangeReward(true)} text="Schimba recompensa"/>
                 {showChangeReward && <ChangeRewardForm changed={() => { setShowChangeReward(false); refetch(); }} />}
 
                 {campaign.rewards.length > 1 &&
                     <>
-                        <span className="text-sm font-bold">Recompense anterioare</span>
+                        <span className="text-sm font-bold mt-3">Recompense anterioare</span>
                         {campaign.rewards.slice(1).map((r,i) => (
                             <div key={r.id} className={`${i%2 ? "bg-slate-50" : "bg-white"}`}>
                                 <span className="text-gray-600 font-bold">{dateFormat.format(new Date(r.createdAt))}</span>
                                 <ul>
                                     {r.options.map(o => (
-                                        <li key={o} className="text-sm list-disc">{o}</li>
+                                        <li key={o} className="text-sm">{o}</li>
                                     ))}
                                 </ul>
                             </div>
