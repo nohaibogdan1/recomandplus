@@ -10,12 +10,16 @@ type DbBusiness = {
   facebook: string;
   instagram: string;
   tiktok: string;
-  location_map: string;
-  location: string;
+  youtube: string;
   phone: string;
-  county: string;
   is_online: boolean;
   website: string;
+  addresses: {
+    county: string;
+    location: string;
+    phone: string;
+    maps: string;
+  }[];
   campaigns: {
     id: string;
     start_at: string;
@@ -47,7 +51,7 @@ export async function GET() {
   let res = null;
   res = await supabase
     .from("businesses")
-    .select("*, campaigns(*, campaigns_rewards(*))")
+    .select("*, campaigns(*, campaigns_rewards(*)), addresses(*)")
     .gte("campaigns.end_at", check.toISOString())
     .eq("user_id", user.id);
 
@@ -89,14 +93,18 @@ export async function GET() {
     name: business.name,
     photo: business.photo,
     phone: business.phone,
-    county: business.county,
     isOnline: business.is_online,
-    location: business.location,
-    maps: business.location_map,
     facebook: business.facebook,
+    youtube: business.youtube,
     instagram: business.instagram,
     tiktok: business.tiktok,
     website: business.website,
+    addresses: business.addresses.map(a => ({
+      location: a.location,
+      county: a.county,
+      phone: a.phone,
+      maps: a.maps
+    })),
     ...(business.campaigns[0] && {
       campaign: {
         id: business.campaigns[0].id,

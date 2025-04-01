@@ -42,18 +42,24 @@ export type CreateCampaignRes = {
   success: boolean;
 };
 
+type Address = {
+  phone: string,
+  county: string,
+  location: string,
+  maps: string
+}
+
 export type BusinessData = {
   name: string;
   photo: string;
   phone: string;
-  county: string;
   isOnline: boolean;
-  location: string;
-  maps: string;
   facebook: string;
   instagram: string;
   tiktok: string;
   website: string;
+  youtube: string;
+  addresses: Address[];
 };
 
 export type BusinessOwnerRes = BusinessData & {

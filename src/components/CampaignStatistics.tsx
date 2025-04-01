@@ -52,8 +52,7 @@ export default function CampaignStatistics({ id }: { id: string }) {
 
   return (
     <div>
-      <Button onClick={() => setShowStatistics(true)} text="Vezi statisticile" loading={loading}/>
-      {loading && <span>Se Incarca</span>}
+      <Button onClick={() => setShowStatistics(true)} text="Vezi statisticile" loading={loading} />
       {error && <Problem />}
       {!!statistics.length &&
         <div className="max-w-full max-h-96 overflow-auto">
@@ -79,8 +78,6 @@ export default function CampaignStatistics({ id }: { id: string }) {
           </table>
         </div>
       }
-
-
     </div>
   )
 }

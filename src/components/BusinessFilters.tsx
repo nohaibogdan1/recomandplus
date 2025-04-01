@@ -102,7 +102,7 @@ function Filters({ showFilter, close, params }: { showFilter: boolean, close: ()
         return null;
     }
     return (
-        <div ref={modalRef} className="absolute bg-white h-100 w-70 px-6 py-6 pb-1 rounded-md flex flex-col gap-3">
+        <div ref={modalRef} className={`transition-all duration-300 absolute bg-white h-100 w-70 px-6 py-6 pb-1 rounded-md flex flex-col gap-3 opacity-100 scale-100 translate-y-0`}>
             <div className="flex flex-col space-y-2 overflow-scroll h-5/6">
                 <label key={"online"} className="flex items-center space-x-2">
                     <input

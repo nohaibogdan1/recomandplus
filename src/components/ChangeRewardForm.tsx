@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import RewardsForm from "./RewardsForm";
 import Problem from "./Problem";
-import Button from "./common/Button";
+import Button, { ButtonVariants } from "./common/Button";
 
 export default function ChangeRewardForm({ changed }: { changed: () => void }) {
   const [addedRewards, setAddedRewards] = useState<string[]>([]);
@@ -55,6 +55,7 @@ export default function ChangeRewardForm({ changed }: { changed: () => void }) {
               onClick={handleChangeReward}
               loading={loading}
               text="Schimba"
+              variant={ButtonVariants.PRIMARY}
             />
           }
           {error && <Problem />}

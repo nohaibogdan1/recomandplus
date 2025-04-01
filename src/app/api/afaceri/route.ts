@@ -15,6 +15,7 @@ type DbBusiness = {
   phone: string;
   county: string;
   is_online: string;
+  user_id: string;
 };
 
 export async function GET() {
@@ -75,41 +76,28 @@ export async function POST(req: Request) {
 
   let {
     name,
-    location,
-    maps,
     phone,
     facebook,
     instagram,
     tiktok,
+    youtube,
     website,
-    county,
+    addresses,
   } = payload;
 
   const { isOnline } = payload;
 
   name = name.trim();
-  location = location.trim();
-  maps = maps.trim();
   phone = phone.trim();
   facebook = facebook.trim();
   instagram = instagram.trim();
   website = website.trim();
   tiktok = tiktok.trim();
-  county = county.trim();
+  youtube = youtube.trim();
 
-  const dbData = {
-    name,
-    location,
-    location_map: maps,
-    phone: phone,
-    facebook: facebook,
-    website,
-    instagram: instagram,
-    tiktok: tiktok,
-    user_id: user.id,
-    county: county,
-    is_online: isOnline,
-  };
+  if (!name || !phone) {
+    return NextResponse.json({ error: "Parameters missing" }, { status: 400 });
+  }
 
   let res = null;
   res = await supabase.from("businesses").select("*").eq("user_id", user.id);
@@ -119,17 +107,32 @@ export async function POST(req: Request) {
   }
 
   const business = res.data[0] as DbBusiness;
+  let businessId = business?.id;
 
-  res = await supabase
-    .from("businesses")
-    .upsert(
-      {
-        ...dbData,
-        ...(business?.id && { id: business.id }),
-      },
-      { onConflict: "id" }
-    )
-    .select();
+  addresses = addresses
+    .map((a) => ({
+      phone: a.phone.trim(),
+      location: a.location.trim(),
+      maps: a.maps.trim(),
+      county: a.county.trim(),
+    }))
+    .filter((a) => a.phone && a.location && a.county);
+
+  res = await supabase.rpc("insert_update_business", {
+    business_p: {
+      name,
+      phone,
+      facebook,
+      youtube,
+      website,
+      tiktok,
+      instagram,
+      is_online: isOnline,
+      user_id: user.id,
+      id: businessId
+    },
+    addresses_p: addresses
+  });
 
   if (res.error) {
     console.error("Error business upsert: ", res.error);

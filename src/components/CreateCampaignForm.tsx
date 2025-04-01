@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, SyntheticEvent, useState } from 'react';
 import Problem from './Problem';
 import RewardsForm from './RewardsForm';
-import Button from './common/Button';
+import Button, { ButtonVariants } from './common/Button';
 
 export default function CreateCampaignForm(props: { created: () => void }) {
   const [months, setMonths] = useState(1);
@@ -103,7 +103,7 @@ export default function CreateCampaignForm(props: { created: () => void }) {
           }
           {error && <Problem />}
           {missingParam && <span>Lipsesc parametri</span>}
-          {agreed && <Button type='submit' text='Porneste campania' loading={loading}/>}
+          {agreed && <Button type='submit' text='Porneste campania' loading={loading} variant={ButtonVariants.PRIMARY} />}
         </form>
       </div>
     </div>
