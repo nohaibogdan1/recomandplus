@@ -1,13 +1,14 @@
 import { CampaignAnalyticsRes } from "@/types/serverResponse";
 import { useEffect, useState } from "react";
 import Problem from "./Problem";
-import Button from "./common/Button";
+import Button, { ButtonVariants } from "./common/Button";
 
 export default function CampaignStatistics({ id }: { id: string }) {
   const [showStatistics, setShowStatistics] = useState(false);
   const [statistics, setStatistics] = useState<CampaignAnalyticsRes>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const dateFormat = new Intl.DateTimeFormat("ro-RO", {
     timeZone: "Europe/Bucharest",
@@ -41,6 +42,7 @@ export default function CampaignStatistics({ id }: { id: string }) {
           setTimeout(() => setError(false), 3000);
         }
       }
+      setLoaded(true);
       setLoading(false);
     }
 
@@ -52,8 +54,11 @@ export default function CampaignStatistics({ id }: { id: string }) {
 
   return (
     <div>
-      <Button onClick={() => setShowStatistics(true)} text="Vezi statisticile" loading={loading} />
+      <Button variant={ButtonVariants.PRIMARY}
+        onClick={() => setShowStatistics(true)}
+        text="Vezi statisticile" loading={loading} />
       {error && <Problem />}
+      {!statistics.length && loaded && !error && <span>Nu sunt date</span>}
       {!!statistics.length &&
         <div className="max-w-full max-h-96 overflow-auto">
           <table className="min-w-full border-collapse">
@@ -68,7 +73,10 @@ export default function CampaignStatistics({ id }: { id: string }) {
             <tbody>
               {statistics.map((s, i) => (
                 <tr className={`${i % 2 ? "bg-slate-50" : ""} text-sm leading-[3]`} key={s.createdAt}>
-                  <td className={`sticky left-0 p-2 ${i % 2 ? "bg-slate-50" : "bg-white"} flex flex-nowrap justify-center`}><div>{dateFormatDay.format(new Date(s.createdAt))}</div> <div>{dateFormat.format(new Date(s.createdAt))}</div></td>
+                  <td className={`sticky left-0 p-2 ${i % 2 ? "bg-slate-50" : "bg-white"} flex flex-nowrap justify-center gap-1`}>
+                    <div>{dateFormatDay.format(new Date(s.createdAt))}</div>
+                    <div>{dateFormat.format(new Date(s.createdAt))}</div>
+                  </td>
                   <td className=" p-2 text-center">{s.sales}</td>
                   <td className=" p-2 text-center">{s.rewards}</td>
                   <td className=" p-2 text-center">{s.advocates}</td>

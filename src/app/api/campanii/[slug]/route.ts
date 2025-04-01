@@ -9,7 +9,7 @@ type DbResponse = {
   end_at: string;
   months: number;
   business_id: string;
-  campaigns_rewards: {current: boolean, reward: string}[];
+  campaigns_rewards: { current: boolean; reward: string }[];
   businesses: {
     name: string;
     county: string;
@@ -18,10 +18,17 @@ type DbResponse = {
     phone: string;
     location: string;
     location_map: string;
-    facebook: string | null;
-    instagram: string | null;
-    tiktok: string | null;
-    website: string | null;
+    facebook: string;
+    instagram: string;
+    tiktok: string;
+    website: string;
+    youtube: string;
+    addresses: {
+      location: string;
+      maps: string;
+      county: string;
+      phone: string;
+    }[];
   };
 };
 
@@ -36,7 +43,7 @@ export async function GET(
 
   const res = await supabase
     .from("campaigns")
-    .select("*, businesses(*), campaigns_rewards(*)")
+    .select("*, businesses(*, addresses(*)), campaigns_rewards(*)")
     .eq("businesses.name", decodeURIComponent(slug))
     .eq("campaigns_rewards.current", true);
 
@@ -55,7 +62,7 @@ export async function GET(
 
   try {
     reward = JSON.parse(data.campaigns_rewards[0].reward);
-  }catch{}
+  } catch {}
 
   const mapped: CampaignRes = {
     id: data.id,
@@ -68,15 +75,19 @@ export async function GET(
     business: {
       name: data.businesses.name,
       photo: data.businesses.photo,
-      county: data.businesses.county,
       isOnline: data.businesses.is_online,
-      location: data.businesses.location,
-      maps: data.businesses.location_map,
       facebook: data.businesses.facebook,
       instagram: data.businesses.instagram,
       tiktok: data.businesses.tiktok,
+      youtube: data.businesses.youtube,
       website: data.businesses.website,
       phone: data.businesses.phone,
+      addresses: data.businesses.addresses.map((a) => ({
+        county: a.county,
+        location: a.location,
+        maps: a.maps,
+        phone: a.phone,
+      })),
     },
   };
 

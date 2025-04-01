@@ -5,6 +5,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Share from "./Share";
 import Problem from "./Problem";
+import UserStats from "./UserStats";
+import Button, { ButtonVariants } from "./common/Button";
 
 export default function RewardBtn(props: { slug: string }) {
     const { user } = useUser();
@@ -79,16 +81,20 @@ export default function RewardBtn(props: { slug: string }) {
     if (showGetReward) {
         return (
             <>
-                <button onClick={handler} className={`mt-5 px-5 py-3 bg-regal-orange rounded-md text-white font-bold text-md cursor-pointer`}>Obtine recompensa</button>
+                <Button loading={loadingReq} onClick={handler} text="Obtine recompensa" variant={ButtonVariants.PRIMARY} />
                 {error &&
                     <div className="mt-2">
                         <Problem />
                     </div>
                 }
+                <UserStats slug={props.slug} />
             </>
         )
     }
     return (
-        <Share slug={props.slug} />
+        <>
+            <Share slug={props.slug} />
+            <UserStats slug={props.slug} />
+        </>
     )
 }

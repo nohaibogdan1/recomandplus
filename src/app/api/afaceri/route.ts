@@ -107,7 +107,6 @@ export async function POST(req: Request) {
   }
 
   const business = res.data[0] as DbBusiness;
-  let businessId = business?.id;
 
   addresses = addresses
     .map((a) => ({
@@ -129,7 +128,7 @@ export async function POST(req: Request) {
       instagram,
       is_online: isOnline,
       user_id: user.id,
-      id: businessId
+      id: business?.id
     },
     addresses_p: addresses
   });

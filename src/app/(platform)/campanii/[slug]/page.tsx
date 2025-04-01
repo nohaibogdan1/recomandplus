@@ -1,5 +1,4 @@
 import Reward from "@/components/Reward";
-import UserStats from "@/components/UserStats";
 import { CampaignRes } from "@/types/serverResponse";
 import Image from "next/image";
 import getLeftDays from "../components/getLeftDays";
@@ -31,7 +30,7 @@ export default async function CampaignPage({ params }: { params: Promise<{ slug:
       />
 
       <div className="md:max-w-2xl md:mx-auto">
-        <div className="w-full bg-white rounded-t-3xl h-8 relative -top-5 md:top-0 px-5 md:px-0 pt-5 md:h-auto ">
+        <div className="w-full bg-white rounded-t-3xl relative -top-5 md:top-0 px-5 md:px-0 pt-5 md:h-auto ">
           <div className="text-2xl text-center">{data.business.name}</div>
 
           <div className="flex gap-2 mt-2">
@@ -50,7 +49,19 @@ export default async function CampaignPage({ params }: { params: Promise<{ slug:
             </ul>
           </div>
 
-          <div className='flex gap-6 mt-5'>
+          <div className='flex gap-6 mt-5 mb-5'>
+            {data.business.website && <a href={data.business.website}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src="/globe.svg"
+                alt="Next.js logo"
+                width={25}
+                height={25}
+                priority
+              /></a>
+            }
             {data.business.facebook && <a href={data.business.facebook}
               target="_blank"
               rel="noopener noreferrer"
@@ -88,27 +99,66 @@ export default async function CampaignPage({ params }: { params: Promise<{ slug:
                 priority
               /></a>
             }
+
+            {data.business.youtube && < a href={data.business.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src="/youtube.svg"
+                alt="Next.js logo"
+                width={25}
+                height={25}
+                priority
+              /></a>
+            }
           </div>
 
-
           <Reward slug={slug} />
-          <UserStats slug={slug} />
 
           <div className="text-xl mt-6 text-center font-bold text-gray-600">Te asteapta urmatoarea recompensa</div>
 
           <div className="border-1 mt-5 border-gray-200" />
-          <div className="mt-5">{data.business.location}</div>
-          <a href={data.business.maps} className="flex gap-3 mt-4">
+
+          <div className="font-bold mt-4 flex gap-2">
             <Image
-              src="/gmaps.svg"
+              src="/phone-color.svg"
               alt="Next.js logo"
               width={20}
               height={20}
               priority
-            />
-            <div className="text-sm">Deschide in google maps</div>
-          </a>
-          <div className="mt-5">Tel: {data.business.phone}</div>
+            />Telefon: {data.business.phone}</div>
+
+          {!!data.business.addresses.length &&
+            <div className="flex flex-col gap-5 mt-4">
+              <h3 className="font-bold">Locatii</h3>
+              {data.business.addresses.map(a => (
+                <div key={a.location} className="flex flex-col gap-2">
+                  <span>Judetul {a.county}</span>
+                  <span>{a.location}</span>
+                  {a.maps &&
+                    <a href={a.maps} className="flex gap-2">
+                      <Image
+                        src="/gmaps.svg"
+                        alt="Next.js logo"
+                        width={20}
+                        height={20}
+                        priority
+                      />
+                      <div className="">Deschide in google maps</div>
+                    </a>
+                  }
+                  <div className="flex gap-2"><Image
+                    src="/phone-color.svg"
+                    alt="Next.js logo"
+                    width={20}
+                    height={20}
+                    priority
+                  />Telefon: {a.phone}</div>
+                </div>
+              ))}
+            </div>
+          }
         </div>
       </div>
     </>

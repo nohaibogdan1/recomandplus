@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, SyntheticEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import Problem from './Problem';
 import RewardsForm from './RewardsForm';
 import Button, { ButtonVariants } from './common/Button';

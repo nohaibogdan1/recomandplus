@@ -27,14 +27,13 @@ export type CampaignRes = {
     name: string;
     photo: string;
     phone: string;
-    county: string;
     isOnline: boolean;
-    location: string;
-    maps: string;
-    facebook: string | null;
-    instagram: string | null;
-    tiktok: string | null;
-    website: string | null;
+    facebook: string;
+    instagram: string;
+    tiktok: string;
+    youtube: string;
+    website: string;
+    addresses: Address[],
   };
 };
 

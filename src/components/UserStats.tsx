@@ -32,8 +32,6 @@ export default function UserStats(props: { slug: string }) {
     const rewardsGroup: Record<string, { count: number; options: string[] }> = {};
     const rewards = status.rewards;
 
-    console.log("rew", rewards)
-
     for (const r of rewards) {
         if (r.id in rewardsGroup) {
             rewardsGroup[r.id].count++;
