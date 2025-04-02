@@ -33,7 +33,7 @@ export type CampaignRes = {
     tiktok: string;
     youtube: string;
     website: string;
-    addresses: Address[],
+    addresses: Address[];
   };
 };
 
@@ -42,11 +42,11 @@ export type CreateCampaignRes = {
 };
 
 type Address = {
-  phone: string,
-  county: string,
-  location: string,
-  maps: string
-}
+  phone: string;
+  county: string;
+  location: string;
+  maps: string;
+};
 
 export type BusinessData = {
   name: string;
@@ -95,4 +95,8 @@ export type CampaignAnalyticsRes = {
   sales: number;
   rewards: number;
   advocates: number;
+}[];
+
+export type CampaignsSitemapRes = {
+  businessName: string;
 }[];
