@@ -1,4 +1,5 @@
 import Auth from "@/components/Auth";
+import { Metadata } from "next";
 import Image from "next/image";
 import { Suspense } from "react";
 
@@ -86,3 +87,9 @@ export default function LandingBusiness() {
         </div>
     )
 }
+
+
+export const metadata: Metadata = {
+    title: "RecomandPlus - Creste afacerea cu noi",
+    description: "Afacerea ta creste organic atunci cand clientii tai sunt fericiti",
+  };

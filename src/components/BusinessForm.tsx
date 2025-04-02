@@ -1,58 +1,13 @@
 
-import { useState, ChangeEvent, FormEvent, SyntheticEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, SyntheticEvent, useEffect } from 'react';
 import Image from 'next/image';
-// import { upload } from '@vercel/blob/client';
-// import useUser from '@/hooks/useUser';
-// import { createClient } from "@/utils/supabase/client";
+import { upload } from '@vercel/blob/client';
 import { BusinessData } from '@/types/serverResponse';
 import Problem from './Problem';
 import Button, { ButtonVariants } from './common/Button';
 import { pinkAsterisk, textInput } from './common/classes';
-
-const counties = ["Alba",
-  "Arad",
-  "Argeş",
-  "Bacău",
-  "Bihor",
-  "Bistriţa - Năsăud",
-  "Botoşani",
-  "Braşov",
-  "Brăila",
-  "Buzău",
-  "Caraş - Severin",
-  "Călăraşi",
-  "Cluj",
-  "Constanţa",
-  "Covasna",
-  "Dâmboviţa",
-  "Dolj",
-  "Galaţi",
-  "Giurgiu",
-  "Gorj",
-  "Harghita",
-  "Hunedoara",
-  "Ialomiţa",
-  "Iaşi",
-  "Ilfov",
-  "Maramureş",
-  "Mehedinţi",
-  "Mureş",
-  "Neamţ",
-  "Olt",
-  "Prahova",
-  "Satu Mare",
-  "Sălaj",
-  "Sibiu",
-  "Suceava",
-  "Teleorman",
-  "Timiş",
-  "Tulcea",
-  "Vaslui",
-  "Vâlcea",
-  "Vrancea",
-  "Bucuresti"
-];
-
+import { counties } from '@/consts';
+import useUser from '@/hooks/useUser';
 
 type Address = BusinessData["addresses"][0];
 
@@ -207,11 +162,13 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
 
   const [showAddressesForm, setShowAddressesForm] = useState(false);
 
+  const [photo, setPhoto] = useState<File>();
+
+  useEffect(() => { console.log("photo", photo) }, [photo])
+
   const [error, setError] = useState(false);
 
-  // const [_, setPhoto] = useState<string>('');
-
-  // const { user } = useUser();
+  const { user } = useUser();
 
   const [loading, setLoading] = useState(false);
 
@@ -228,7 +185,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
       reader.onloadend = () => {
         const result = reader.result as string;
         setPreview(result);
-        // setPhoto(result);
+        setPhoto(file);
       };
       reader.readAsDataURL(file);
     }
@@ -236,7 +193,6 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form data:', formData);
 
     if (loading) { return; }
 
@@ -253,28 +209,19 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
-
       if (response.ok) {
-        console.log("eee", result);
+        if (photo) {
+          await upload(`picture-business-${user!.id}`, photo, {
+            access: 'public',
+            handleUploadUrl: '/api/afaceri/upload',
+            contentType: photo.type
+          });
 
-        /*
+          await (async function(){
+            return new Promise((acc) => setTimeout(() => {acc(true)}, 1000));
+          })();
+        }
 
-        const newBlob = await upload(`picture-business-${user!.id}`, formData.photo, {
-          access: 'public',
-          handleUploadUrl: '/api/afaceri/upload',
-          clientPayload: JSON.stringify({ userId: user!.id, businessId: result.id })
-        });
-
-        // tempo
-        const supabase = createClient();
-        const { error } = await supabase.from("businesses").update({
-          photo: newBlob.url
-         }).eq('business_id', result.id);
-        // console.log("errr", error);
-
-*/
-        console.log('Business saved successfully:', result);
         updated();
       } else {
         if (response.status === 500) {
@@ -304,7 +251,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
 
         <span className={`font-medium ${pinkAsterisk}`}>Fotografie</span>
         <div className='h-50 max-w-100 md:w-80 border border-dashed border-gray-300 rounded-md flex flex-col justify-center items-center'>
-          <label htmlFor='bla' className={`block font-medium  border rounded border-gray-300 w-30 text-center py-1 cursor-pointer`}>
+          <label htmlFor='photo' className={`block font-medium  border rounded border-gray-300 w-30 text-center py-1 cursor-pointer`}>
             <div className="relative">
               <Image
                 src="/upload.svg"
@@ -317,7 +264,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
               Incarca
             </div>
           </label>
-          <input id="bla" type="file" accept="image/*" onChange={handlePhotoChange} className="w-1/3 border rounded border-gray-300 hidden" placeholder='sef' />
+          <input id="photo" type="file" accept="image/*" onChange={handlePhotoChange} className="w-1/3 border rounded border-gray-300 hidden" />
           <div className='w-50 h-20 text-center flex justify-center'>
             {!preview &&
               <div className='text-xs text-gray-500'>

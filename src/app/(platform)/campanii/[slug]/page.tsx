@@ -22,7 +22,7 @@ export default async function CampaignPage({ params }: { params: Promise<{ slug:
     <>
       <Image
         className="object-cover h-50 md:max-w-2xl md:rounded-xl md:mt-5 md:mx-auto md:h-60"
-        src={data.business.photo || "/florarie.jpeg"}
+        src={data.business.photo}
         alt="Next.js logo"
         width={1000}
         height={1000}

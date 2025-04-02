@@ -5,51 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { Params } from "./BusinessPagination";
-
-const countiesData = ["Alba",
-    "Arad",
-    "Argeş",
-    "Bacău",
-    "Bihor",
-    "Bistriţa - Năsăud",
-    "Botoşani",
-    "Braşov",
-    "Brăila",
-    "Buzău",
-    "Caraş - Severin",
-    "Călăraşi",
-    "Cluj",
-    "Constanţa",
-    "Covasna",
-    "Dâmboviţa",
-    "Dolj",
-    "Galaţi",
-    "Giurgiu",
-    "Gorj",
-    "Harghita",
-    "Hunedoara",
-    "Ialomiţa",
-    "Iaşi",
-    "Ilfov",
-    "Maramureş",
-    "Mehedinţi",
-    "Mureş",
-    "Neamţ",
-    "Olt",
-    "Prahova",
-    "Satu Mare",
-    "Sălaj",
-    "Sibiu",
-    "Suceava",
-    "Teleorman",
-    "Timiş",
-    "Tulcea",
-    "Vaslui",
-    "Vâlcea",
-    "Vrancea",
-    "Bucuresti"
-];
-
+import { counties } from "@/consts";
 
 export default function BusinessFilters({ params }: { params: Params }) {
     const [showFilter, setShowFilter] = useState(false);
@@ -114,7 +70,7 @@ function Filters({ showFilter, close, params }: { showFilter: boolean, close: ()
                     <span>Online</span>
                 </label>
                 <div className="border border-gray-200"></div>
-                {countiesData.map((option) => (
+                {counties.map((option) => (
                     <label key={option} className="flex items-center space-x-2">
                         <input
                             type="checkbox"

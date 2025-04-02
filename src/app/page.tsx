@@ -1,101 +1,88 @@
+import BusinessFilters from "@/components/BusinessFilters";
+import BusinessPagination from "@/components/BusinessPagination";
+import { CampaignsRes } from "@/types/serverResponse";
 import Image from "next/image";
+import Problem from "@/components/Problem";
+import Empty from "@/components/Empty";
+import getLeftDays from "./(platform)/campanii/components/getLeftDays";
 
-export default function Home() {
+function CampaignBox(props: { image: string, name: string, rewards: string[], endAt: string }) {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <a href={`/campanii/${encodeURIComponent(props.name)}`} className="p-3 bg-white rounded-md w-xs lg:w-[calc(33.333%-12px)] hover:shadow-2xl cursor-pointer">
+      <Image
+        className="rounded-md object-cover h-34 lg:h-45"
+        src={props.image}
+        alt="Next.js logo"
+        width={1000}
+        height={1000}
+        priority
+      />
+      <div className="mt-2 text-lg font-bold">{props.name}</div>
+      <ul className="mt-1 flex flex-col gap-2">
+        {props.rewards.map(o => <li key={o}>{o}</li>)}
+      </ul>
+      <div className="flex gap-2 mt-2">
         <Image
-          src="/next.svg"
+          src="/clock.svg"
           alt="Next.js logo"
-          width={180}
-          height={38}
+          width={20}
+          height={20}
           priority
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+        <span>{getLeftDays(props.endAt)}</span>
+      </div>
+    </a>
+  )
+};
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default async function CampaignsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string }> }) {
+  const params = await searchParams;
+  const { counties, p, online } = params;
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campanii?counties=${counties || ""}&online=${online || ""}&p=${p || ""}`, {
+    cache: "no-store",
+  });
+
+  const data: CampaignsRes = await res.json();
+  let error = false;
+
+  if (!res.ok) {
+    error = true;
+  }
+
+  return (
+    <>
+      <div className="flex flex-col gap-3 bg-neutral-100 pt-5 px-4 min-h-[80vh]">
+        <div className="w-xs lg:w-full max-w-5xl mx-auto">
+          <BusinessFilters params={{ counties, p, online }} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
-}
+
+        {error && <Problem />}
+
+        {!error &&
+          <div className="flex py-2 gap-4 flex-wrap w-full max-w-5xl mx-auto justify-center md:justify-start">
+            {data.campaigns.map(c =>
+              <CampaignBox
+                key={c.id}
+                image={c.business.photo}
+                name={c.business.name}
+                rewards={c.rewards}
+                endAt={c.endAt} />
+            )}
+          </div>}
+
+        {!error && !data.campaigns.length && <Empty />}
+
+        <div className="w-full md:max-w-5xl mx-auto">
+          {!error && data.pagination.hasNextPage &&
+            <BusinessPagination
+              params={{ counties, p, online }}
+              pagination={data.pagination}
+            />
+          }
+        </div>
+      </div>
+    </>
+
+  )
+};
+
