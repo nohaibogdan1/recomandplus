@@ -19,7 +19,7 @@ export async function login({
   const { data, error } = await supabase.auth.signInWithOtp({
     email: formData.get("email") as string,
     options: {
-      emailRedirectTo: red ? `${process.env.NEXT_PUBLIC_API_URL}/${red}` : `${process.env.NEXT_PUBLIC_API_URL}/campanii`,
+      emailRedirectTo: red ? `${process.env.NEXT_PUBLIC_API_URL}/${red}` : `${process.env.NEXT_PUBLIC_API_URL}/`,
     },
   });
 

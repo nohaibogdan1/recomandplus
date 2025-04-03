@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { login } from "@/app/(platform)/login/actions";
 import Problem from "./Problem";
 import Button, { ButtonVariants } from "./common/Button";
+import Link from "next/link";
 
 export default function Auth(props: { withBorder?: boolean }) {
     const [error, setError] = useState(false);
@@ -56,7 +57,9 @@ export default function Auth(props: { withBorder?: boolean }) {
                             text="Creeaza un cont" />
                     </div>
 
-                    <div className="text-gray-500 text-sm text-center w-5/6 mt-4">Înregistrându-vă sunteți de acord cu condițiile de utilizare și cu prelucrarea datelor cu caracter personal.</div>
+                    <div className="text-gray-500 text-sm text-center w-5/6 mt-4">
+                        <p>Prin apăsarea butonului &quot;Conecteaza-te&quot; sau a butonului &quot;Creeaza un cont&quot;, acceptați <Link href={"/termeni-si-conditii"}><b>Termenii și Condițiile</b> </Link> și sunteți de acord ca, în cazul în care nu aveți deja un cont pe platformă, să fiți înregistrat automat folosind datele de autentificare.</p>
+                    </div>
                 </div>
             </form>
         </div>

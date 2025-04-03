@@ -51,7 +51,10 @@ export default async function CampaignsPage({ searchParams }: { searchParams: Pr
 
   return (
     <>
+      <div className="bg-regal-orange text-white font-bold text-md text-center py-1.5">Recomanda si castiga!</div>
+
       <div className="flex flex-col gap-3 bg-neutral-100 pt-5 px-4 min-h-[80vh]">
+
         <div className="w-xs lg:w-full max-w-5xl mx-auto">
           <BusinessFilters params={{ counties, p, online }} />
         </div>

@@ -37,6 +37,7 @@ export default function RootLayout({
             <Link href="/"><div className="font-extrabold text-2xl text-regal-orange-dark cursor-pointer">RecomandPlus</div></Link>
             <HeaderAccount />
           </div>
+
         </div>
 
         <div className="min-h-180">
@@ -48,20 +49,20 @@ export default function RootLayout({
 
             <div className='w-50 flex flex-col gap-2'>
               <span className="text-md">Harta site</span>
-              <Link href="/landing-business" className='text-sm cursor-pointer'>Am afacere</Link>
-              <Link href="/landing-advocate" className='text-sm cursor-pointer'>Vreau recompense</Link>
-              <Link href="/login" className='text-sm cursor-pointer'>Inregistrare / conectare</Link>
-              <Link href="/profil" className='text-sm cursor-pointer'>Profil</Link>
-              <Link href="/" className='text-sm cursor-pointer'>Exploreaza</Link>
+              <Link href="/landing-business" className='text-sm cursor-pointer size-fit'>Am afacere</Link>
+              <Link href="/landing-advocate" className='text-sm cursor-pointer size-fit'>Vreau recompense</Link>
+              <Link href="/login" className='text-sm cursor-pointer size-fit'>Inregistrare / conectare</Link>
+              <Link href="/profil" className='text-sm cursor-pointer size-fit'>Profil</Link>
+              <Link href="/" className='text-sm cursor-pointer size-fit'>Exploreaza</Link>
             </div>
 
             <div className='w-50 flex flex-col gap-2'>
               <span className="text-md ">RecomandPlus</span>
-              <Link href="/intrebari-frecvente" className='text-sm cursor-pointer'>Cele mai frecvente intrebari</Link>
-              {/* <Link className=' text-sm cursor-pointer'>Termeni de utilizare</Link> */}
-              <Link href="/politica-confidentialitate" className=' text-sm cursor-pointer'>Politica de confidentialitate</Link>
-              <Link href="/cookies" className='text-sm cursor-pointer'>Cookies</Link>
-              <a className=' text-sm cursor-pointer'>ANPC</a>
+              <Link href="/intrebari-frecvente" className='text-sm cursor-pointer size-fit'>Cele mai frecvente intrebari</Link>
+              <Link href="/termeni-si-conditii" className=' text-sm cursor-pointer size-fit'>Termeni si Conditii</Link>
+              <Link href="/politica-confidentialitate" className=' text-sm cursor-pointer size-fit'>Politica de confidentialitate</Link>
+              <Link href="/cookies" className='text-sm cursor-pointer size-fit'>Cookies</Link>
+              <a href="https://anpc.ro/" className=' text-sm cursor-pointer size-fit'>ANPC</a>
             </div>
 
             <div className="text-lg font-bold">Cum te putem ajuta? <span className="text-regal-orange underline">recommandplus@gmail.com</span></div>
