@@ -11,14 +11,14 @@ question: "Cum pot folosi o recompensă?", answer: "După ce o recompensă este 
 }, {
     question: "Pot face mai multe recomandări?", answer: "Da! Poți recomanda oricâte afaceri dorești și poți acumula recompense din fiecare recomandare validată.",
 }, {
-    question: "Există un termen de valabilitate pentru recomandări?", answer: "Da, în general recomandările sunt valabile 30 de zile din momentul trimiterii."
+    question: "Există un termen de valabilitate pentru recomandări?", answer: "Nu, atât timp cât campania este în desfășurare."
 }, {
     question: "Trebuie să plătesc pentru a folosi platforma?", answer: "Nu. Platforma este gratuită pentru utilizatori."
 }];
 
 const businessQuestions = [{
     question: "Cum mă înregistrez ca afacere?",
-    answer: "Accesează platforma, alege pachetul dorit și completează formularul de înregistrare."
+    answer: "Accesează platforma, și contactează-ne pentru a trece printr-un proces de validare."
 }, {
     question: "Cum funcționează sistemul de recomandări?",
     answer: "Utilizatorii pot recomanda afacerea ta. Când o persoană nouă ajunge printr-o recomandare și achiziționează serviciul, recomandatorul primește o recompensă."
@@ -27,7 +27,7 @@ const businessQuestions = [{
     answer: "Tu, ca afacere, îți alegi tipurile de recompense pe care dorești să le oferi. Acestea trebuie să fie clare și atractive."
 }, {
     question: "Pot modifica recompensele după publicare?",
-    answer: "Da, dar modificările vor intra în vigoare doar pentru utilizatorii care încă nu au primit confirmarea utilizării recompensei."
+    answer: "Da, dar modificările vor intra în vigoare doar pentru utilizatorii care vor primi recompense din acel momente. Utilizatorii care au recompense dinaintea modificării vor folosi acele recompense."
 }, {
     question: "Cum sunt validate recomandările?",
     answer: "Recomandările sunt validate când o persoană nouă achiziționează efectiv un serviciu, iar tu confirmi acest lucru din contul de afacere."
@@ -38,8 +38,8 @@ const businessQuestions = [{
     question: "Ce se întâmplă dacă nu respect regulamentul?",
     answer: "Poți primi avertismente sau, în cazuri grave, contul tău poate fi suspendat."
 }, {
-    question: "Plătesc doar dacă primesc clienți?",
-    answer: "Nu. Plata se face indiferent de numărul de recomandări sau clienți, iar platforma nu garantează un minim de trafic."
+    question: "Primesc în mod obligatoriu un anumit număr de clienți?",
+    answer: "Nu. Platforma nu garantează un număr minim de clienți."
 }]
 
 

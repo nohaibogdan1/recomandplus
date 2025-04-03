@@ -91,7 +91,7 @@ function Addresses({
         </div>
 
         <div>
-          <label className="block font-medium">Locatie google maps (optional)</label>
+          <label className="block font-medium">Locatie google maps (opțional)</label>
 
           <div className='relative'>
             <Image
@@ -317,7 +317,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         <h4 className='font-bold'>Social media</h4>
 
         <div>
-          <label className="block font-medium">Link catre website (optional)</label>
+          <label className="block font-medium">Link către website (opțional)</label>
           <div className='relative'>
             <Image
               src="/globe.svg"
@@ -332,7 +332,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         </div>
 
         <div>
-          <label className="block font-medium">Facebook (optional)</label>
+          <label className="block font-medium">Facebook (opțional)</label>
           <div className='relative'>
             <Image
               src="/facebook-gray.svg"
@@ -347,7 +347,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         </div>
 
         <div>
-          <label className="block font-medium">Instagram (optional)</label>
+          <label className="block font-medium">Instagram (opțional)</label>
           <div className='relative'>
             <Image
               src="/instagram-gray.svg"
@@ -362,7 +362,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         </div>
 
         <div>
-          <label className="block font-medium">Tiktok (optional)</label>
+          <label className="block font-medium">Tiktok (opțional)</label>
           <div className='relative'>
             <Image
               src="/tiktok-gray.svg"
@@ -377,7 +377,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         </div>
 
         <div>
-          <label className="block font-medium">Youtube (optional)</label>
+          <label className="block font-medium">Youtube (opțional)</label>
           <div className='relative'>
             <Image
               src="/youtube-gray.svg"

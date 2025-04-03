@@ -65,7 +65,7 @@ export default function CampaignStatistics({ id }: { id: string }) {
             <thead className="sticky top-0 z-2">
               <tr>
                 <th className="sticky left-0 p-2 z-1 bg-white text-center align-baseline">Data</th>
-                <th className=" p-2 text-center text-center bg-white align-baseline">Vanzari</th>
+                <th className=" p-2 text-center text-center bg-white align-baseline">Vânzări</th>
                 <th className=" p-2 text-center text-center bg-white align-baseline">Recompense noi</th>
                 <th className=" p-2 text-center text-center bg-white align-baseline">Recomandatori</th>
               </tr>

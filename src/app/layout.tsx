@@ -51,16 +51,16 @@ export default function RootLayout({
               <span className="text-md">Harta site</span>
               <Link href="/landing-business" className='text-sm cursor-pointer size-fit'>Am afacere</Link>
               <Link href="/landing-advocate" className='text-sm cursor-pointer size-fit'>Vreau recompense</Link>
-              <Link href="/login" className='text-sm cursor-pointer size-fit'>Inregistrare / conectare</Link>
+              <Link href="/login" className='text-sm cursor-pointer size-fit'>Înregistrare / conectare</Link>
               <Link href="/profil" className='text-sm cursor-pointer size-fit'>Profil</Link>
-              <Link href="/" className='text-sm cursor-pointer size-fit'>Exploreaza</Link>
+              <Link href="/" className='text-sm cursor-pointer size-fit'>Explorează</Link>
             </div>
 
             <div className='w-50 flex flex-col gap-2'>
               <span className="text-md ">RecomandPlus</span>
-              <Link href="/intrebari-frecvente" className='text-sm cursor-pointer size-fit'>Cele mai frecvente intrebari</Link>
-              <Link href="/termeni-si-conditii" className=' text-sm cursor-pointer size-fit'>Termeni si Conditii</Link>
-              <Link href="/politica-confidentialitate" className=' text-sm cursor-pointer size-fit'>Politica de confidentialitate</Link>
+              <Link href="/intrebari-frecvente" className='text-sm cursor-pointer size-fit'>Cele mai frecvente întrebări</Link>
+              <Link href="/termeni-si-conditii" className=' text-sm cursor-pointer size-fit'>Termeni și Condiții</Link>
+              <Link href="/politica-confidentialitate" className=' text-sm cursor-pointer size-fit'>Politica de confidențialitate</Link>
               <Link href="/cookies" className='text-sm cursor-pointer size-fit'>Cookies</Link>
               <a href="https://anpc.ro/" className=' text-sm cursor-pointer size-fit'>ANPC</a>
             </div>

@@ -11,7 +11,7 @@ export default function ProfileCurrentCampaign({
 }: {
     refetch: () => void,
     businessName: string,
-    campaign: Required<BusinessOwnerRes>["campaign"]
+    campaign: Required<Required<BusinessOwnerRes>["business"]>["campaign"]
 }) {
     const [showChangeReward, setShowChangeReward] = useState(false);
 
@@ -28,14 +28,14 @@ export default function ProfileCurrentCampaign({
                 <a className="text-sm text-blue-600" href={`/campanii/${encodeURIComponent(businessName)}`}>Link catre pagina campaniei tale</a>
                 <span className="text-gray-600 font-bold">{dateFormat.format(new Date(campaign.startAt))} - {dateFormat.format(new Date(campaign.endAt))}</span>
                 <CampaignStatistics id={campaign.id}/>
-                <span className="text-sm font-bold mt-3">Recompensa curenta</span>
+                <span className="text-sm font-bold mt-3">Recompensa curentă</span>
                 <span className="text-gray-600 font-bold">{dateFormat.format(new Date(campaign.rewards[0].createdAt))}</span>
                 <ul>
                     {campaign.rewards[0].options.map(o =>
                         <li key={o} className="text-sm">{o}</li>
                     )}
                 </ul>
-                <Button onClick={() => setShowChangeReward(true)} text="Schimba recompensa"/>
+                <Button onClick={() => setShowChangeReward(true)} text="Schimbă recompensa"/>
                 {showChangeReward && <ChangeRewardForm changed={() => { setShowChangeReward(false); refetch(); }} />}
 
                 {campaign.rewards.length > 1 &&

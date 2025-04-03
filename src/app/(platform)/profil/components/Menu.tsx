@@ -7,7 +7,7 @@ export default function Menu({ menu, setMenu }: { menu: number, setMenu: (o: num
             <div className="flex mt-10 gap-10 md:gap-30 max-w-2xl">
                 <div className="hidden md:flex flex-col w-45 gap-10">
                     <div className={`cursor-pointer ${menu === 0 && 'font-bold'}`}
-                        onClick={() => setMenu(0)}>Recomandari</div>
+                        onClick={() => setMenu(0)}>Recomandări</div>
                     <div className={`cursor-pointer ${menu === 1 && 'font-bold'}`}
                         onClick={() => setMenu(1)}>Afacere</div>
                     <div className={`cursor-pointer ${menu === 2 && 'font-bold'}`}
@@ -22,7 +22,7 @@ export default function Menu({ menu, setMenu }: { menu: number, setMenu: (o: num
                             width={15}
                             height={15}
                             priority />
-                        <span className="text-xs text-wrap">Exploreaza</span>
+                        <span className="text-xs text-wrap">Explorează</span>
                     </Link>
                     <div className="cursor-pointer py-3  items-center flex flex-col  justify-center text-center gap-1 font-light  flex-1"
                         onClick={() => setMenu(1)}>
@@ -42,7 +42,7 @@ export default function Menu({ menu, setMenu }: { menu: number, setMenu: (o: num
                             width={15}
                             height={15}
                             priority />
-                        <span className={`text-xs text-wrap ${menu === 0 && 'font-bold'}`}>Recomandari</span>
+                        <span className={`text-xs text-wrap ${menu === 0 && 'font-bold'}`}>Recomandări</span>
                     </div>
                     <div className="cursor-pointer py-3  items-center flex flex-col  justify-center text-center gap-1 font-light  flex-1"
                         onClick={() => setMenu(2)}>

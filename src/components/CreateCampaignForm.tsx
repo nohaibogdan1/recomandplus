@@ -59,7 +59,7 @@ export default function CreateCampaignForm(props: { created: () => void }) {
   return (
     <div className="rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] w-full">
       <div className="bg-white p-8 rounded-lg w-96">
-        <div className='mb-4 font-bold'>Incepe o noua campanie de promovare pentru a atrage mai multe clienti</div>
+        <div className='mb-4 font-bold'>Începe o nouă campanie de promovare pentru a atrage mai multe clienți</div>
         <form onSubmit={handleSubmit} >
           <div className="mb-4">
             <label htmlFor="months" className="block text-sm font-medium text-gray-700">

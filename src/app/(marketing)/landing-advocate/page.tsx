@@ -55,7 +55,7 @@ export default function LandingAdvocate() {
                 <div className="flex flex-col">
                     <div className="flex w-full justify-start bg-regal-orange text-white text-2xl md:text-3xl leading-9 px-5 py-10 mt-3">
                         <div className="w-full lg:w-5xl mx-auto">
-                            <div className="max-w-lg"><b>Recomandă și Câștigă Reduceri </b> la Afacerile Tale Favorite! </div></div>
+                            <div className="max-w-lg"><b>Recomandă și Câștigă Reduceri </b></div></div>
                     </div>
                     <div className="flex flex-col lg:flex-row justify-between w-full max-w-5xl mx-auto">
                         <div className="flex flex-col md:flex-row lg:flex-col items-center justify-center align-center">
@@ -81,12 +81,12 @@ export default function LandingAdvocate() {
 
                     <div className="border mt-10 mx-5 border-gray-300 w-full max-w-5xl mx-auto"></div>
                     <div className="mt-10 px-5 md:px-10 lg:px-0 flex flex-col md:px-10 w-full max-w-5xl mx-auto">
-                        <div className="font-bold text-2xl">Cum functioneaza ?</div>
+                        <div className="font-bold text-2xl">Cum funcționează ?</div>
                         <div className="flex flex-col gap-4 mt-5">
                             <NumericalReason count="1" title="Alege o afacere locală" text="Descoperă magazine, saloane, restaurante și multe altele." />
                             <NumericalReason count="2" title="Recomandă unui prieten" text="Trimite un link unic de recomandare." />
                             <NumericalReason count="3" title="Prietenul tău folosește serviciul" text="Când finalizează o achiziție, tu primești o reducere." />
-                            <NumericalReason count="4" title="Bucură-te de recompensa ta!" text="Folosește reducerea la afacerile preferate din oraș." />
+                            <NumericalReason count="4" title="Bucură-te de recompensa ta!" text="Folosește reducerea." />
                         </div>
                     </div>
                     <div className="mt-10 py-10 px-5 md:px-10 bg-regal-orange text-white">

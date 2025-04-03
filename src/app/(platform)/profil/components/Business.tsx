@@ -23,11 +23,11 @@ export default function Business({ businessData, refetch, error }: { businessDat
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      {!validBusinessOwner && <div>Contacteaza-ne la adresa de email nohai.ionut02@gmail.com pentru a iti inscrie afacerea</div>}
+      {!validBusinessOwner && <div>Contactează-ne la adresa de email nohai.ionut02@gmail.com pentru a îți înscrie afacerea</div>}
       {error && <Problem />}
       {!error && validBusinessOwner &&
         <>
-          {!business && <Button onClick={() => setShowUpdateBusiness(true)} text="Adauga afacerea" />}
+          {!business && <Button onClick={() => setShowUpdateBusiness(true)} text="Adaugă afacerea" />}
           {business && !showBusiness && <Button onClick={() => setShowBusiness(true)} text="Vezi afacerea" />}
 
           {business && showBusiness &&
@@ -136,12 +136,12 @@ export default function Business({ businessData, refetch, error }: { businessDat
 
 
                 <div>
-                  <h4 className="font-bold">Locatii fizice</h4>
+                  <h4 className="font-bold">Locații fizice</h4>
                   <div className="flex flex-col gap-5">
                     {business.addresses.map(a =>
                       <div key={a.location} className="flex flex-col gap-2 rounded-lg border border-3 border-gray-100 p-5">
                         <span>Telefon: {a.phone}</span>
-                        <span>Judetul: {a.county}</span>
+                        <span>Județul: {a.county}</span>
                         <span>Adresa: {a.location}</span>
                         {a.maps &&
                           <a href={a.maps}
@@ -164,7 +164,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
                   </div>
                 </div>
 
-                {!showUpdateBusiness && <Button onClick={() => { setShowUpdateBusiness(true); }} text="Modifica" />}
+                {!showUpdateBusiness && <Button onClick={() => { setShowUpdateBusiness(true); }} text="Modifică" />}
               </div>
             </>
           }
@@ -187,7 +187,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
           {business && <>
             <div className='font-bold mt-5'>Campania mea</div>
             {!business.campaign && <>
-              <Button onClick={() => setShowCreateCampaign(true)} text="Creaza campanie" />
+              <Button onClick={() => setShowCreateCampaign(true)} text="Creează campanie" />
               {showCreateCampaign && <CreateCampaignForm created={createdCampaignHandler} />}
             </>
             }
