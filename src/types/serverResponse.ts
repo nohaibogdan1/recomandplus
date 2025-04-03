@@ -61,16 +61,19 @@ export type BusinessData = {
   addresses: Address[];
 };
 
-export type BusinessOwnerRes = BusinessData & {
-  campaign?: {
-    id: string;
-    startAt: string;
-    endAt: string;
-    rewards: {
+export type BusinessOwnerRes = {
+  validBusinessOwner?: boolean;
+  business?: BusinessData & {
+    campaign?: {
       id: string;
-      options: string[];
-      createdAt: string;
-    }[];
+      startAt: string;
+      endAt: string;
+      rewards: {
+        id: string;
+        options: string[];
+        createdAt: string;
+      }[];
+    };
   };
 };
 

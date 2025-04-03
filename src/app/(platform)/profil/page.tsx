@@ -42,7 +42,7 @@ export default function ProfilePage() {
     }, [user]);
 
     useEffect(() => {
-        if (business) {
+        if (business?.business) {
             setMenu(1);
         }
     }, [business])
@@ -62,7 +62,7 @@ export default function ProfilePage() {
                 <Menu menu={menu} setMenu={(o: number) => { setMenu(o); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
                 <div className="w-full">
                     {menu === 0 && <Recommendations />}
-                    {menu === 1 && <Business business={business} refetch={() => fetchBusiness()} error={error} />}
+                    {menu === 1 && <Business businessData={business} refetch={() => fetchBusiness()} error={error} />}
                     {menu === 2 && <MyAccount />}
                 </div>
             </div>

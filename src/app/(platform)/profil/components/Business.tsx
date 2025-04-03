@@ -8,10 +8,13 @@ import BusinessForm from "@/components/BusinessForm";
 import ProfileCurrentCampaign from "@/components/ProfileCurrentCampaign";
 import Button from "@/components/common/Button";
 
-export default function Business({ business, refetch, error }: { business?: BusinessOwnerRes, refetch: () => void, error: boolean }) {
+export default function Business({ businessData, refetch, error }: { businessData?: BusinessOwnerRes, refetch: () => void, error: boolean }) {
   const [showCreateCampaign, setShowCreateCampaign] = useState(false);
   const [showUpdateBusiness, setShowUpdateBusiness] = useState(false);
   const [showBusiness, setShowBusiness] = useState(false);
+
+  const business = businessData?.business;
+  const validBusinessOwner = businessData?.validBusinessOwner;
 
   function createdCampaignHandler() {
     setShowCreateCampaign(false);
@@ -20,8 +23,9 @@ export default function Business({ business, refetch, error }: { business?: Busi
 
   return (
     <div className="flex flex-col gap-4 w-full">
+      {!validBusinessOwner && <div>Contacteaza-ne la adresa de email nohai.ionut02@gmail.com pentru a iti inscrie afacerea</div>}
       {error && <Problem />}
-      {!error &&
+      {!error && validBusinessOwner &&
         <>
           {!business && <Button onClick={() => setShowUpdateBusiness(true)} text="Adauga afacerea" />}
           {business && !showBusiness && <Button onClick={() => setShowBusiness(true)} text="Vezi afacerea" />}

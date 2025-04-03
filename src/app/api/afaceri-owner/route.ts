@@ -44,11 +44,27 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  let res = null;
+
+  res = await supabase
+    .from("users")
+    .select("allowed_business")
+    .eq("auth_user_id", user.id)
+    .eq("allowed_business", true);
+
+  if (res.error) {
+    console.error("Error check allow businesse creation:  ", res.error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+
+  if (!res.data.length) {
+    return NextResponse.json({ validBusinessOwner: false } as BusinessOwnerRes);
+  }
+
   const check = new Date();
   check.setUTCDate(check.getUTCDate());
   check.setUTCHours(0, 0, 0, 0);
 
-  let res = null;
   res = await supabase
     .from("businesses")
     .select("*, campaigns(*, campaigns_rewards(*)), addresses(*)")
@@ -62,10 +78,8 @@ export async function GET() {
 
   const business = res.data[0] as DbBusiness;
 
-  console.log("\n\n business", business, "\n\n");
-
   if (!business) {
-    return NextResponse.json({ error: "Not Found" }, { status: 404 });
+    return NextResponse.json({ validBusinessOwner: true } as BusinessOwnerRes);
   }
 
   const campaign = business.campaigns[0];
@@ -84,35 +98,38 @@ export async function GET() {
       return {
         id: r.id,
         options,
-        createdAt: r.created_at
+        createdAt: r.created_at,
       };
     });
   }
 
   const mapped: BusinessOwnerRes = {
-    name: business.name,
-    photo: business.photo,
-    phone: business.phone,
-    isOnline: business.is_online,
-    facebook: business.facebook,
-    youtube: business.youtube,
-    instagram: business.instagram,
-    tiktok: business.tiktok,
-    website: business.website,
-    addresses: business.addresses.map(a => ({
-      location: a.location,
-      county: a.county,
-      phone: a.phone,
-      maps: a.maps
-    })),
-    ...(business.campaigns[0] && {
-      campaign: {
-        id: business.campaigns[0].id,
-        startAt: business.campaigns[0].start_at,
-        endAt: business.campaigns[0].end_at,
-        rewards: rewards!,
-      },
-    }),
+    validBusinessOwner: true,
+    business: {
+      name: business.name,
+      photo: business.photo,
+      phone: business.phone,
+      isOnline: business.is_online,
+      facebook: business.facebook,
+      youtube: business.youtube,
+      instagram: business.instagram,
+      tiktok: business.tiktok,
+      website: business.website,
+      addresses: business.addresses.map((a) => ({
+        location: a.location,
+        county: a.county,
+        phone: a.phone,
+        maps: a.maps,
+      })),
+      ...(business.campaigns[0] && {
+        campaign: {
+          id: business.campaigns[0].id,
+          startAt: business.campaigns[0].start_at,
+          endAt: business.campaigns[0].end_at,
+          rewards: rewards!,
+        },
+      }),
+    },
   };
 
   return NextResponse.json(mapped);

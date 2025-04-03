@@ -72,6 +72,23 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  let res = null;
+
+  res = await supabase
+    .from("users")
+    .select("allowed_business")
+    .eq("auth_user_id", user.id)
+    .eq("allowed_business", true);
+
+  if (res.error) {
+    console.error("Error check allow businesse creation:  ", res.error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+
+  if (!res.data?.length) {
+    return NextResponse.json({ error: "Cannot allow business" }, { status: 403 });
+  }
+  
   const payload = (await req.json()) as BusinessData;
 
   let {
@@ -99,7 +116,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Parameters missing" }, { status: 400 });
   }
 
-  let res = null;
   res = await supabase.from("businesses").select("*").eq("user_id", user.id);
   if (res.error) {
     console.error("Error businesses ", res.error);
@@ -128,9 +144,9 @@ export async function POST(req: Request) {
       instagram,
       is_online: isOnline,
       user_id: user.id,
-      id: business?.id
+      id: business?.id,
     },
-    addresses_p: addresses
+    addresses_p: addresses,
   });
 
   if (res.error) {
