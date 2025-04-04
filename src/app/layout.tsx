@@ -65,7 +65,7 @@ export default function RootLayout({
               <a href="https://anpc.ro/" className=' text-sm cursor-pointer size-fit'>ANPC</a>
             </div>
 
-            <div className="text-lg font-bold">Cum te putem ajuta? <span className="text-regal-orange underline">recommandplus@gmail.com</span></div>
+            <div className="text-lg font-bold">Cum te putem ajuta? <span className="text-regal-orange underline">client@recomandplus.ro</span></div>
           </div>
         </footer>
       </body>

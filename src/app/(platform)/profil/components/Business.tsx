@@ -23,7 +23,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      {!validBusinessOwner && <div>Contactează-ne la adresa de email nohai.ionut02@gmail.com pentru a îți înscrie afacerea</div>}
+      {!validBusinessOwner && <div>Contactează-ne la adresa de email client@recomandplus.ro sau la tel 0755378352 pentru a îți înscrie afacerea</div>}
       {error && <Problem />}
       {!error && validBusinessOwner &&
         <>
