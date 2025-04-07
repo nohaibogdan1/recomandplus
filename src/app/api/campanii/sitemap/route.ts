@@ -17,7 +17,7 @@ export async function GET() {
 
   const res = await supabase
     .from("campaigns")
-    .select("end_at, businesses(name)")
+    .select("end_at, businesses!inner(name)")
     .gte("end_at", check.toISOString());
 
   if (res.error) {

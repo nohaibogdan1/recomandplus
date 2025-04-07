@@ -92,4 +92,15 @@ export default function LandingBusiness() {
 export const metadata: Metadata = {
     title: "Recomand Plus - Crește-ți afacerea și oferă clienților reduceri",
     description: "Afacerea ta crește organic atunci cand clienții tăi sunt fericiți",
-  };
+    openGraph: {
+        title: "Recomand Plus - Crește-ți afacerea și oferă clienților reduceri",
+        description: "Afacerea ta crește organic atunci cand clienții tăi sunt fericiți",
+        images: [`${process.env.NEXT_PUBLIC_API_URL}/preview-main.png`],
+        type: "website",
+      },
+      twitter: {
+        title:  "Recomand Plus - Crește-ți afacerea și oferă clienților reduceri",
+        description:  "Afacerea ta crește organic atunci cand clienții tăi sunt fericiți",
+        images: [`${process.env.NEXT_PUBLIC_API_URL}/preview-main.png`],
+      } 
+};

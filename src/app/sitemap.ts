@@ -4,7 +4,7 @@ import { MetadataRoute } from "next";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   console.log("sitemap", process.env.NEXT_PUBLIC_API_URL);
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "https://www.recomandplus.vercel.app";
+    process.env.NEXT_PUBLIC_API_URL || "https://www.recomandplus.ro";
 
   const res = await fetch(`${baseUrl}/api/campanii/sitemap`, {
     cache: "no-store",
@@ -22,8 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/politica-confidentialitate` },
 
     ...campaigns.map((c) => ({
-      url: `${baseUrl}/campaigns/${encodeURIComponent(c.businessName)}`,
-      lastModified: new Date().toISOString(),
+      url: `${baseUrl}/campanii/${encodeURIComponent(c.businessName)}`
     })),
   ];
 }

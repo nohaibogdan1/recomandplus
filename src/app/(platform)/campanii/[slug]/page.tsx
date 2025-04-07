@@ -1,11 +1,49 @@
+import type { Metadata } from 'next';
 import Reward from "@/components/Reward";
 import { CampaignRes } from "@/types/serverResponse";
 import Image from "next/image";
 import getLeftDays from "../components/getLeftDays";
 import Problem from "@/components/Problem";
 
+type Props = { params: Promise<{ slug: string }> };
 
-export default async function CampaignPage({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata(
+  { params }: Props,
+  // parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { slug } = await params;
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campanii/${slug}`, {
+    cache: "no-store",
+  });
+
+  const data: CampaignRes = await res.json();
+
+  if (!res.ok) {
+    return {};
+  }
+
+  const text = `${data.business.name} - ${data.reward.join(" . ")} - recomandplus.ro`;
+
+  return {
+    title: text,
+    description: `Recomandă ${data.business.name} și te bucuri de recompense`,
+    openGraph: {
+      title: text,
+      description: `Recomandă ${data.business.name} și te bucuri de recompense`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}/campanii/${slug}`,
+      images: [data.business.photo],
+      type: "website",
+    },
+    twitter: {
+      title: text,
+      description: `Recomandă ${data.business.name} și te bucuri de recompense`,
+      images: [data.business.photo],
+    }
+  }
+}
+
+export default async function CampaignPage({ params }: Props) {
   const { slug } = await params;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campanii/${slug}`, {

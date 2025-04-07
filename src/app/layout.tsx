@@ -16,11 +16,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Recomand Plus - Profită de reduceri exclusive",
-  description: "Recomandă locul tău favorit prietenilor și primește recompense",
-  verification: {
-    google: "Pa8vMU7Skw15fwUICROFo9w_XpumOkOMdcKDo0brKEw"
+  description: "Recomandă locul tău favorit prietenilor și primește un cadou",
+  openGraph: {
+    title: "Recomand Plus - Profită de reduceri exclusive",
+    description: "Recomandă locul tău favorit prietenilor și primește un cadou",
+    images: [`${process.env.NEXT_PUBLIC_API_URL}/preview-main.png`],
+    type: "website",
+  },
+  twitter: {
+    title: "Recomand Plus - Profită de reduceri exclusive",
+    description: "Recomandă locul tău favorit prietenilor și primește un cadou",
+    images: [`${process.env.NEXT_PUBLIC_API_URL}/preview-main.png`],
   }
 };
+
+
 
 export default function RootLayout({
   children,
