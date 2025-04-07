@@ -8,7 +8,7 @@ import getLeftDays from "./(platform)/campanii/components/getLeftDays";
 
 function CampaignBox(props: { image: string, name: string, rewards: string[], endAt: string }) {
   return (
-    <a href={`/campanii/${encodeURIComponent(props.name)}`} className="p-3 bg-white rounded-md w-xs lg:w-[calc(33.333%-12px)] hover:shadow-2xl cursor-pointer">
+    <a href={`/campanii/${encodeURIComponent(props.name)}`} className="p-3 bg-white rounded-md w-xs lg:w-[calc(33.333%-12px)] hover:shadow-2xl cursor-pointer h-[280] lg:h-[333] flex flex-col">
       <Image
         className="rounded-md object-cover h-34 lg:h-45"
         src={props.image}
@@ -17,11 +17,13 @@ function CampaignBox(props: { image: string, name: string, rewards: string[], en
         height={1000}
         priority
       />
-      <div className="mt-2 text-lg font-bold">{props.name}</div>
-      <ul className="mt-1 flex flex-col gap-2">
-        {props.rewards.map(o => <li key={o}>{o}</li>)}
-      </ul>
-      <div className="flex gap-2 mt-2">
+      <div className="mt-2 text-lg font-bold line-clamp-1">{props.name}</div>
+
+      <div className="flex-1">
+        <span className="mt-1 line-clamp-2">{props.rewards[0]}</span>
+      </div>
+
+      <div className="flex gap-2 mt-2 ">
         <Image
           src="/clock.svg"
           alt="Next.js logo"

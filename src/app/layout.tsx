@@ -72,7 +72,10 @@ export default function RootLayout({
               <Link href="/termeni-si-conditii" className=' text-sm cursor-pointer size-fit'>Termeni și Condiții</Link>
               <Link href="/politica-confidentialitate" className=' text-sm cursor-pointer size-fit'>Politica de confidențialitate</Link>
               <Link href="/cookies" className='text-sm cursor-pointer size-fit'>Cookies</Link>
-              <a href="https://anpc.ro/" className=' text-sm cursor-pointer size-fit'>ANPC</a>
+              <a href="https://anpc.ro/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className=' text-sm cursor-pointer size-fit'>ANPC</a>
             </div>
 
             <div className="text-lg font-bold">Cum te putem ajuta? <span className="text-regal-orange underline">client@recomandplus.ro</span></div>

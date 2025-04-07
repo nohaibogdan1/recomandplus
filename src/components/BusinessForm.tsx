@@ -125,7 +125,11 @@ function Addresses({
             <span>Telefon: {a.phone}</span>
             <span>Judet: {a.county}</span>
             <span>Adresa: {a.location}</span>
-            <span>Google maps: {a.maps ? a.maps : "Fara"}</span>
+            <div>Google maps: {a.maps ?
+              <a href={a.maps} target="_blank"
+                rel="noopener noreferrer">Link</a> :
+              "Fara"
+            }</div>
           </div>
         </div>
       ))
@@ -217,8 +221,8 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
             contentType: photo.type
           });
 
-          await (async function(){
-            return new Promise((acc) => setTimeout(() => {acc(true)}, 1000));
+          await (async function () {
+            return new Promise((acc) => setTimeout(() => { acc(true) }, 1000));
           })();
         }
 
