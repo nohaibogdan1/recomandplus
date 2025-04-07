@@ -43,7 +43,7 @@ export async function GET(
 
   const res = await supabase
     .from("campaigns")
-    .select("*, businesses(*, addresses(*)), campaigns_rewards(*)")
+    .select("*, businesses!inner(*, addresses(*)), campaigns_rewards(*)")
     .eq("businesses.name", decodeURIComponent(slug))
     .eq("campaigns_rewards.current", true);
 
@@ -63,7 +63,7 @@ export async function GET(
   try {
     reward = JSON.parse(data.campaigns_rewards[0].reward);
   } catch {}
-
+console.log("bbbb", data);
   const mapped: CampaignRes = {
     id: data.id,
     createdAt: data.created_at,
