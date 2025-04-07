@@ -1,5 +1,4 @@
 import Auth from "@/components/Auth";
-import { Metadata } from "next";
 import Image from "next/image";
 import { Suspense } from "react";
 
@@ -121,9 +120,3 @@ export default function LandingAdvocate() {
         </div>
     )
 }
-
-
-export const metadata: Metadata = {
-    title: "RecomandPlus - Primeste reduceri faine",
-    description: "Primeste diverse reduceri cand recomanzi",
-  };

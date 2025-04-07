@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RecomandPlus - Crestesti afacerea si ofera utilizatorilor reduceri",
-  description: "Platforma care te ajută să îți crești afacerea online. Descoperă avantajele noastre!",
+  title: "Recomand Plus - Profită de reduceri exclusive",
+  description: "Recomandă locul tău favorit prietenilor și primește recompense",
   verification: {
     google: "Pa8vMU7Skw15fwUICROFo9w_XpumOkOMdcKDo0brKEw"
   }

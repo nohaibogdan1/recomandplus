@@ -90,6 +90,6 @@ export default function LandingBusiness() {
 
 
 export const metadata: Metadata = {
-    title: "RecomandPlus - Creste afacerea cu noi",
-    description: "Afacerea ta creste organic atunci cand clientii tai sunt fericiti",
+    title: "Recomand Plus - Crește-ți afacerea și oferă clienților reduceri",
+    description: "Afacerea ta crește organic atunci cand clienții tăi sunt fericiți",
   };
