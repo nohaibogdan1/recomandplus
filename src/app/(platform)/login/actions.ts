@@ -5,19 +5,16 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function login({
-  formData,
-  redirect,
-}: {
-  formData: FormData;
-  redirect?: string | null;
-}) {
+export async function login(
+  redirect: string | null,
+  address: string
+) {
   const supabase = await createClient();
 
   const red = redirect?.slice(2, redirect.length - 1);
 
   const { data, error } = await supabase.auth.signInWithOtp({
-    email: formData.get("email") as string,
+    email: address,
     options: {
       emailRedirectTo: red ? `${process.env.NEXT_PUBLIC_API_URL}/${red}` : `${process.env.NEXT_PUBLIC_API_URL}/`,
     },
