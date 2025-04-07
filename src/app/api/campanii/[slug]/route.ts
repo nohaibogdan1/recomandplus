@@ -63,7 +63,7 @@ export async function GET(
   try {
     reward = JSON.parse(data.campaigns_rewards[0].reward);
   } catch {}
-console.log("bbbb", data);
+  
   const mapped: CampaignRes = {
     id: data.id,
     createdAt: data.created_at,
