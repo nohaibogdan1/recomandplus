@@ -18,6 +18,8 @@
   --color-orange-4: #d13b1ae0;
   --color-page: #F5F5F5;
   --color-regal-orange-dark: #6f3528;
+  --color-text-secondary: #717780;
+  --color-header-white: #F9FAFB;
 }
 
 @media (prefers-color-scheme: white) {

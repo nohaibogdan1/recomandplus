@@ -22,7 +22,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
   }
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-14 w-full">
       {!validBusinessOwner && <div>Contactează-ne la adresa de email client@recomandplus.ro sau la tel 0755378352 pentru a îți înscrie afacerea</div>}
       {error && <Problem />}
       {!error && validBusinessOwner &&
@@ -185,7 +185,6 @@ export default function Business({ businessData, refetch, error }: { businessDat
 
 
           {business && <>
-            <div className='font-bold mt-5'>Campania mea</div>
             {!business.campaign && <>
               <Button onClick={() => setShowCreateCampaign(true)} text="Creează campanie" />
               {showCreateCampaign && <CreateCampaignForm created={createdCampaignHandler} />}

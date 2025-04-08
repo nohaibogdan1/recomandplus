@@ -45,7 +45,7 @@ export default function RewardValidation() {
     }
 
     return (
-        <>
+        <div className="flex flex-col gap-3">
             <span className="font-bold">Validare recompensa</span>
             <div className="p-5 rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] w-full">
                 <div className="flex flex-col gap-2">
@@ -63,6 +63,6 @@ export default function RewardValidation() {
                     {error && <Problem />}
                 </div>
             </div>
-        </>
+        </div>
     )
 }

@@ -7,7 +7,7 @@ import Problem from "./Problem";
 import Button, { ButtonVariants } from "./common/Button";
 import Link from "next/link";
 
-export default function Auth(props: { withBorder?: boolean }) {
+export default function Auth(props: { withBorder?: boolean, forBusiness?: boolean }) {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [btn, setBtn] = useState(0);
@@ -26,10 +26,48 @@ export default function Auth(props: { withBorder?: boolean }) {
         setError(hasError);
     }
 
+    if (props.forBusiness) {
+        return (
+            <div className="flex justify-center">
+            <form onSubmit={handler}>
+                <div className={`flex flex-col gap-4  items-center w-full `}>
+                    {error && <Problem />}
+                    {success && <span className="font-bold">Verifica emailul pentru confirmare</span>}
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={address}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)}
+                        required
+                        placeholder="Adresa ta de e-mail"
+                        className=" w-full  px-5 py-3 mt-2  border-1 border-gray-200 rounded-md bg-gray-100 active:outline-gray-500 focus:outline-gray-500"
+                    />
+                    <div className=" w-full flex flex-col gap-5">
+                        <Button
+                            type="submit"
+                            text="Începe"
+                            variant={ButtonVariants.PRIMARY}
+                            className="text-xl px-5 py-3 w-full"
+                            loading={loading && btn === 1}
+                            onClick={() => setBtn(1)}
+                            iconHeight={25}
+                            iconWidth={25} />
+                    </div>
+
+                    <div className="text-gray-500 text-sm text-center  mt-4">
+                        <p>Prin apăsarea butonului &quot;Începe&quot;, acceptați <Link href={"/termeni-si-conditii"}><b>Termenii și Condițiile</b> </Link> și sunteți de acord ca, în cazul în care nu aveți deja un cont pe platformă, să fiți înregistrat automat folosind datele de autentificare.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        )
+    }
+
     return (
         <div className="flex justify-center">
             <form onSubmit={handler}>
-                <div className={`flex flex-col mt-7 gap-4  max-w-md px-4 items-center w-full  py-10 rounded-2xl ${props.withBorder && 'shadow-2xl'}`}>
+                <div className={`flex flex-col gap-4  max-w-md px-4 items-center w-full  py-10 rounded-2xl ${props.withBorder && 'shadow-2xl'}`}>
                     {error && <Problem />}
                     {success && <span className="font-bold">Verifica emailul pentru confirmare</span>}
                     <input

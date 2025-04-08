@@ -53,7 +53,7 @@ export default function CampaignStatistics({ id }: { id: string }) {
   }, [showStatistics]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <Button variant={ButtonVariants.PRIMARY}
         onClick={() => setShowStatistics(true)}
         text="Vezi statisticile" loading={loading} />
