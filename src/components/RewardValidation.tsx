@@ -46,20 +46,20 @@ export default function RewardValidation() {
 
     return (
         <div className="flex flex-col gap-3">
-            <span className="font-bold">Validare recompensa</span>
+            <span className="font-medium">Validare recompensă</span>
             <div className="p-5 rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] w-full">
                 <div className="flex flex-col gap-2">
                     <input value={text} onChange={(e: ChangeEvent<HTMLInputElement>) => setText(e.target.value)} type="text" placeholder="Adresa de e-mail" className="mb-3  w-full max-w-sm px-5 py-2 border-1 border-gray-200 rounded-md bg-gray-100 active:outline-gray-500 focus:outline-gray-500" />
                     <Button onClick={handlerValidate} text="Valideaza" loading={loading} variant={ButtonVariants.PRIMARY} />
                     {valid === 1 &&
                         <>
-                            <div className="text-green-500 font-bold">VALID</div>
+                            <div className="text-green-500 font-medium">VALID</div>
                             <ul className="flex flex-col gap-1">
                                 {reward.map(o => <li key={o} >{o}</li>)}
                             </ul>
                         </>
                     }
-                    {valid === 2 && <div className="text-red-500 font-bold">INVALID</div>}
+                    {valid === 2 && <div className="text-red-500 font-medium">INVALID</div>}
                     {error && <Problem />}
                 </div>
             </div>

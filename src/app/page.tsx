@@ -5,6 +5,7 @@ import Image from "next/image";
 import Problem from "@/components/Problem";
 import Empty from "@/components/Empty";
 import getLeftDays from "./(platform)/campanii/components/getLeftDays";
+import Header from "@/components/Header";
 
 function CampaignBox(props: { image: string, name: string, rewards: string[], endAt: string }) {
   return (
@@ -17,13 +18,13 @@ function CampaignBox(props: { image: string, name: string, rewards: string[], en
         height={1000}
         priority
       />
-      <div className="mt-2 text-lg font-bold line-clamp-1">{props.name}</div>
+      <div className="mt-2 text-lg font-semibold line-clamp-1">{props.name}</div>
 
       <div className="flex-1">
         <span className="mt-1 line-clamp-2">{props.rewards[0]}</span>
       </div>
 
-      <div className="flex gap-2 mt-2 ">
+      <div className="flex gap-2 mt-2 text-sm font-medium">
         <Image
           src="/clock.svg"
           alt="Next.js logo"
@@ -53,7 +54,7 @@ export default async function CampaignsPage({ searchParams }: { searchParams: Pr
 
   return (
     <>
-      <div className="bg-regal-orange text-white font-bold text-md text-center py-1.5">Recomanda si castiga!</div>
+      <Header/>
 
       <div className="flex flex-col gap-3 bg-neutral-100 pt-5 px-4 min-h-[80vh]">
 

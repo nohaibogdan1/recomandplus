@@ -32,7 +32,7 @@ export default function Auth(props: { withBorder?: boolean, forBusiness?: boolea
             <form onSubmit={handler}>
                 <div className={`flex flex-col gap-4  items-center w-full `}>
                     {error && <Problem />}
-                    {success && <span className="font-bold">Verifica emailul pentru confirmare</span>}
+                    {success && <span className="font-medium">Verifica emailul pentru confirmare</span>}
                     <input
                         id="email"
                         name="email"
@@ -69,7 +69,7 @@ export default function Auth(props: { withBorder?: boolean, forBusiness?: boolea
             <form onSubmit={handler}>
                 <div className={`flex flex-col gap-4  max-w-md px-4 items-center w-full  py-10 rounded-2xl ${props.withBorder && 'shadow-2xl'}`}>
                     {error && <Problem />}
-                    {success && <span className="font-bold">Verifica emailul pentru confirmare</span>}
+                    {success && <span className="font-medium">Verifica emailul pentru confirmare</span>}
                     <input
                         id="email"
                         name="email"
@@ -90,7 +90,7 @@ export default function Auth(props: { withBorder?: boolean, forBusiness?: boolea
                             onClick={() => setBtn(1)}
                             iconHeight={25}
                             iconWidth={25} />
-                        <div className="font-bold text-gray-500 text-xl text-center">SAU</div>
+                        <div className="font-medium text-gray-500 text-xl text-center">SAU</div>
                         <Button
                             type="submit"
                             variant={ButtonVariants.PRIMARY}

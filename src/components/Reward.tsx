@@ -81,7 +81,7 @@ export default function RewardBtn(props: { slug: string }) {
     if (showGetReward) {
         return (
             <>
-                <Button loading={loadingReq} onClick={handler} text="Obtine recompensa" variant={ButtonVariants.PRIMARY} />
+                <Button loading={loadingReq} onClick={handler} text="Obține recompensa" variant={ButtonVariants.PRIMARY} />
                 {error &&
                     <div className="mt-2">
                         <Problem />

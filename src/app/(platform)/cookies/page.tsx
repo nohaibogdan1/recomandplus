@@ -1,7 +1,7 @@
 export default function CookiesPage() {
     return (
         <div className="w-full max-w-5xl mx-auto mt-5 px-4">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">
+            <h1 className="text-3xl font-medium text-gray-900 mb-6">
                 Politica privind utilizarea cookie-urilor
             </h1>
 

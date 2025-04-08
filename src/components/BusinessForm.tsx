@@ -54,7 +54,7 @@ function Addresses({
   return (
     <>
       <div className='flex flex-col gap-5'>
-        <span className='inline-block font-bold'>Locatii fizice</span>
+        <span className='inline-block font-medium'>Locatii fizice</span>
         <div>
           <label className={`block font-medium ${pinkAsterisk}`}>Telefon</label>
           <div className='relative'>
@@ -245,7 +245,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
 
   return (
     <div>
-      <div className={`text-pink-600 text-sm font-bold mb-4 ${pinkAsterisk}`}>Campuri necesare</div>
+      <div className={`text-pink-600 text-sm font-medium mb-4 ${pinkAsterisk}`}>Campuri necesare</div>
       <form onSubmit={handleSubmit} className="space-y-4 md:w-1/2 max-w-100">
         <div>
           <label className={`block font-medium ${pinkAsterisk}`}>Numele afacerii</label>
@@ -318,7 +318,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
 
         <div className='border border-gray-100 border-3 mt-5'></div>
 
-        <h4 className='font-bold'>Social media</h4>
+        <h4 className='font-medium'>Social media</h4>
 
         <div>
           <label className="block font-medium">Link către website (opțional)</label>

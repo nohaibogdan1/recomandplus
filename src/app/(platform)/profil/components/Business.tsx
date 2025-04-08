@@ -22,7 +22,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
   }
 
   return (
-    <div className="flex flex-col gap-14 w-full">
+    <div className="flex flex-col gap-10 w-full">
       {!validBusinessOwner && <div>Contactează-ne la adresa de email client@recomandplus.ro sau la tel 0755378352 pentru a îți înscrie afacerea</div>}
       {error && <Problem />}
       {!error && validBusinessOwner &&
@@ -50,7 +50,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
 
               <div className='flex flex-col gap-7'>
                 <div className="flex flex-col gap-2">
-                  <span className="text-md font-bold">{business.name}</span>
+                  <span className="text-md font-medium">{business.name}</span>
                   <Image
                     src={business.photo}
                     alt="Next.js logo"
@@ -64,7 +64,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
 
 
                 <div className='flex gap-6'>
-                  <h4 className="font-bold">Social media</h4>
+                  <h4 className="font-medium">Social media</h4>
                   {business.website &&
                     <a href={business.website}
                       target="_blank"
@@ -136,7 +136,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
 
 
                 <div>
-                  <h4 className="font-bold">Locații fizice</h4>
+                  <h4 className="font-medium">Locații fizice</h4>
                   <div className="flex flex-col gap-5">
                     {business.addresses.map(a =>
                       <div key={a.location} className="flex flex-col gap-2 rounded-lg border border-3 border-gray-100 p-5">

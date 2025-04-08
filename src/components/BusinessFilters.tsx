@@ -16,7 +16,7 @@ export default function BusinessFilters({ params }: { params: Params }) {
 
     return (
         <div className="relative">
-            <button onClick={handleShowFilter} className="bg-white py-3 px-10 rounded-3xl font-bold cursor-pointer">Schimba locatia</button>
+            <button onClick={handleShowFilter} className="bg-white py-3 px-10 rounded-3xl font-medium cursor-pointer text-neutral-800">Schimbă locația</button>
             <Filters params={params} showFilter={showFilter} close={() => setShowFilter(false)} />
         </div>
     )
@@ -82,7 +82,7 @@ function Filters({ showFilter, close, params }: { showFilter: boolean, close: ()
                     </label>
                 ))}
             </div>
-            <button onClick={handleClick} className="font-bold text-sm text-center cursor-pointer py-3">CAUTA</button>
+            <button onClick={handleClick} className="font-medium text-sm text-center cursor-pointer py-3">CAUTĂ</button>
         </div>
     )
 }

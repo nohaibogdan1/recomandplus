@@ -7,7 +7,6 @@ import MyAccount from './components/MyAccount';
 import Menu from './components/Menu';
 import Business from './components/Business';
 import { BusinessOwnerRes } from '@/types/serverResponse';
-import Header from '@/components/Header';
 
 export default function ProfilePage() {
     const [menu, setMenu] = useState(0);
@@ -58,8 +57,6 @@ export default function ProfilePage() {
 
     return (
         <>
-            <Header />
-
             <div className="max-w-5xl mx-auto mt-3 px-2 md:px-10">
                 <div className="">{user.email}</div>
                 <div className='flex mt-5'>

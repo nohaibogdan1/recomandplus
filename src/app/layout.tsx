@@ -1,17 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
+// import { Inter } from 'next/font/google'
+import { Inter_Tight } from 'next/font/google'
+
+const inter = Inter_Tight({
+  subsets: ['latin'],
+  variable: '--font-inter', // CSS var
+  display: 'swap',
+})
+
+// const inter = Inter({
+//   subsets: ['latin'],
+//   variable: '--font-inter',
+//   display: 'swap',
+// })
 import "./globals.css";
 import Link from "next/link";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "Recomand Plus - Profită de reduceri exclusive",
@@ -39,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
+        className={`${inter.variable} antialiased relative text-neutral-800`}
       >
         <div className="min-h-180">
           {children}
@@ -69,7 +83,7 @@ export default function RootLayout({
                 className=' text-sm cursor-pointer size-fit'>ANPC</a>
             </div>
 
-            <div className="text-lg font-bold">Cum te putem ajuta? <span className="text-regal-orange underline">client@recomandplus.ro</span></div>
+            <div className="text-lg font-medium">Cum te putem ajuta? <span className="text-regal-orange underline">client@recomandplus.ro</span></div>
           </div>
         </footer>
       </body>

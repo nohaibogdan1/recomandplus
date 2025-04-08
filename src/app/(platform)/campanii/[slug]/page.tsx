@@ -57,7 +57,7 @@ export default async function CampaignPage({ params }: Props) {
   }
 
   return (
-    <>
+    <div className='mb-30'>
       <Image
         className="object-cover h-50 md:max-w-2xl md:rounded-xl md:mt-5 md:mx-auto md:h-60"
         src={data.business.photo}
@@ -71,7 +71,7 @@ export default async function CampaignPage({ params }: Props) {
         <div className="w-full bg-white rounded-t-3xl relative -top-5 md:top-0 px-5 md:px-0 pt-5 md:h-auto ">
           <div className="text-2xl text-center">{data.business.name}</div>
 
-          <div className="flex gap-2 mt-2">
+          <div className="flex gap-2 mt-2 font-medium">
             <Image
               src="/clock.svg"
               alt="Next.js logo"
@@ -81,13 +81,13 @@ export default async function CampaignPage({ params }: Props) {
             />
             <span>{getLeftDays(data.endAt)}</span>
           </div>
-          <div className="mt-5 p-5 shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] rounded-md">
+          <div className="mt-10 p-5 shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] rounded-md">
             <ul className="mt-1 flex flex-col gap-1">
               {data.reward.map(o => <li key={o}>{o}</li>)}
             </ul>
           </div>
 
-          <div className='flex gap-6 mt-5 mb-5'>
+          <div className='flex gap-6 mt-10 mb-10'>
             {data.business.website && <a href={data.business.website}
               target="_blank"
               rel="noopener noreferrer"
@@ -154,11 +154,7 @@ export default async function CampaignPage({ params }: Props) {
 
           <Reward slug={slug} />
 
-          <div className="text-xl mt-6 text-center font-bold text-gray-600">Te asteapta urmatoarea recompensa</div>
-
-          <div className="border-1 mt-5 border-gray-200" />
-
-          <div className="font-bold mt-4 flex gap-2">
+          <div className="font-medium mt-15 flex gap-2 text-text-secondary">
             <Image
               src="/phone-color.svg"
               alt="Next.js logo"
@@ -168,11 +164,11 @@ export default async function CampaignPage({ params }: Props) {
             />Telefon: {data.business.phone}</div>
 
           {!!data.business.addresses.length &&
-            <div className="flex flex-col gap-5 mt-4">
-              <h3 className="font-bold">Locatii</h3>
+            <div className="flex flex-col gap-5 mt-4 text-text-secondary">
+              <h3 className="font-medium">Locații</h3>
               {data.business.addresses.map(a => (
                 <div key={a.location} className="flex flex-col gap-2">
-                  <span>Judetul {a.county}</span>
+                  <span>Județul {a.county}</span>
                   <span>{a.location}</span>
                   {a.maps &&
                     <a href={a.maps} className="flex gap-2">
@@ -199,6 +195,6 @@ export default async function CampaignPage({ params }: Props) {
           }
         </div>
       </div>
-    </>
+    </div>
   )
 };

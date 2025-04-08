@@ -1,4 +1,5 @@
 import Auth from "@/components/Auth";
+import Header from "@/components/Header";
 import Image from "next/image";
 import { Suspense } from "react";
 
@@ -16,7 +17,7 @@ function NumericalReason(props: { count: string, title: string, text: string }) 
 
 function Reason(props: { text: string }) {
     return (
-        <div className="flex mt-6 gap-4 font-bold">
+        <div className="flex mt-6 gap-4 font-medium">
             <Image
                 src="/verified.svg"
                 alt="Next.js logo"
@@ -50,6 +51,7 @@ function Reason2(props: { title: string, text: string }) {
 export default function LandingAdvocate() {
     return (
         <div>
+            <Header/>
             <div>
                 <div className="flex flex-col">
                     <div className="flex w-full justify-start bg-regal-orange text-white text-2xl md:text-3xl leading-9 px-5 py-10 mt-3">
@@ -80,7 +82,7 @@ export default function LandingAdvocate() {
 
                     <div className="border mt-10 mx-5 border-gray-300 w-full max-w-5xl mx-auto"></div>
                     <div className="mt-10 px-5 md:px-10 lg:px-0 flex flex-col md:px-10 w-full max-w-5xl mx-auto">
-                        <div className="font-bold text-2xl">Cum funcționează ?</div>
+                        <div className="font-medium text-2xl">Cum funcționează ?</div>
                         <div className="flex flex-col gap-4 mt-5">
                             <NumericalReason count="1" title="Alege o afacere locală" text="Descoperă magazine, saloane, restaurante și multe altele." />
                             <NumericalReason count="2" title="Recomandă unui prieten" text="Trimite un link unic de recomandare." />
@@ -90,7 +92,7 @@ export default function LandingAdvocate() {
                     </div>
                     <div className="mt-10 py-10 px-5 md:px-10 bg-regal-orange text-white">
                         <div className="mx-5 w-full max-w-5xl mx-auto">
-                            <div className="font-bold text-2xl"> Beneficiile tale </div>
+                            <div className="font-medium text-2xl"> Beneficiile tale </div>
                             <Reason text="Economisești bani la serviciile pe care le folosești deja." />
                             <Reason text="Susții afacerile locale și comunitatea ta." />
                             <Reason text="Recomanzi doar ceea ce iubești – fără obligații!" />
@@ -98,7 +100,7 @@ export default function LandingAdvocate() {
                         </div>
                     </div>
                     <div className="px-5 w-full max-w-3xl mx-auto">
-                        <button className="px-5 py-6 mt-10  bg-regal-orange rounded-md text-white font-bold text-xl w-full hover:bg-regal-orange-2 active:bg-regal-orange-2 cursor-pointer">Incepe acum GRATUIT</button>
+                        <button className="px-5 py-6 mt-10  bg-regal-orange rounded-md text-white font-medium text-xl w-full hover:bg-regal-orange-2 active:bg-regal-orange-2 cursor-pointer">Incepe acum GRATUIT</button>
                     </div>
                     <div className="flex w-full max-w-5xl mx-auto flex-col md:flex-row items-center justify-center lg:justify-between align-center">
                         <Image

@@ -21,11 +21,11 @@ export default function Share(props: { slug: string }) {
 
     return (
         <div className="flex flex-col gap-3 relative md:max-w-5/6">
-            <button onClick={handler} className={`mt-5 px-5 py-3 bg-regal-orange rounded-md text-white font-bold text-md cursor-pointer`}>Recomanda - trimite linkul prietenilor tai</button>
-            <span className="font-bold text-sm text-gray-500">{process.env.NEXT_PUBLIC_API_URL}/campanii/{props.slug}?referral={encodeURIComponent(user.email)}</span>
+            <button onClick={handler} className={`px-5 py-3 bg-regal-orange rounded-md text-white font-medium text-md cursor-pointer`}>Recomandă - trimite linkul prietenilor tăi</button>
+            <span className="font-medium text-sm text-gray-500">{process.env.NEXT_PUBLIC_API_URL}/campanii/{props.slug}?referral={encodeURIComponent(user.email)}</span>
             {copied &&
                 <div className="absolute px-10 py-2 bg-black/50 rounded-md bottom-0 right-0">
-                    <div className="bg-white p-3 py-1 rounded-md font-bold text-xs">Link copiat !</div>
+                    <div className="bg-white p-3 py-1 rounded-md font-medium text-xs">Link copiat !</div>
                 </div>
             }
         </div>

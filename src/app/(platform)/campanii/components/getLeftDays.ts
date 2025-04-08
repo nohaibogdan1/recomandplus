@@ -5,5 +5,5 @@ export default function getLeftDays(endAt: string) {
     const leftDays = (endDate.getTime() - current.getTime()) / (1000 * 3600 * 24);
     if (leftDays === 0) return "Astazi este ultima zi";
     if (leftDays === 1) return "Maine este ultima zi";
-    return `Au mai ramas ${leftDays} zile`;
+    return `Valabil încă ${leftDays} zile`;
 }

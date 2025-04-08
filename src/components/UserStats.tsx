@@ -46,7 +46,7 @@ export default function UserStats(props: { slug: string }) {
     return (
         <>
             <div className="mt-10 p-5 shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)] rounded-md">
-                <span className="font-bold">Castigurile tale</span>
+                <span className="font-medium">Câștigurile tale</span>
                 <div className="mt-2 text-sm text-stone-700">
                     {Object.entries(rewardsGroup).map(([k, v]) => (
                         <div key={k} className="mt-1 font-semibold flex gap-3">

@@ -1,43 +1,29 @@
 import Auth from "@/components/Auth";
-import Header from "@/components/Header";
+import BusinessFAQ from "@/components/BusinessFAQ";
+import HeaderLanding from "@/components/HeaderLanding";
 import { Metadata } from "next";
 import Image from "next/image";
+import { Suspense } from "react";
 
 function NumericalReason(props: { count: string, title: string, text: string }) {
     return (
         <div className="flex gap-5 items-start">
             <div className="bg-regal-orange rounded-3xl px-2 text-white mt-[2]">{props.count}</div>
             <div className="flex flex-col gap-2">
-                <span className="text-lg font-bold ">{props.title} </span>
+                <span className="text-lg font-semibold ">{props.title} </span>
                 <span className="text-text-secondary">{props.text}</span>
             </div>
         </div>
     )
 };
 
-function Reason(props: { text: string }) {
-    return (
-        <div className="flex mt-6 gap-4 font-bold">
-            <Image
-                src="/verified.svg"
-                alt="Next.js logo"
-                width={25}
-                height={25}
-                priority
-            />
-            {props.text}
-        </div>
-    )
-};
-
-
 export default function LandingBusiness() {
     return (
         <div>
-            <Header />
+            <HeaderLanding />
 
             <div className="bg-[url(/group.jpg)] h-160 w-full bg-cover bg-top absolute top-0"></div>
-            <div className="bg-gradient-to-t from-[rgba(0,0,0,0.6)] to-[rgba(0,0,0,0.2)] h-160 w-full bg-cover bg-top absolute top-0"></div>
+            <div className="bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-[rgba(0,0,0,0.2)] h-160 w-full bg-cover bg-top absolute top-0"></div>
 
             <div className="relative">
                 <div className="flex flex-col">
@@ -51,7 +37,9 @@ export default function LandingBusiness() {
                         <div className="bg-white rounded-3xl mt-20 lg:mt-25 px-5 flex flex-col md:px-10 w-full max-w-5xl mx-auto ">
                             <div className="flex flex-col gap-4 py-10">
                                 <h4 className="font-semibold mt-0 text-2xl">Te ajutăm să îți dezvolți afacerea</h4>
-                                <Auth forBusiness />
+                                <Suspense>
+                                    <Auth forBusiness />
+                                </Suspense>
                             </div>
                         </div>
                     </div>
@@ -94,21 +82,14 @@ export default function LandingBusiness() {
                         />
                     </div>
 
-                    <div className="mt-20 px-5 md:px-10 lg:px-0 flex gap-15 md:px-10 lg:mt-50 w-full max-w-5xl mx-auto flex-col md:flex-row">
-                        <div className="mx-5 w-full max-w-5xl mx-auto order-2 md:order-2">
-                            <div className="font-bold text-2xl"> Beneficiile tale </div>
-                            <Reason text="Recomandările personale sunt cea mai eficientă metodă de marketing." />
-                            <Reason text="Tu decizi valoarea recompensa." />
-                            <Reason text="Clienții tăi au un motiv în plus să revină și să te recomande." />
-                            <Reason text="Vezi exact câți clienți ai atras și cum performează campaniile tale." />
-                        </div>
-                    </div>
+                    <BusinessFAQ />
+
+                    <div className="mt-30"></div>
                 </div>
             </div>
         </div>
     )
 }
-
 
 export const metadata: Metadata = {
     title: "Recomand Plus - Crește-ți afacerea și oferă clienților reduceri",

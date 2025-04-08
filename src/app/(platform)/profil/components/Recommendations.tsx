@@ -25,7 +25,7 @@ function Box({ campaign }: AdvocateCampaignsRes[0]) {
     return (
         <div onClick={() => router.push(`/campanii/${encodeURIComponent(campaign.business)}`)} className="rounded-md shadow-[0px_4px_25px_9px_rgba(0,0,0,0.08)]   cursor-pointer w-full">
             <div className="flex flex-col p-5">
-                <span className="text-md font-bold">{campaign.business}</span>
+                <span className="text-md font-medium">{campaign.business}</span>
                 <div className="mt-2 text-sm text-stone-700">
                     {Object.entries(rewardsGroup).map(([k, v]) => (
                         <div key={k} className="mt-1 font-semibold flex gap-3">{v.count}
@@ -95,7 +95,7 @@ export default function Recommendations() {
 
     return (
         <div className="flex flex-col gap-4 w-full">
-            {!!withRewards.length && <div className="font-bold">Recompense nefolosite</div>}
+            {!!withRewards.length && <div className="font-medium">Recompense nefolosite</div>}
             {withRewards.map(a => <Box key={a.campaign.id} {...a} />)}
             {!!withRewards.length && !!withNoRewards.length && <div className="border border-gray-400"></div>}
             {withNoRewards.map(a => <Box key={a.campaign.id} {...a} />)}

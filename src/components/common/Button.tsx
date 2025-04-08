@@ -15,7 +15,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function Button({ text, loading, variant, className, iconWidth = 20, iconHeight = 20, ...props }: ButtonProps) {
     return (
-        <button className={`cursor-pointer w-50 rounded-md text-sm font-bold py-2 flex justify-center 
+        <button className={`cursor-pointer w-50 rounded-md text-sm font-medium py-2 flex justify-center 
             ${variant === ButtonVariants.PRIMARY ? "bg-regal-orange text-white" :
                 variant === ButtonVariants.SECONDARY ? "bg-white border border-gray-300" : "bg-gray-100"} ${className}`} {...props}>
             <div className="relative">

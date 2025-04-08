@@ -1,7 +1,7 @@
 export default function PrivacyPolicyPage() {
     return (
         <div className="w-full max-w-5xl mx-auto mt-5 px-4">
-            <h1 className="text-3xl font-bold mb-6">Politică de Confidențialitate</h1>
+            <h1 className="text-3xl font-medium mb-6">Politică de Confidențialitate</h1>
 
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">1. Cine suntem</h2>
