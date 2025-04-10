@@ -23,7 +23,7 @@ export default function RewardsForm({
   };
 
   return (
-    <div className="container mx-auto py-4">
+    <div className="container py-4">
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700">Adaugă recompensa. Clientul va putea folosi una dintre opțiuni</label>
         <input

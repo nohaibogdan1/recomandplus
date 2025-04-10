@@ -24,7 +24,7 @@ export default function HeaderLanding() {
                     {scrolled ?
                         <Image
                             className="h-4 w-auto lg:h-5"
-                            src={"/big-logo-dark.svg"}
+                            src={"/big-logo-dark.png"}
                             alt="Next.js logo"
                             width={300}
                             height={300}
@@ -33,7 +33,7 @@ export default function HeaderLanding() {
                         :
                         <Image
                             className="h-4 w-auto lg:h-5"
-                            src={"/big-logo-white.svg"}
+                            src={"/big-logo-white.png"}
                             alt="Next.js logo"
                             width={300}
                             height={300}

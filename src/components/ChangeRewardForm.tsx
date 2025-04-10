@@ -33,7 +33,7 @@ export default function ChangeRewardForm({ changed }: { changed: () => void }) {
   }
 
   return (
-    <div className="w-96">
+    <div className="w-full md:w-100">
       <RewardsForm addedRewards={addedRewards} setAddedRewards={setAddedRewards} />
       {!!addedRewards.length &&
         <>

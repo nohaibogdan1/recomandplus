@@ -10,7 +10,7 @@ export default function Header() {
                 <Link href="/">
                     <Image
                         className="h-4 w-auto lg:h-5"
-                        src={"/big-logo-orange.svg"}
+                        src={"/big-logo-orange.png"}
                         alt="Next.js logo"
                         width={300}
                         height={300}
