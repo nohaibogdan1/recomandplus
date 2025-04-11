@@ -54,7 +54,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
                   <Image
                     src={business.photo}
                     alt="Next.js logo"
-                    width={100}
+                    width={150}
                     height={100}
                     priority
                   />
