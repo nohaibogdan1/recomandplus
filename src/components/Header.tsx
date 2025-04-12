@@ -6,10 +6,10 @@ import Link from "next/link";
 export default function Header() {
     return (
         <header className="z-3  sticky top-0 bg-white ">
-            <nav className="flex py-5 lg:py-7  justify-between px-4 w-full max-w-5xl mx-auto border-b border-gray-200" >
+            <nav className="flex py-5 lg:py-5  justify-between px-4 w-full max-w-5xl mx-auto border-b border-gray-200" >
                 <Link href="/">
                     <Image
-                        className="h-4 w-auto lg:h-5"
+                        className="h-6 w-auto"
                         src={"/big-logo-orange.png"}
                         alt="Next.js logo"
                         width={300}

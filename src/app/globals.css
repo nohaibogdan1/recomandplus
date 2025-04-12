@@ -16,6 +16,8 @@
 
   --grid-fit-full: repeat(auto-fit, 100%);
   --grid-fit: repeat(auto-fit, 330px);
+
+  --breakpoint-xs: 500px;
 }
 
 body {

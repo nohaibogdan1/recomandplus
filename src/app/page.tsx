@@ -6,6 +6,8 @@ import Problem from "@/components/Problem";
 import Empty from "@/components/Empty";
 import getLeftDays from "./(platform)/campanii/components/getLeftDays";
 import Header from "@/components/Header";
+import Modal from "@/components/common/Modal";
+import SearchAndCategories from "@/components/SearchAndCategories";
 
 function CampaignBox(props: { image: string, name: string, rewards: string[], endAt: string }) {
   return (
@@ -58,6 +60,10 @@ export default async function CampaignsPage({ searchParams }: { searchParams: Pr
 
       <div className="flex flex-col gap-3 bg-neutral-100 pt-5 px-4 min-h-[80vh]">
 
+      <SearchAndCategories/>
+
+
+
         <div className="w-xs lg:w-full max-w-5xl lg:mx-auto">
           <BusinessFilters params={{ counties, p, online }} />
         </div>
@@ -76,6 +82,7 @@ export default async function CampaignsPage({ searchParams }: { searchParams: Pr
           </div>}
 
         {!error && !data.campaigns.length && <Empty />}
+
 
         <div className="w-full md:max-w-5xl mx-auto">
           {!error && data.pagination.hasNextPage &&
