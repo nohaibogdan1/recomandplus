@@ -9,7 +9,7 @@ import Header from "@/components/Header";
 
 function CampaignBox(props: { image: string, name: string, rewards: string[], endAt: string }) {
   return (
-    <a href={`/campanii/${encodeURIComponent(props.name)}`} className="p-3 bg-white rounded-md w-xs lg:w-[calc(33.333%-12px)] hover:shadow-2xl cursor-pointer h-[280] lg:h-[333] flex flex-col">
+    <a href={`/campanii/${encodeURIComponent(props.name)}`} className="p-3 bg-white rounded-md  hover:shadow-2xl cursor-pointer h-[280] lg:h-[333] flex flex-col">
       <Image
         className="rounded-md object-cover h-34 lg:h-45"
         src={props.image}
@@ -54,18 +54,17 @@ export default async function CampaignsPage({ searchParams }: { searchParams: Pr
 
   return (
     <>
-      <Header/>
+      <Header />
 
       <div className="flex flex-col gap-3 bg-neutral-100 pt-5 px-4 min-h-[80vh]">
 
-        <div className="w-xs lg:w-full max-w-5xl mx-auto">
+        <div className="w-xs lg:w-full max-w-5xl lg:mx-auto">
           <BusinessFilters params={{ counties, p, online }} />
         </div>
 
         {error && <Problem />}
-
         {!error &&
-          <div className="flex py-2 gap-4 flex-wrap w-full max-w-5xl mx-auto justify-center md:justify-start">
+          <div className="grid grid-cols-(--grid-fit-full) sm:grid-cols-(--grid-fit) py-2  w-full max-w-5xl mx-auto gap-4 justify-center ">
             {data.campaigns.map(c =>
               <CampaignBox
                 key={c.id}

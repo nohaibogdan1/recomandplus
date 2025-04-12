@@ -13,6 +13,9 @@
   --color-header-white: #f9fafb;
   --color-border-separator: #061a3714;
   --color-orange-white: #e956360d;
+
+  --grid-fit-full: repeat(auto-fit, 100%);
+  --grid-fit: repeat(auto-fit, 330px);
 }
 
 body {
