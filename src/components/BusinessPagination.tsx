@@ -1,41 +1,62 @@
+import { BusinessesContext } from "@/BusinessesProvider";
 import { Pagination } from "@/types/serverResponse";
+import { useContext } from "react";
 
 export type Params = {
-    counties: string,
-    online: string,
-    p: string,
-}
+  counties: string;
+  online: string;
+  p: string;
+  categories: string;
+};
 
 type IBusinessPagination = {
-    pagination: Pagination,
-    params: Params
-}
+  pagination: Pagination;
+};
 
-export default function BusinessPagination({ params, pagination }: IBusinessPagination) {
-    let link = '/?';
-    if (params.counties) {
-        link += `counties=${params.counties}`;
-    }
-    if (params.online !== null) {
-        link += `&online=${params.online}`;
-    }
+export default function BusinessPagination({
+  pagination,
+}: IBusinessPagination) {
+  const { params } = useContext(BusinessesContext);
 
-    let page: number | null = Number(params.p);
-    if (Number.isNaN(Number(page))) {
-        page = null;
-    }
-    const prevPage = page && page > 1 ? page - 1 : 0;
-    const nextPage = page && pagination.hasNextPage ? page + 1 : pagination.hasNextPage ? 2 : 0;
-    const prevPageLink = link + `&p=${prevPage}`;
-    const nextPageLink = link + `&p=${nextPage}`;
+  let link = "/?";
+  if (params.counties) {
+    link += `counties=${params.counties}`;
+  }
+  if (params.online !== null) {
+    link += `&online=${params.online}`;
+  }
 
-    const prevPageDisabled = !prevPage;
-    const nextPageDisabled = !nextPage;
+  let page: number | null = Number(params.p);
+  if (Number.isNaN(Number(page))) {
+    page = null;
+  }
+  const prevPage = page && page > 1 ? page - 1 : 0;
+  const nextPage =
+    page && pagination.hasNextPage ? page + 1 : pagination.hasNextPage ? 2 : 0;
+  const prevPageLink = link + `&p=${prevPage}`;
+  const nextPageLink = link + `&p=${nextPage}`;
 
-    return (
-        <div className="flex justify-center md:justify-end gap-4 bg-white py-5 px-5 rounded-md text-xs">
-            <a href={prevPageLink} className={`border rounded-sm border-regal-orange text-regal-orange cursor-pointer hover:bg-regal-hover px-1 md:px-5 py-3 md:py-1 ${prevPageDisabled && 'hidden'}`}>Pagina anterioara</a>
-            <a href={nextPageLink} className={`border rounded-sm border-regal-orange text-regal-orange cursor-pointer hover:bg-regal-hover  px-1 md:px-5 py-3 md:py-1 ${nextPageDisabled && 'hidden'}`}>Pagina urmatoare</a>
-        </div>
-    )
+  const prevPageDisabled = !prevPage;
+  const nextPageDisabled = !nextPage;
+
+  return (
+    <div className="flex justify-center md:justify-end gap-4 bg-white py-5 px-5 rounded-md text-xs">
+      <a
+        href={prevPageLink}
+        className={`border rounded-sm border-regal-orange text-regal-orange cursor-pointer hover:bg-regal-hover px-1 md:px-5 py-3 md:py-1 ${
+          prevPageDisabled && "hidden"
+        }`}
+      >
+        Pagina anterioara
+      </a>
+      <a
+        href={nextPageLink}
+        className={`border rounded-sm border-regal-orange text-regal-orange cursor-pointer hover:bg-regal-hover  px-1 md:px-5 py-3 md:py-1 ${
+          nextPageDisabled && "hidden"
+        }`}
+      >
+        Pagina urmatoare
+      </a>
+    </div>
+  );
 }
