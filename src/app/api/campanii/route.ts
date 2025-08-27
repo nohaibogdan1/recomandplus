@@ -161,6 +161,7 @@ export async function POST(req: Request) {
     end_at: endTimestamp.toISOString(),
     months,
     reward: JSON.stringify(rewards),
+    status: "running"
   });
 
   if (res.error) {

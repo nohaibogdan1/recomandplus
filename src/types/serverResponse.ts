@@ -108,3 +108,5 @@ export type CampaignsSitemapRes = {
 export type CategoriesRes = string[];
 
 export type CountiesRes = string[];
+
+export type CampaignsSearchRes = string[];

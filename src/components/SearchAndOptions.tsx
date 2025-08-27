@@ -16,17 +16,20 @@ import Checkbox from "./common/Checkbox";
 import RefreshIcon from "./icons/RefreshIcon";
 import Toggle from "./common/Toggle";
 import { BusinessesContext } from "@/BusinessesProvider";
-import { CategoriesRes, CountiesRes } from "@/types/serverResponse";
+import { CampaignsSearchRes, CategoriesRes, CountiesRes } from "@/types/serverResponse";
 
 const MARGIN = 20;
 
 function SearchModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
   const [focused, setFocused] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<number[]>([]);
+  const [data, setData] = useState<string[]>([]);
   const [val, setVal] = useState("");
 
   useEffect(() => {
+    if (!val.trim().length) {
+      return;
+    }
     if (!val) {
       setLoading(false);
       return;
@@ -36,16 +39,16 @@ function SearchModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
 
     async function search() {
       try {
-        // const res = await fetch("");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campanii/cautare?q=${val}`,
+          {
+            cache: "no-store",
+          });
 
-        // if (res.ok) {
-        // const data = await res.json();
-        setData(
-          Array(30)
-            .fill(1)
-            .map((el, indx) => indx)
-        );
-        // }
+        const data: CampaignsSearchRes = await res.json();
+
+        if (res.ok) {
+          setData(data);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -63,9 +66,8 @@ function SearchModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
     <Modal title="Cautare" setIsOpen={setIsOpen}>
       <div className="flex flex-col h-[90%]">
         <div
-          className={`flex rounded bg-gray-100 h-12 border border-2 border-gray-100 ${
-            focused && "bg-white border-regal-orange"
-          }`}
+          className={`flex rounded bg-gray-100 h-12 border border-2 border-gray-100 ${focused && "bg-white border-regal-orange"
+            }`}
         >
           <div className="p-[10]">
             <Image
@@ -104,15 +106,14 @@ function SearchModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
             style={{ marginTop: MARGIN }}
             className="flex flex-col overflow-auto"
           >
-            {data.map((el, indx) => (
+            {data.map((businessName, indx) => (
               <Link
-                key={indx}
-                href={"faf"}
-                className={`pt-3 pb-3 border-t border-gray-200 ${
-                  !indx && "border-none"
-                }`}
+                key={businessName}
+                href={`/campanii/${encodeURIComponent(businessName)}`}
+                className={`pt-3 pb-3 border-t border-gray-200 ${!indx && "border-none"
+                  }`}
               >
-                <div className="">Click here {el}</div>
+                <div className="">{businessName}</div>
               </Link>
             ))}
           </div>
@@ -176,7 +177,7 @@ function OptionsModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
           counties: dataCounties,
         });
         setLoading(false);
-      } catch {}
+      } catch { }
     })();
   }, []);
 
@@ -195,9 +196,8 @@ function OptionsModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
   const handleApply = () => {
     const query = `?categories=${options.categories.join(
       ","
-    )}&counties=${options.counties.join(",")}&online=${
-      options.online || ""
-    }&p=""`;
+    )}&counties=${options.counties.join(",")}&online=${options.online || ""
+      }&p=""`;
     refetchData(query);
     setIsOpen(false);
   };
@@ -324,8 +324,8 @@ function SelectedOptions() {
     const query = `?categories=${categories
       .filter((categ) => categ !== option)
       .join(",")}&counties=${counties
-      .filter((county) => county !== option)
-      .join(",")}&online=${option === "online" ? "" : params.online}&p=""`;
+        .filter((county) => county !== option)
+        .join(",")}&online=${option === "online" ? "" : params.online}&p=""`;
     refetchData(query);
   }
 
