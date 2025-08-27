@@ -58,6 +58,7 @@ export default function Business({ businessData, refetch, error }: { businessDat
                     height={100}
                     priority
                   />
+                  <span>Categoria: {business.category}</span>
                   <span>Telefon: {business.phone}</span>
                   <span>{business.isOnline ? "Este afacere online" : "Nu este afacere online"}</span>
                 </div>

@@ -6,6 +6,7 @@ import type { BusinessOwnerRes } from "@/types/serverResponse";
 type DbBusiness = {
   id: string;
   name: string;
+  category: string;
   photo: string;
   facebook: string;
   instagram: string;
@@ -107,6 +108,7 @@ export async function GET() {
     validBusinessOwner: true,
     business: {
       name: business.name,
+      category: business.category,
       photo: business.photo,
       phone: business.phone,
       isOnline: business.is_online,

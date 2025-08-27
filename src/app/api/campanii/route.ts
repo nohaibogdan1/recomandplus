@@ -11,6 +11,7 @@ type DbResponse = {
   campaign_reward1: string;
   business_id: string;
   business_name: string;
+  business_category: string;
   business_county: string;
   business_is_online: boolean;
   business_photo: string;
@@ -25,6 +26,10 @@ export async function GET(request: Request) {
     .get("counties")
     ?.split(",")
     .filter((c) => Boolean(c.trim()));
+  const categories = searchParams
+    .get("categories")
+    ?.split(",")
+    .filter((c) => Boolean(c.trim()));
   const limit = 22;
   const offset = (page - 1) * limit;
 
@@ -32,6 +37,7 @@ export async function GET(request: Request) {
 
   const { data, error: campaignsError } = await supabase.rpc("get_campaigns", {
     counties: counties?.[0] ? counties : null,
+    categories: categories?.[0] ? categories : null,
     online:
       onlineParam === "true" ? true : onlineParam === "false" ? false : null,
     offsetn: offset,
@@ -59,6 +65,7 @@ export async function GET(request: Request) {
       rewards: reward,
       business: {
         name: c.business_name,
+        category: c.business_category,
         photo: c.business_photo,
         county: c.business_county,
         isOnline: c.business_is_online,

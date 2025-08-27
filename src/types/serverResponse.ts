@@ -53,6 +53,7 @@ export type BusinessData = {
   photo: string;
   phone: string;
   isOnline: boolean;
+  category: string;
   facebook: string;
   instagram: string;
   tiktok: string;
@@ -103,3 +104,7 @@ export type CampaignAnalyticsRes = {
 export type CampaignsSitemapRes = {
   businessName: string;
 }[];
+
+export type CategoriesRes = string[];
+
+export type CountiesRes = string[];

@@ -6,7 +6,7 @@ import { BusinessData } from '@/types/serverResponse';
 import Problem from './Problem';
 import Button, { ButtonVariants } from './common/Button';
 import { pinkAsterisk, textInput } from './common/classes';
-import { counties } from '@/consts';
+import { categories, counties } from '@/consts';
 import useUser from '@/hooks/useUser';
 
 type Address = BusinessData["addresses"][0];
@@ -158,6 +158,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
       isOnline: false,
       website: '',
       youtube: '',
+      category: categories[0],
       addresses: []
     }
   );
@@ -179,6 +180,8 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
   const [preview, setPreview] = useState<string>(initialData?.photo || '');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+
+    console.log(e.target.name, e.target.value)
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -250,6 +253,21 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
         <div>
           <label className={`block font-medium ${pinkAsterisk}`}>Numele afacerii</label>
           <input name="name" value={formData.name} onChange={handleChange} className={textInput} required />
+        </div>
+
+        <div>
+          <label htmlFor="selectCategory" className={`block font-medium ${pinkAsterisk}`}>
+            Categoria
+          </label>
+          <select
+            id="selectCategory"
+            name="category"
+            onChange={handleChange}
+            value={formData.category}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-gray-400"
+          >
+            {categories.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
         </div>
 
 

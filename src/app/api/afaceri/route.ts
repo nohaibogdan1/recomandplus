@@ -6,6 +6,7 @@ import { BusinessData } from "@/types/serverResponse";
 type DbBusiness = {
   id: string;
   name: string;
+  category: string;
   photo: string;
   facebook: string;
   instagram: string;
@@ -47,6 +48,7 @@ export async function GET() {
   const mapped = {
     id: data.id,
     businessName: data.name,
+    category: data.category,
     photo: data.photo,
     facebook: data.facebook,
     instagram: data.instagram,
@@ -100,6 +102,7 @@ export async function POST(req: Request) {
     youtube,
     website,
     addresses,
+    category
   } = payload;
 
   const { isOnline } = payload;
@@ -136,6 +139,7 @@ export async function POST(req: Request) {
   res = await supabase.rpc("insert_update_business", {
     business_p: {
       name,
+      category,
       phone,
       facebook,
       youtube,

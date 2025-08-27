@@ -14,9 +14,9 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Link from "next/link";
 import Checkbox from "./common/Checkbox";
 import RefreshIcon from "./icons/RefreshIcon";
-import { counties } from "@/consts";
 import Toggle from "./common/Toggle";
 import { BusinessesContext } from "@/BusinessesProvider";
+import { CategoriesRes, CountiesRes } from "@/types/serverResponse";
 
 const MARGIN = 20;
 
@@ -132,11 +132,53 @@ function SearchModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
 }
 
 function OptionsModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
-  const categories = Array(30)
-    .fill(1)
-    .map((el, indx) => "Cateogira" + indx);
-
   const { params } = useContext(BusinessesContext);
+  const [categoriesAndCounties, setCategoriesAndCounties] = useState<{
+    categories: string[];
+    counties: string[];
+  }>({
+    categories: [],
+    counties: [],
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const fetchCategories = fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/categorii`,
+          {
+            cache: "no-store",
+          }
+        );
+
+        const fetchCounties = fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/judete`,
+          {
+            cache: "no-store",
+          }
+        );
+
+        const responses = await Promise.allSettled([
+          fetchCategories,
+          fetchCounties,
+        ]);
+        const dataCategories: CategoriesRes =
+          responses[0].status === "fulfilled"
+            ? await responses[0].value.json()
+            : [];
+        const dataCounties: CountiesRes =
+          responses[1].status === "fulfilled"
+            ? await responses[1].value.json()
+            : [];
+        setCategoriesAndCounties({
+          categories: dataCategories,
+          counties: dataCounties,
+        });
+        setLoading(false);
+      } catch {}
+    })();
+  }, []);
 
   const [options, setOptions] = useState<{
     categories: string[];
@@ -145,7 +187,7 @@ function OptionsModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
   }>({
     categories: (params.categories && params.categories.split(",")) || [],
     online: params.online === "true",
-    counties: (params.online && params.counties.split(",")) || [],
+    counties: (params.counties && params.counties.split(",")) || [],
   });
 
   const { refetchData } = useContext(BusinessesContext);
@@ -201,20 +243,6 @@ function OptionsModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
       <div className="flex flex-col h-[90%]">
         <div className="flex h-[85%] flex-col overflow-auto gap-10">
           <div>
-            <div className="text-lg font-semibold">Categorii</div>
-
-            {categories.map((category, indx) => (
-              <Checkbox
-                key={category}
-                checked={options.categories.includes(category)}
-                label={category}
-                handleChange={handleCategorySelect}
-                className={`border-t border-gray-200 ${!indx && "border-none"}`}
-              />
-            ))}
-          </div>
-
-          <div>
             <div className="text-lg font-semibold mb-3">
               Magazine si servicii pe internet
             </div>
@@ -228,12 +256,34 @@ function OptionsModal({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) {
           <div>
             <div className="text-lg font-semibold">Judete</div>
 
-            {counties.map((county, indx) => (
+            {loading && (
+              <Skeleton count={2} enableAnimation className="mt-3 mb-3" />
+            )}
+
+            {categoriesAndCounties.counties.map((county, indx) => (
               <Checkbox
                 key={county}
                 checked={options.counties.includes(county)}
                 label={county}
                 handleChange={handleCountySelect}
+                className={`border-t border-gray-200 ${!indx && "border-none"}`}
+              />
+            ))}
+          </div>
+
+          <div>
+            <div className="text-lg font-semibold">Categorii</div>
+
+            {loading && (
+              <Skeleton count={2} enableAnimation className="mt-3 mb-3" />
+            )}
+
+            {categoriesAndCounties.categories.map((category, indx) => (
+              <Checkbox
+                key={category}
+                checked={options.categories.includes(category)}
+                label={category}
+                handleChange={handleCategorySelect}
                 className={`border-t border-gray-200 ${!indx && "border-none"}`}
               />
             ))}
