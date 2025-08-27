@@ -9,6 +9,7 @@ import { pinkAsterisk, textInput } from './common/classes';
 import { categories, counties } from '@/consts';
 import useUser from '@/hooks/useUser';
 
+
 type Address = BusinessData["addresses"][0];
 
 function Addresses({
@@ -158,7 +159,7 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
       isOnline: false,
       website: '',
       youtube: '',
-      category: categories[0],
+      category: '',
       addresses: []
     }
   );
@@ -259,15 +260,19 @@ export default function BusinessForm({ initialData, updated, close }: BusinessFo
           <label htmlFor="selectCategory" className={`block font-medium ${pinkAsterisk}`}>
             Categoria
           </label>
-          <select
-            id="selectCategory"
-            name="category"
-            onChange={handleChange}
-            value={formData.category}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-gray-400"
-          >
-            {categories.map(c => <option key={c} value={c}>{c}</option>)}
+
+          <select onChange={handleChange} name="category" 
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-gray-400"
+>
+            {categories.map(group => (
+              <optgroup key={group.group} label={group.group} className="font-bold">
+                {group.items.map(item =>
+                  <option className="text-red-100" key={item}>{item}</option>
+                )}
+              </optgroup>
+            ))}
           </select>
+
         </div>
 
 
