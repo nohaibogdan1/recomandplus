@@ -9,6 +9,9 @@ export default async function CampaignsPage({
 }) {
   const params = await searchParams;
   const { counties, p, online, categories } = params;
+
+  console.log("AAAA", process.env.NEXT_PUBLIC_API_URL)
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/campanii?counties=${
       counties || ""
