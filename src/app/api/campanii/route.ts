@@ -15,7 +15,7 @@ type DbResponse = {
   business_county: string;
   business_is_online: boolean;
   business_photo: string;
-  campaign_rewards: string;
+  campaign_rewards: string[];
 };
 
 export async function GET(request: Request) {
@@ -50,11 +50,6 @@ export async function GET(request: Request) {
   }
 
   const campaigns = (data as DbResponse[]).map((c) => {
-    let reward = [c.campaign_rewards];
-    try {
-      reward = JSON.parse(c.campaign_rewards);
-    } catch {}
-
     return {
       id: c.campaign_id,
       createdAt: c.campaign_created_at,
@@ -62,7 +57,7 @@ export async function GET(request: Request) {
       endAt: c.campaign_end_at,
       months: c.campaign_months,
       businessId: c.business_id,
-      rewards: reward,
+      rewards: c.campaign_rewards,
       business: {
         name: c.business_name,
         category: c.business_category,
@@ -155,13 +150,12 @@ export async function POST(req: Request) {
     );
   }
 
-  res = await supabase.rpc("insert_campaign", {
+  res = await supabase.rpc("insert_campaign_v2", {
     business_id: business.id,
     start_at: startTimestamp.toISOString(),
     end_at: endTimestamp.toISOString(),
     months,
-    reward: JSON.stringify(rewards),
-    status: "running"
+    reward: rewards
   });
 
   if (res.error) {

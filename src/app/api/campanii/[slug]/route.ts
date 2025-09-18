@@ -9,7 +9,7 @@ type DbResponse = {
   end_at: string;
   months: number;
   business_id: string;
-  campaigns_rewards: { current: boolean; reward: string }[];
+  campaigns_rewards: { current: boolean; reward: string[] }[];
   businesses: {
     name: string;
     county: string;
@@ -58,11 +58,7 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  let reward = [data.campaigns_rewards[0].reward];
-
-  try {
-    reward = JSON.parse(data.campaigns_rewards[0].reward);
-  } catch {}
+  let reward = data.campaigns_rewards[0].reward;
   
   const mapped: CampaignRes = {
     id: data.id,

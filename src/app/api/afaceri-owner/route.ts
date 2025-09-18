@@ -28,7 +28,7 @@ type DbBusiness = {
     months: number;
     campaigns_rewards: {
       id: string;
-      reward: string;
+      reward: string[];
       created_at: string;
     }[];
   }[];
@@ -92,13 +92,9 @@ export async function GET() {
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     );
     rewards = rewards.map((r) => {
-      let options = [r.reward];
-      try {
-        options = JSON.parse(r.reward);
-      } catch {}
       return {
         id: r.id,
-        options,
+        options: r.reward,
         createdAt: r.created_at,
       };
     });
