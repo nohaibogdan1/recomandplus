@@ -1,5 +1,5 @@
 export default function getLeftDays(endAt: string) {
-    const endDate = new Date(endAt + 'Z');
+    const endDate = new Date(endAt);
     const current = new Date();
     current.setUTCHours(0,0,0,0);
     const leftDays = (endDate.getTime() - current.getTime()) / (1000 * 3600 * 24);
